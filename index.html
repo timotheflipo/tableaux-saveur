@@ -1,0 +1,1749 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Fiche de révision interactive du cas Saveur : bilan, compte de résultat, SIG et CAF reliés ligne par ligne.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231F1C33'/%3E%3Crect x='6' y='9' width='20' height='5' rx='2.5' fill='%23FFA8CD' transform='rotate(-4 16 11)'/%3E%3Crect x='6' y='15' width='20' height='5' rx='2.5' fill='%23FFE04A' transform='rotate(3 16 17)'/%3E%3Crect x='6' y='21' width='20' height='5' rx='2.5' fill='%2385CDFF' transform='rotate(-2 16 23)'/%3E%3C/svg%3E">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Tableaux du cas Saveur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Recursive:wght,CASL,MONO@300..1000,0..1,0..1&display=swap">
+<style>
+/* Concept : un classeur de révision passé au surligneur.
+   Feuilles blanches arrondies posées sur un fond de carnet pointillé.
+   Trois surligneurs portent tout le sens : rose = la ligne choisie, jaune = même montant, bleu = lien de calcul.
+   Une pastille de couleur = le cycle de la ligne. Une seule famille de caractères, trois écritures :
+   manuscrite (titres), droite (texte), chasse fixe (montants). */
+:root {
+  --ground: #EDECF3;
+  --dots: #D3D1E0;
+  --card: #FFFFFF;
+  --card-2: #F5F4FA;
+  --card-3: #ECEAF4;
+  --edge: #E4E2EC;
+  --grid: #ECEBF5;
+  --ink: #1F1C33;
+  --ink-2: #57536D;
+  --ink-3: #8A87A0;
+  --line: #ECEAF2;
+  --line-2: #D5D2E2;
+
+  --sel: #FFA8CD;
+  --sel-soft: #FFE5F0;
+  --pink: #E93D85;
+  --same: #FFE04A;
+  --same-soft: #FFF4A8;
+  --same-ink: #5A4600;
+  --calc: #85CDFF;
+  --calc-soft: #D8F0FF;
+  --calc-ink: #07466F;
+
+  --good: #1C7A4A; --good-soft: #DCF3E5;
+  --bad: #BE3A2C; --bad-soft: #FCE5E1;
+  --warn: #A45C00; --warn-soft: #FFF1DC;
+  --tip-bg: #1F1C33; --tip-fg: #F4F3F9; --tip-2: #B9B6CC;
+  --knob-off: #FFFFFF;
+  --shadow-1: 0 1px 2px rgba(31, 28, 51, .05), 0 8px 24px -10px rgba(31, 28, 51, .14);
+  --shadow-2: 0 28px 70px -14px rgba(31, 28, 51, .32), 0 4px 14px rgba(31, 28, 51, .10);
+  --mix: 13%;
+
+  --f-inv: #3F5CAB;
+  --f-exp: #12846E;
+  --f-hexp: #B9760F;
+  --f-tre: #4A8A26;
+  --f-cp: #7650BE;
+  --f-fin: #C0483A;
+  --f-exc: #A3448C;
+  --f-imp: #6E7686;
+  --f-res: #1F1C33;
+
+  --font-display: "Recursive", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Recursive", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-num: "Recursive", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --r-lg: 22px;
+  --r-md: 14px;
+  --bar-h: 72px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #12111A; --dots: #262434; --card: #1B1A26; --card-2: #232232; --card-3: #2B293C;
+    --edge: #2A2939; --grid: #252436;
+    --ink: #EEECF6; --ink-2: #B5B2C8; --ink-3: #8B88A1; --line: #282737; --line-2: #3D3A52;
+    --sel: #93305F; --sel-soft: #431A31; --pink: #FF72B0;
+    --same: #8C7712; --same-soft: #443A0E; --same-ink: #FFEC94;
+    --calc: #1D6191; --calc-soft: #12344D; --calc-ink: #B3E2FF;
+    --good: #6BD39A; --good-soft: #173A29; --bad: #FF8F84; --bad-soft: #43201D; --warn: #F2B55F; --warn-soft: #3A2B14;
+    --tip-bg: #EEECF6; --tip-fg: #1B1A26; --tip-2: #57536D; --knob-off: #9592AA;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px -12px rgba(0, 0, 0, .6);
+    --shadow-2: 0 28px 70px -14px rgba(0, 0, 0, .75), 0 4px 14px rgba(0, 0, 0, .4);
+    --mix: 20%;
+    --f-inv: #94ADE6; --f-exp: #55C7B2; --f-hexp: #E3AD55; --f-tre: #95CB6B; --f-cp: #B49BE6;
+    --f-fin: #EE8E77; --f-exc: #DB8DCC; --f-imp: #A0A8B5; --f-res: #EEECF6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #12111A; --dots: #262434; --card: #1B1A26; --card-2: #232232; --card-3: #2B293C;
+  --edge: #2A2939; --grid: #252436;
+  --ink: #EEECF6; --ink-2: #B5B2C8; --ink-3: #8B88A1; --line: #282737; --line-2: #3D3A52;
+  --sel: #93305F; --sel-soft: #431A31; --pink: #FF72B0;
+  --same: #8C7712; --same-soft: #443A0E; --same-ink: #FFEC94;
+  --calc: #1D6191; --calc-soft: #12344D; --calc-ink: #B3E2FF;
+  --good: #6BD39A; --good-soft: #173A29; --bad: #FF8F84; --bad-soft: #43201D; --warn: #F2B55F; --warn-soft: #3A2B14;
+  --tip-bg: #EEECF6; --tip-fg: #1B1A26; --tip-2: #57536D; --knob-off: #9592AA;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px -12px rgba(0, 0, 0, .6);
+  --shadow-2: 0 28px 70px -14px rgba(0, 0, 0, .75), 0 4px 14px rgba(0, 0, 0, .4);
+  --mix: 20%;
+  --f-inv: #94ADE6; --f-exp: #55C7B2; --f-hexp: #E3AD55; --f-tre: #95CB6B; --f-cp: #B49BE6;
+  --f-fin: #EE8E77; --f-exc: #DB8DCC; --f-imp: #A0A8B5; --f-res: #EEECF6;
+  color-scheme: dark;
+}
+
+/* ── Base ── */
+* { box-sizing: border-box; }
+body {
+  background-color: var(--ground);
+  background-image: radial-gradient(var(--dots) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-variation-settings: "CASL" 0, "MONO" 0;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 30; background: var(--ground);
+}
+.gutter {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1500px; margin: 0 auto; }
+button { font: inherit; color: inherit; font-variation-settings: inherit; }
+:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+.hand { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; }
+.mono { font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; }
+
+/* Traits de surligneur réutilisés partout */
+.stroke {
+  display: inline-block; flex: none; width: 34px; height: 13px;
+  border-radius: 4px 8px 5px 9px / 7px 4px 8px 5px;
+  transform: rotate(-3deg); background: var(--c);
+}
+.stroke.sel { --c: var(--sel); }
+.stroke.same { --c: var(--same); }
+.stroke.calc { --c: var(--calc); }
+
+/* ── En-tête ── */
+.mast-in { padding-block: 44px 30px; display: grid; gap: 26px 56px; align-items: end; }
+@media (min-width: 980px) { .mast-in { grid-template-columns: minmax(0, 1fr) minmax(0, 430px); } }
+.eyebrow {
+  margin: 0; display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%;
+  padding: 6px 14px 6px 8px; border-radius: 999px; background: var(--card); box-shadow: inset 0 0 0 1px var(--edge);
+  font-size: 12px; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
+}
+.eyebrow .stroke { width: 22px; height: 10px; }
+h1 {
+  margin: 18px 0 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0;
+  font-weight: 880; font-size: clamp(38px, 6.2vw, 78px); line-height: .98; letter-spacing: -.025em; text-wrap: balance;
+}
+.hlw { position: relative; z-index: 0; white-space: nowrap; }
+.hlw::before {
+  content: ""; position: absolute; z-index: -1; left: -.1em; right: -.16em; bottom: .02em; height: .52em;
+  background: var(--same); border-radius: .22em .42em .28em .5em / .34em .22em .44em .26em;
+  transform-origin: left center; transform: rotate(-1.6deg);
+  animation: draw .75s cubic-bezier(.55, .1, .25, 1) .25s both;
+}
+@keyframes draw { from { transform: rotate(-1.6deg) scaleX(0); } to { transform: rotate(-1.6deg) scaleX(1); } }
+.lede { margin: 16px 0 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+.howto {
+  background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-1); border: 1px solid var(--edge);
+  padding: 20px 22px; display: grid; gap: 14px; min-width: 0;
+}
+.howto-h { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
+.on-fine { display: none; }
+@media (hover: hover) and (pointer: fine) { .on-fine { display: inline; } .on-touch { display: none; } }
+.markers { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.markers li { display: flex; align-items: center; gap: 14px; font-size: 14.5px; color: var(--ink-2); }
+.markers b { color: var(--ink); font-weight: 700; margin-right: 2px; }
+
+/* ── Barre d'onglets ── */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--ground);
+  background: color-mix(in srgb, var(--ground) 95%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
+}
+.bar-in { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; padding-block: 10px; }
+.tabs {
+  display: flex; gap: 4px; padding: 5px; min-width: 0; max-width: 100%;
+  background: var(--card); border-radius: 19px; box-shadow: var(--shadow-1); border: 1px solid var(--edge);
+  overflow-x: auto; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  appearance: none; border: 0; background: none; cursor: pointer; text-align: left; white-space: nowrap;
+  display: grid; gap: 1px; padding: 9px 16px 10px; border-radius: 14px; color: var(--ink-2);
+  transition: background-color .15s, color .15s;
+}
+.tab:hover { background: var(--card-2); color: var(--ink); }
+.tab-t { display: flex; align-items: center; gap: 8px; font-size: 15.5px; font-weight: 720; line-height: 1.25; }
+.tab-s { font-size: 12px; font-weight: 450; color: var(--ink-3); }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--card); }
+.tab[aria-selected="true"] .tab-s { color: color-mix(in srgb, var(--card) 68%, var(--ink)); }
+.badges { display: inline-flex; gap: 3px; }
+.badge {
+  min-width: 21px; height: 21px; padding: 0 6px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 11.5px; font-weight: 700;
+  animation: pop .3s cubic-bezier(.3, 1.6, .5, 1) both;
+}
+@keyframes pop { from { transform: scale(.4); opacity: 0; } }
+.badge.same { background: var(--same); color: var(--same-ink); }
+.badge.calc { background: var(--calc); color: var(--calc-ink); }
+.controls { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.switch { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-2); cursor: pointer; user-select: none; }
+.switch input {
+  appearance: none; -webkit-appearance: none; margin: 0; flex: none; cursor: pointer; position: relative;
+  width: 38px; height: 22px; border-radius: 999px; background: var(--line-2); transition: background-color .15s;
+}
+.switch input::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--knob-off); box-shadow: 0 1px 2px rgba(0, 0, 0, .22); transition: transform .18s cubic-bezier(.3, .7, .3, 1), background-color .15s;
+}
+.switch input:checked { background: var(--ink); }
+.switch input:checked::after { transform: translateX(16px); background: var(--card); }
+.btn {
+  appearance: none; cursor: pointer; border: 1px solid var(--line-2); background: var(--card);
+  border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 650; color: var(--ink);
+  transition: border-color .15s, background-color .15s;
+}
+.btn:hover:not(:disabled) { border-color: var(--ink-3); }
+.btn:disabled { opacity: .45; cursor: default; }
+
+/* ── Mise en page ── */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding-block: 18px 72px; }
+@media (min-width: 1180px) { .layout { grid-template-columns: minmax(0, 1fr) 390px; } }
+main { min-width: 0; }
+.tabpanel { display: grid; gap: 26px; }
+.tp-head { display: grid; gap: 14px 48px; align-items: start; padding-top: 8px; }
+@media (min-width: 900px) { .tp-head { grid-template-columns: auto minmax(0, 62ch); justify-content: space-between; } }
+.tp-title {
+  margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0;
+  font-weight: 860; font-size: clamp(32px, 4.2vw, 50px); line-height: 1; letter-spacing: -.02em; text-wrap: balance;
+}
+.tp-side { display: grid; gap: 12px; justify-items: start; }
+.tp-intro { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
+.chip-exam {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px 5px 10px; border-radius: 999px;
+  background: var(--ink); color: var(--card); font-size: 13px; font-weight: 700;
+}
+.chip-exam::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sel); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lg {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 13px 5px 10px; border-radius: 999px; cursor: help;
+  background: color-mix(in srgb, var(--fc) var(--mix), var(--card));
+  color: color-mix(in srgb, var(--fc) 72%, var(--ink));
+  font-size: 13px; font-weight: 650;
+}
+.lg .dot { margin: 0; }
+.lg-mks { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.lg-sep { width: 1px; height: 20px; background: var(--line-2); margin: 0 6px; }
+.lg-mk { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); padding-right: 6px; }
+.lg-mk .stroke { width: 24px; height: 10px; }
+
+.sheets { display: grid; gap: 24px; }
+@media (min-width: 1360px) { .sheets.duo { grid-template-columns: 1fr 1fr; align-items: start; } }
+.sheet {
+  background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-1); border: 1px solid var(--edge);
+  padding: 4px 10px 12px; min-width: 0;
+}
+.sheet-h { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; padding: 16px 10px 12px; }
+.sheet-h h3 {
+  margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0;
+  font-size: 21px; font-weight: 780; letter-spacing: -.01em; line-height: 1.2;
+}
+.unit { font-size: 12.5px; color: var(--ink-3); }
+.scroll { overflow-x: auto; }
+table.net-only [data-col="nb"], table.net-only [data-col="na"], table.net-only [data-col="pb"], table.net-only [data-col="pa"] { display: none; }
+table.wide.net-only { min-width: 0; }
+
+/* ── Tableaux ── */
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
+table.wide { min-width: 820px; }
+thead th {
+  font-size: 11px; font-weight: 650; line-height: 1.2; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3);
+  text-align: right; padding: 10px 14px 11px; border-bottom: 1px solid var(--line-2); white-space: nowrap; background: var(--card);
+}
+thead th.lab-h { text-align: left; }
+thead th.yr { text-align: center; border-bottom: 0; padding-bottom: 4px; }
+thead th.yr span { display: inline-block; padding: 3px 12px; border-radius: 999px; background: var(--card-2); color: var(--ink-2); letter-spacing: .06em; }
+thead th[data-tip] { cursor: help; }
+thead th[data-tip]:hover { color: var(--ink); }
+
+tr.row { --rbg: var(--card); --rfg: var(--ink); cursor: pointer; }
+tr.row td {
+  background-color: var(--rbg); color: var(--rfg);
+  padding: 10px 14px; vertical-align: baseline; box-shadow: inset 0 -1px 0 var(--line);
+  transition: background-color .15s;
+}
+td.num {
+  text-align: right; white-space: nowrap;
+  font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 13.5px; font-weight: 450;
+}
+td.num .nil { color: var(--ink-3); }
+.cv { display: inline-block; padding: 2px 8px; margin: -2px -8px; border-radius: 999px; transition: background-color .2s; }
+td.lab { padding-left: calc(14px + var(--ind, 0) * 20px); min-width: 250px; }
+.lw { display: flex; align-items: flex-start; gap: 11px; }
+.lt { min-width: 0; }
+.dot { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--fc, var(--ink-3)); margin-top: .5em; }
+tr.sub .dot { width: 7px; height: 7px; background: transparent; box-shadow: inset 0 0 0 2px var(--fc, var(--ink-3)); margin-top: .58em; }
+
+/* Colonne des signes : un fil qui relie les étapes de la cascade */
+table.signed td.sg, table.signed th.sg-h { width: 44px; padding: 0; text-align: center; position: relative; }
+table.signed td.sg { vertical-align: middle; }
+table.signed td.sg::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--line-2);
+}
+table.signed tbody tr:first-child td.sg::before { top: 50%; }
+table.signed tbody tr:last-child td.sg::before { bottom: 50%; }
+.sgc {
+  position: relative; z-index: 1; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--card); box-shadow: inset 0 0 0 1.5px var(--line-2); color: var(--ink-2);
+  font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 13px; font-weight: 650; line-height: 1;
+}
+tr.sg-eq .sgc { width: 26px; height: 26px; background: var(--ink); color: var(--card); box-shadow: none; }
+
+/* Types de lignes */
+tr.k-g td { box-shadow: none; padding-top: 24px; padding-bottom: 8px; }
+tbody tr.k-g:first-child td { padding-top: 12px; }
+.gp {
+  display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--fc, var(--ink-3)) var(--mix), var(--card));
+  color: color-mix(in srgb, var(--fc, var(--ink-3)) 72%, var(--ink));
+  font-size: 11.5px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase;
+}
+.gp .dot { margin: 0; width: 8px; height: 8px; }
+table.signed .gp { text-transform: none; letter-spacing: 0; font-size: 14px; padding: 4px 14px 4px 10px; }
+table.signed tr.k-g td { padding-top: 14px; padding-bottom: 6px; }
+tr.k-s td { font-weight: 650; }
+tr.k-t { --rbg: var(--card-2); }
+tr.k-t td { font-weight: 720; box-shadow: none; padding-top: 12px; padding-bottom: 12px; }
+tr.k-t td.num { font-weight: 650; font-size: 14px; }
+tr.k-t.grand { --rbg: var(--ink); --rfg: var(--card); }
+tr.k-t.grand td { padding-top: 15px; padding-bottom: 15px; }
+tr.k-t.grand td.lab { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 16px; }
+tr.k-t.grand .nil { color: inherit; opacity: .6; }
+tr.k-r { --rbg: color-mix(in srgb, var(--fc, var(--ink)) var(--mix), var(--card)); }
+tr.k-r td { box-shadow: none; padding-top: 13px; padding-bottom: 13px; }
+tr.k-r td.lab { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-weight: 760; font-size: 16px; line-height: 1.3; }
+tr.k-r td.num { font-weight: 700; font-size: 14.5px; }
+tr.k-d td { color: var(--ink-2); font-size: 14px; padding-top: 7px; padding-bottom: 7px; }
+tr.k-d td.num { font-size: 12.5px; }
+tr.empty td { color: var(--ink-3); }
+body:not(.show-empty) tr.empty { display: none; }
+
+/* Bandes arrondies : totaux, soldes, survol, surlignage */
+tr.k-t td:first-child, tr.k-r td:first-child, tr.row:hover td:first-child,
+tr.sel td:first-child, tr.hl-same td:first-child, tr.hl-up td:first-child, tr.hl-down td:first-child { border-top-left-radius: 13px; border-bottom-left-radius: 13px; }
+tr.k-t td:last-child, tr.k-r td:last-child, tr.row:hover td:last-child,
+tr.sel td:last-child, tr.hl-same td:last-child, tr.hl-up td:last-child, tr.hl-down td:last-child { border-top-right-radius: 13px; border-bottom-right-radius: 13px; }
+tr.row:not(.grand):not(.k-r):hover { --rbg: var(--card-2); }
+tr.row.k-r:hover { --rbg: color-mix(in srgb, var(--fc, var(--ink)) calc(var(--mix) + 7%), var(--card)); }
+tr.row:hover td { box-shadow: none; }
+
+.ev {
+  display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  background: var(--card-3); color: var(--ink-2);
+}
+.ev.good { background: var(--good-soft); color: var(--good); }
+.ev.bad { background: var(--bad-soft); color: var(--bad); }
+.chip-x, .chip-a, .tag {
+  display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; vertical-align: 1px;
+  font-family: var(--font-body); font-variation-settings: "CASL" 0, "MONO" 0;
+  font-size: 11px; font-weight: 750; letter-spacing: .01em; line-height: 1.6; text-transform: none; white-space: nowrap;
+}
+.chip-x { background: var(--ink); color: var(--card); }
+.chip-a { box-shadow: inset 0 0 0 1.5px var(--warn); color: var(--warn); }
+tr.grand .chip-x { background: var(--card); color: var(--ink); }
+
+/* Surligneurs */
+tr.row.sel { --hl: var(--sel-soft); }
+tr.row.hl-same { --hl: var(--same-soft); }
+tr.row.hl-up, tr.row.hl-down { --hl: var(--calc-soft); }
+tr.row.sel, tr.row.hl-same, tr.row.hl-up, tr.row.hl-down { --rfg: var(--ink); }
+tr.row.grand.sel, tr.row.grand.hl-same, tr.row.grand.hl-up, tr.row.grand.hl-down { --rbg: var(--card); }
+tr.row.sel td, tr.row.hl-same td, tr.row.hl-up td, tr.row.hl-down td {
+  background-image: linear-gradient(var(--hl), var(--hl));
+  background-repeat: no-repeat; background-size: 100% 100%;
+  box-shadow: none;
+  animation: swipe var(--dd, .2s) linear var(--d0, 0s) both;
+}
+@keyframes swipe { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+tr.row.sel td.lab .lt { font-weight: 700; }
+tr.hl-same td.hit .cv { background: var(--same); color: var(--same-ink); font-weight: 650; }
+tr.hl-up td.hit .cv, tr.hl-down td.hit .cv { background: var(--calc); color: var(--calc-ink); font-weight: 650; }
+tr.sel td.hit-own .cv { background: var(--card); box-shadow: inset 0 0 0 2px var(--pink); font-weight: 650; }
+.tag.same { background: var(--same); color: var(--same-ink); }
+.tag.up, .tag.down { background: var(--calc); color: var(--calc-ink); }
+tr.row:focus-visible { outline: none; }
+tr.row:focus-visible td { box-shadow: inset 0 2px 0 var(--pink), inset 0 -2px 0 var(--pink); }
+tr.flash td { animation: swipe var(--dd, .2s) linear var(--d0, 0s) both, ping 1.5s ease-out 0s; }
+@keyframes ping { 0%, 45% { box-shadow: inset 0 2px 0 var(--pink), inset 0 -2px 0 var(--pink); } 100% { box-shadow: inset 0 0 0 transparent; } }
+
+/* Écarts relevés */
+.notes { background: var(--warn-soft); border-radius: var(--r-lg); padding: 20px 22px; display: grid; gap: 12px; }
+.notes h3 {
+  margin: 0; display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 18px; font-weight: 780; color: var(--warn);
+}
+.notes h3::before {
+  content: "!"; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--warn); color: var(--warn-soft); font-size: 14px; font-weight: 900;
+}
+.notes ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.notes li { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); max-width: 96ch; }
+.notes button {
+  appearance: none; cursor: pointer; border: 0; margin-right: 6px; padding: 2px 11px; border-radius: 999px;
+  background: var(--card); color: var(--ink); font-size: 13.5px; font-weight: 700; box-shadow: inset 0 0 0 1px var(--edge);
+}
+.notes button:hover { box-shadow: inset 0 0 0 1.5px var(--warn); }
+.foot { font-size: 13px; color: var(--ink-3); margin: 0; }
+
+/* ── Panneau de détail ── */
+#panel { min-width: 0; }
+.panel-in {
+  background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-1); border: 1px solid var(--edge);
+  display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+}
+.p-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px 10px; position: relative; }
+.p-head h2 { margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.grip { display: none; }
+.p-close { display: none; padding: 5px 14px; font-size: 13px; }
+.p-scroll { overflow-y: auto; padding: 0 14px 18px; display: flex; flex-direction: column; gap: 16px; overscroll-behavior: contain; }
+.p-scroll > * { flex-shrink: 0; }
+
+.p-empty { display: grid; gap: 14px; padding: 18px 16px 20px; border-radius: 18px; background: var(--card-2); color: var(--ink-2); font-size: 14.5px; }
+.p-empty p { margin: 0; }
+.pe-art { display: flex; gap: 8px; }
+.pe-art .stroke { width: 46px; height: 15px; }
+.pe-art .stroke:nth-child(2) { transform: rotate(2deg); }
+.pe-art .stroke:nth-child(3) { transform: rotate(-1deg); }
+.pe-lead { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 19px; font-weight: 760; line-height: 1.25; color: var(--ink); }
+.pe-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.p-top { background: var(--sel-soft); border-radius: 18px; padding: 16px 16px 15px; display: grid; gap: 10px; }
+.p-where { margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.p-title {
+  margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0;
+  font-weight: 800; font-size: 23px; line-height: 1.15; letter-spacing: -.01em; text-wrap: balance;
+}
+.p-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px; padding: 3px 11px 3px 9px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 650; background: var(--card); color: var(--ink-2);
+}
+.chip .dot { margin: 0; width: 8px; height: 8px; }
+.chip.pcg { font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-weight: 500; font-size: 12px; padding-left: 11px; }
+.chip.x { background: var(--ink); color: var(--card); padding-left: 11px; }
+
+.vals { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(98px, 1fr)); gap: 8px; }
+.vals > div { background: var(--card-2); border-radius: var(--r-md); padding: 10px 12px 11px; display: grid; gap: 3px; align-content: start; }
+.vals dt { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.vals dd { margin: 0; font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 16px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.vals > div.main dd { font-size: 18px; font-weight: 750; }
+.vals > div.good { background: var(--good-soft); } .vals > div.good dd { color: var(--good); }
+.vals > div.bad { background: var(--bad-soft); } .vals > div.bad dd { color: var(--bad); }
+.vals dd small { display: block; font-family: var(--font-body); font-variation-settings: "CASL" 0, "MONO" 0; font-size: 12px; font-weight: 650; }
+.mini-wrap { background: var(--card-2); border-radius: var(--r-md); padding: 6px 4px; }
+table.mini { font-size: 13px; }
+table.mini th, table.mini td { padding: 6px 10px; }
+table.mini th { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); text-align: right; }
+table.mini th:first-child { text-align: left; }
+table.mini td { font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; text-align: right; }
+table.mini td.netc { font-weight: 700; }
+.p-desc { margin: 0; font-size: 15px; line-height: 1.6; }
+.cours { margin: 0; padding: 13px 15px 14px; border-radius: var(--r-md); background: var(--card-2); display: grid; gap: 4px; }
+.cours b { font-size: 11px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.cours span { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
+.alert { margin: 0; padding: 13px 15px 14px; border-radius: var(--r-md); background: var(--warn-soft); font-size: 14px; line-height: 1.5; display: grid; gap: 4px; }
+.alert b { font-size: 11px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+
+/* Calcul posé, sur papier à carreaux */
+.formula {
+  display: grid; gap: 10px; padding: 14px 14px 12px; border-radius: 18px; border: 1px solid var(--edge);
+  background-color: var(--card);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 14px 14px; background-position: -1px -1px;
+}
+.formula h4, .links h4 { margin: 0; font-size: 11px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.formula .fl { margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 15px; line-height: 1.45; }
+.formula .fl b { font-weight: 800; }
+table.posee { font-size: 13px; }
+table.posee th { font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); text-align: right; padding: 0 4px 5px 10px; }
+table.posee td { padding: 4px 4px 4px 10px; vertical-align: baseline; }
+table.posee td.ps { width: 16px; padding-left: 0; color: var(--ink-3); font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-weight: 700; }
+table.posee td.pl { padding-left: 2px; color: var(--ink-2); line-height: 1.35; }
+table.posee td.pv { text-align: right; white-space: nowrap; font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; }
+table.posee tfoot td { border-top: 2px solid var(--ink); padding-top: 7px; font-weight: 750; }
+table.posee tfoot td.pl { color: var(--ink); }
+.fx-note { margin: 0; font-size: 12.5px; color: var(--warn); font-weight: 600; }
+
+/* Liens */
+.links { display: grid; gap: 16px; }
+.links section { display: grid; gap: 7px; }
+.links h4 { display: flex; align-items: center; gap: 9px; }
+.links h4 .stroke { width: 22px; height: 9px; }
+.links ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.lk {
+  appearance: none; width: 100%; text-align: left; cursor: pointer; border: 0; border-radius: var(--r-md);
+  padding: 9px 12px 10px 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 12px; align-items: baseline;
+  transition: transform .15s cubic-bezier(.3, .7, .3, 1), filter .15s;
+}
+.lk.same { background: var(--same-soft); }
+.lk.calc { background: var(--calc-soft); }
+.lk:hover { transform: translateX(3px); }
+.lk .w { grid-column: 1 / -1; font-size: 10.5px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); opacity: .85; }
+.lk .n { font-size: 14px; font-weight: 650; color: var(--ink); line-height: 1.35; }
+.lk .v { font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 12.5px; font-weight: 650; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.lk.same .v { background: var(--same); color: var(--same-ink); }
+.lk.calc .v { background: var(--calc); color: var(--calc-ink); }
+.lk .note { grid-column: 1 / -1; font-size: 12.5px; color: var(--ink-2); }
+.none { margin: 0; font-size: 14px; color: var(--ink-3); }
+
+@media (min-width: 1180px) {
+  #panel .panel-in { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--bar-h) + 12px); max-height: calc(100vh - var(--bar-h) - 32px); }
+}
+@media (max-width: 1179px) {
+  #panel {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    transform: translateY(105%); transition: transform .3s cubic-bezier(.3, .8, .3, 1);
+    padding-left: max(6px, env(safe-area-inset-left, 0px)); padding-right: max(6px, env(safe-area-inset-right, 0px));
+  }
+  #panel.open { transform: none; }
+  .panel-in { max-height: 66vh; border-radius: 26px 26px 0 0; box-shadow: var(--shadow-2); border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .p-head { padding-top: 20px; }
+  .grip { display: block; position: absolute; top: 8px; left: 50%; width: 40px; height: 4px; margin-left: -20px; border-radius: 4px; background: var(--line-2); }
+  .p-close { display: inline-flex; }
+  body.panel-open main { padding-bottom: 62vh; }
+}
+@media (max-width: 640px) {
+  body { font-size: 14.5px; }
+  .mast-in { padding-block: 26px 20px; gap: 18px; }
+  h1 { margin-top: 14px; }
+  .lede { font-size: 15.5px; }
+  .howto { padding: 16px 16px; }
+  .bar-in { gap: 8px; padding-block: 8px; }
+  .tabs { width: 100%; }
+  .tab { padding: 8px 12px 9px; }
+  .tab-s { display: none; }
+  .tab-t { font-size: 14.5px; }
+  .controls { width: 100%; justify-content: space-between; gap: 10px; }
+  .switch { font-size: 13px; }
+  .long { display: none; }
+  .btn { padding: 6px 13px; font-size: 13px; }
+  .sheet { padding: 2px 4px 8px; border-radius: 18px; }
+  .sheet-h { padding: 14px 8px 10px; }
+  td.lab { min-width: 176px; }
+  tr.row td { padding: 9px 8px; }
+  td.lab { padding-left: calc(8px + var(--ind, 0) * 14px); }
+  thead th { padding: 9px 8px 10px; }
+  table.signed td.sg, table.signed th.sg-h { width: 34px; }
+  td.lab, th.lab-h { position: sticky; left: 0; z-index: 1; }
+  table.signed td.sg, table.signed th.sg-h { position: sticky; left: 0; z-index: 2; background-color: var(--rbg, var(--card)); }
+  table.signed td.lab, table.signed th.lab-h { left: 34px; }
+  td.lab { min-width: 160px; }
+  .lg-sep { display: none; }
+  .notes { padding: 16px; }
+}
+
+/* ── Infobulle ── */
+#tip {
+  position: fixed; z-index: 50; max-width: 360px; pointer-events: none;
+  background: var(--tip-bg); color: var(--tip-fg); border-radius: 14px; box-shadow: var(--shadow-2);
+  padding: 12px 15px 13px; font-size: 13.5px; line-height: 1.5; display: grid; gap: 6px;
+  animation: tipin .14s ease-out;
+}
+@keyframes tipin { from { opacity: 0; transform: translateY(-3px); } }
+#tip strong { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 15px; font-weight: 780; }
+#tip p { margin: 0; }
+#tip .tf { font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 12px; color: var(--tip-2); }
+#tip .th { font-size: 12px; color: var(--tip-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap gutter mast-in">
+    <div>
+      <p class="eyebrow"><span class="stroke same" aria-hidden="true"></span>Fiche de révision · Diagnostic financier</p>
+      <h1>Tableaux du cas <span class="hlw">Saveur</span></h1>
+      <p class="lede">L’épicerie fine Saveur sur deux exercices, N et N-1. Le bilan, le compte de résultat, les SIG et la CAF, reliés entre eux ligne par ligne.</p>
+    </div>
+    <div class="howto" aria-label="Mode d’emploi">
+      <p class="howto-h"><span class="on-fine">Survole une ligne pour lire son explication, puis clique dessus pour allumer ses liens dans tous les onglets.</span><span class="on-touch">Touche une ligne pour lire son explication et allumer ses liens dans tous les onglets.</span></p>
+      <ul class="markers">
+        <li><span class="stroke sel" aria-hidden="true"></span><span><b>Rose</b> la ligne que tu as choisie</span></li>
+        <li><span class="stroke same" aria-hidden="true"></span><span><b>Jaune</b> le même montant, repris ailleurs</span></li>
+        <li><span class="stroke calc" aria-hidden="true"></span><span><b>Bleu</b> un lien de calcul entre deux lignes</span></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap gutter bar-in">
+    <nav class="tabs" role="tablist" aria-label="Tableaux" id="tabs"></nav>
+    <div class="controls">
+      <label class="switch" for="show-empty"><input type="checkbox" id="show-empty" role="switch"> <span>Lignes vides<span class="long"> du modèle</span></span></label>
+      <button class="btn" type="button" id="clear" disabled>Effacer la sélection</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap gutter layout">
+  <main id="main"></main>
+  <aside id="panel" aria-label="Détail de la ligne">
+    <div class="panel-in">
+      <div class="p-head">
+        <span class="grip" aria-hidden="true"></span>
+        <h2>Détail de la ligne</h2>
+        <button class="btn p-close" type="button" id="close">Fermer</button>
+      </div>
+      <div class="p-scroll" id="pbody"></div>
+    </div>
+  </aside>
+</div>
+
+<div id="tip" role="tooltip" hidden></div>
+
+<script>
+/* Données du cas Saveur : bilan, compte de résultat, SIG, CAF.
+   Chaque ligne : id, l (libellé), sl (libellé court pour les formules), v (valeurs), k (type),
+   f (famille de couleur), ind (retrait), d (description), c (note du cours), a (écart dans le cours),
+   pcg (compte), s (sens : "up" hausse favorable, "down" baisse favorable), x (à connaître), sg (signe affiché). */
+const _ = null;
+const ACOLS = ["nb", "na", "nn", "pb", "pa", "pn"];
+const PCOLS = ["n", "p"];
+function mk(cols, id, l, vals, o) {
+  const v = {};
+  (vals || []).forEach((x, i) => { v[cols[i]] = x; });
+  return Object.assign({ id: id, l: l, v: v, k: "l", ind: 0 }, o || {});
+}
+const A = (id, l, vals, o) => mk(ACOLS, id, l, vals, o);
+const P = (id, l, vals, o) => mk(PCOLS, id, l, vals, o);
+const G = (id, l, o) => Object.assign({ id: id, l: l, v: {}, k: "g", ind: 0 }, o || {});
+
+const DATA = {
+  tabs: [
+    { id: "bilan", label: "Bilan", tables: ["actif", "passif"],
+      intro: "Le bilan est la photo du patrimoine au 31 décembre. L’actif montre ce que l’entreprise possède, le passif d’où viennent les ressources qui l’ont financé. Les deux totaux sont toujours égaux." },
+    { id: "resultat", label: "Compte de résultat", tables: ["crc", "crp"],
+      intro: "Le compte de résultat résume l’année. Produits − charges = résultat. Chaque poste est classé en exploitation, financier ou exceptionnel. Le cours ne donne que l’exercice N." },
+    { id: "sig", label: "SIG", tables: ["sig"],
+      intro: "Les soldes intermédiaires de gestion découpent le résultat en étapes, de la marge commerciale au résultat de l’exercice. Ce tableau est à savoir lire, pas à apprendre par cœur. Le calcul de la VA, lui, est à connaître.",
+      exam: "Calcul de la VA à connaître" },
+    { id: "caf", label: "CAF", tables: ["caf"],
+      intro: "La CAF mesure ce que l’activité de l’année a réellement dégagé comme ressources. On part du résultat, on ajoute les charges qui ne font pas sortir d’argent et on retire les produits qui n’en font pas entrer.",
+      exam: "Tableau à connaître par cœur" }
+  ],
+
+  families: {
+    inv: { name: "Investissement", desc: "Immobilisations : ce que l’entreprise garde durablement." },
+    exp: { name: "Exploitation", desc: "Activité courante : acheter, vendre, payer les salaires." },
+    hexp: { name: "Hors exploitation", desc: "Éléments qui ne viennent pas de l’activité courante." },
+    tre: { name: "Trésorerie", desc: "Argent disponible ou presque : banque, caisse, placements liquides, découvert." },
+    cp: { name: "Capitaux propres", desc: "Ressources apportées ou laissées par les associés." },
+    fin: { name: "Financier", desc: "Emprunts, intérêts et placements." },
+    exc: { name: "Exceptionnel", desc: "Opérations hors activité courante." },
+    imp: { name: "Impôt et participation", desc: "Impôt sur les bénéfices et participation des salariés." },
+    res: { name: "Totaux et résultats", desc: "Sommes et soldes calculés." }
+  },
+
+  tables: [
+    /* ───────────── BILAN ACTIF ───────────── */
+    {
+      id: "actif", tab: "bilan", title: "Bilan actif", short: "Actif",
+      cols: [
+        { k: "nb", label: "Brut", year: "N", tip: "Valeur d’origine du bien, son prix d’achat." },
+        { k: "na", label: "Amort. et dép.", year: "N", tip: "Usure cumulée (amortissements) et pertes de valeur probables (dépréciations) depuis l’achat." },
+        { k: "nn", label: "Net", year: "N", tip: "Brut − amortissements et dépréciations. C’est la valeur qui compte dans le total du bilan." },
+        { k: "pb", label: "Brut", year: "N-1", tip: "Valeur d’origine, au bilan de l’année précédente." },
+        { k: "pa", label: "Amort. et dép.", year: "N-1", tip: "Amortissements et dépréciations cumulés à la fin de N-1." },
+        { k: "pn", label: "Net", year: "N-1", tip: "Valeur nette à la fin de N-1." }
+      ],
+      main: "nn", prev: "pn", evol: false,
+      rows: [
+        A("a-csna", "Capital souscrit non appelé", [0, _, 0, 0, _, 0], { f: "cp",
+          d: "Part du capital promise par les associés que l’entreprise ne leur a pas encore demandée. Rare. Ici à 0." , pcg: "109" }),
+        A("a-fe", "Frais d’établissement", [], { f: "inv",
+          d: "Frais de création de l’entreprise qu’on pouvait inscrire à l’actif. Vide ici." }),
+        G("a-g-immo", "Actif immobilisé", { f: "inv",
+          d: "Ce que l’entreprise garde durablement (plus d’un an) pour exercer son activité.",
+          c: "L’actif, c’est tout ce que possède l’entreprise. Les immobilisations, je ne veux pas m’en débarrasser." }),
+        G("a-g-incorp", "Immobilisations incorporelles", { f: "inv", ind: 1,
+          d: "Biens sans existence physique : brevets, marques, logiciels, fonds commercial." }),
+        A("a-rd", "Frais de recherche et développement", [], { f: "inv", ind: 2,
+          d: "Dépenses de développement de projets que l’entreprise choisit d’inscrire à l’actif. Vide ici." }),
+        A("a-brevets", "Concessions, brevets, licences, marques, procédés, droits", [10742, 10742, 0, 10742, 9742, 1000], { f: "inv", ind: 2, sl: "Brevets, licences, marques", pcg: "205",
+          d: "Droits d’utiliser une marque, un brevet ou un logiciel. Ici, ils sont totalement amortis en N : la valeur nette passe de 1 000 € à 0 (1 000 € d’amortissement dans l’année)." }),
+        A("a-fonds", "Fonds commercial", [81179, _, 81179, 81179, _, 81179], { f: "inv", ind: 2, pcg: "207",
+          d: "Valeur de la clientèle, du nom et de l’emplacement acquis avec le commerce. En principe, il ne s’amortit pas, d’où l’absence d’amortissement." }),
+        A("a-autres-incorp", "Autres immobilisations incorporelles", [], { f: "inv", ind: 2,
+          d: "Autres éléments incorporels non classés ailleurs. Vide ici." }),
+        A("a-incorp-encours", "Immobilisations incorporelles en cours", [], { f: "inv", ind: 2,
+          d: "Immobilisation incorporelle pas encore terminée à la clôture. Vide ici." }),
+        A("a-incorp-av", "Avances et acomptes (incorporels)", [], { f: "inv", ind: 2,
+          d: "Sommes versées d’avance pour une immobilisation incorporelle. Vide ici." }),
+        G("a-g-corp", "Immobilisations corporelles", { f: "inv", ind: 1,
+          d: "Biens physiques durables : terrains, bâtiments, machines, mobilier, agencements, véhicules." }),
+        A("a-terrains", "Terrains", [], { f: "inv", ind: 2,
+          d: "Terrains possédés. Ils ne s’amortissent pas car ils ne s’usent pas. Vide ici : Saveur ne possède pas de terrain." }),
+        A("a-constructions", "Constructions", [8385, 7956, 429, 8385, 7556, 829], { f: "inv", ind: 2, pcg: "213",
+          d: "Bâtiments et aménagements de bâtiments. Presque totalement amortis : il reste 429 € de valeur nette." }),
+        A("a-instal", "Installations techniques, matériel et outillage industriels", [78838, 66750, 12088, 78838, 63296, 15542], { f: "inv", ind: 2, sl: "Installations techniques, matériel", pcg: "215",
+          d: "Machines et outillage utilisés pour l’activité, par exemple du matériel de cuisine ou des vitrines réfrigérées. Aucun achat en N (brut inchangé), seulement de l’usure." }),
+        A("a-autres-corp", "Autres immobilisations corporelles", [1247782, 597139, 650643, 1127602, 573139, 554463], { f: "inv", ind: 2, pcg: "218",
+          d: "Agencements, mobilier, matériel de bureau, matériel de transport… C’est le poste qui augmente le plus : +120 180 € en brut, ce qui correspond aux travaux de rénovation du magasin et de la façade." }),
+        A("a-corp-encours", "Immobilisations corporelles en cours", [], { f: "inv", ind: 2,
+          d: "Immobilisation pas encore terminée à la clôture, comme un chantier en cours. Vide ici." }),
+        A("a-avances", "Avances et acomptes", [5000, _, 5000, 2000, _, 2000], { f: "inv", ind: 2, pcg: "238",
+          d: "Sommes versées d’avance à un fournisseur pour une immobilisation pas encore livrée. Elles passent de 2 000 € à 5 000 €." }),
+        G("a-g-fin", "Immobilisations financières", { f: "inv", ind: 1,
+          d: "Placements et créances à long terme : titres de participation, prêts accordés, dépôts et cautionnements." }),
+        A("a-part-eq", "Participations évaluées par équivalence", [], { f: "inv", ind: 2, d: "Titres de sociétés contrôlées, évalués selon une méthode de consolidation. Vide ici." }),
+        A("a-autres-part", "Autres participations", [], { f: "inv", ind: 2, d: "Titres d’autres sociétés détenus durablement pour les contrôler ou les influencer. Vide ici." }),
+        A("a-cr-part", "Créances rattachées à des participations", [], { f: "inv", ind: 2, d: "Prêts accordés aux sociétés dont on détient des titres. Vide ici." }),
+        A("a-tiap", "Titres immobilisés de l’activité de portefeuille", [], { f: "inv", ind: 2, d: "Titres détenus pour leur rentabilité à long terme. Vide ici." }),
+        A("a-autres-titres", "Autres titres immobilisés", [], { f: "inv", ind: 2, d: "Autres titres gardés à long terme, sans but de contrôle. Vide ici." }),
+        A("a-prets", "Prêts", [1855, _, 1855, 2355, _, 2355], { f: "inv", ind: 2, pcg: "274",
+          d: "Argent prêté par l’entreprise, par exemple à un salarié, remboursable sur plus d’un an. Baisse de 500 € : une partie a été remboursée." }),
+        A("a-autres-imfin", "Autres immobilisations financières", [], { f: "inv", ind: 2, d: "Dépôts et cautionnements versés, par exemple pour un loyer. Vide ici." }),
+        A("a-total1", "Total I", [1433781, 682587, 751194, 1311101, 653733, 657368], { k: "t", f: "res", sl: "Total actif immobilisé",
+          d: "Total de l’actif immobilisé. En brut, il augmente de 122 680 €, signe des investissements de N (les travaux). La colonne Amort. et dép. cumule l’usure enregistrée depuis l’achat des biens.",
+          c: "Bilan fonctionnel : les emplois stables reprennent ce total en valeur brute." }),
+        G("a-g-ac", "Actif circulant", { f: "exp",
+          d: "Éléments qui tournent pendant l’année avec l’activité : stocks, créances, trésorerie.",
+          c: "Les actifs circulants changent toute l’année. Si j’ai besoin de trésorerie, je vends d’abord mes actifs circulants." }),
+        G("a-g-stocks", "Stocks et en-cours", { f: "exp", ind: 1, d: "Biens achetés ou fabriqués, pas encore vendus ou consommés à la clôture." }),
+        A("a-mp", "Matières premières et autres approvisionnements", [], { f: "exp", ind: 2, d: "Matières destinées à être transformées. Vide ici : Saveur revend sans transformer." }),
+        A("a-encours", "En-cours de production (biens et services)", [], { f: "exp", ind: 2, d: "Produits en cours de fabrication à la clôture. Vide ici." }),
+        A("a-pf", "Produits intermédiaires et finis", [], { f: "exp", ind: 2, d: "Produits fabriqués par l’entreprise et pas encore vendus. Vide ici." }),
+        A("a-march", "Marchandises", [31278, 800, 30478, 30278, 300, 29978], { f: "exp", ind: 2, pcg: "37",
+          d: "Stock de produits achetés pour être revendus en l’état. Le stock brut passe de 30 278 € à 31 278 €, d’où une variation de stock de −1 000 € au compte de résultat. La dépréciation de 800 € couvre une perte de valeur probable, par exemple des produits périmés." }),
+        A("a-av-cmd", "Avances et acomptes versés sur commandes", [], { f: "exp", ind: 2, d: "Sommes versées d’avance à un fournisseur pour une commande de marchandises. Vide ici." }),
+        G("a-g-crexp", "Créances d’exploitation", { f: "exp", ind: 1, d: "Sommes que des tiers doivent à l’entreprise du fait de son activité courante." }),
+        A("a-clients", "Créances clients et comptes rattachés", [20872, 1422, 19450, 15122, 822, 14300], { f: "exp", ind: 2, sl: "Créances clients", pcg: "411",
+          d: "Ventes facturées mais pas encore encaissées. Elles augmentent (20 872 € contre 15 122 € en brut). La dépréciation de 1 422 € couvre les clients qui risquent de ne pas payer." }),
+        A("a-autres-cr", "Autres créances d’exploitation", [312, _, 312, 112, _, 112], { f: "exp", ind: 2,
+          d: "Autres sommes dues à l’entreprise du fait de l’activité, par exemple de la TVA à récupérer." }),
+        A("a-cca", "Charges constatées d’avance", [44952, _, 44952, 41002, _, 41002], { f: "exp", ind: 2, pcg: "486", sl: "Charges constatées d’avance (CCA)",
+          d: "Charges payées en N qui concernent N+1, par exemple un loyer payé d’avance. On les retire des charges de N et on les garde à l’actif. D’après le doc 4, elles concernent l’exploitation." }),
+        A("a-cr-div", "Créances diverses", [25749, _, 25749, 25149, _, 25149], { f: "hexp", ind: 1, pcg: "46",
+          d: "Créances qui ne viennent pas de l’activité courante. D’après le doc 4, elles sont hors exploitation : dans le bilan fonctionnel, elles vont dans l’actif circulant hors exploitation." }),
+        A("a-csanv", "Capital souscrit, appelé, non versé", [], { f: "cp", ind: 1, d: "Capital demandé aux associés mais pas encore versé. Vide ici." }),
+        A("a-vmp", "Valeurs mobilières de placement", [52200, 878, 51322, 50800, 528, 50272], { f: "tre", ind: 1, sl: "VMP", pcg: "50",
+          d: "Titres achetés pour placer un surplus de trésorerie à court terme. D’après le doc 4, ils sont liquides, donc comptés en trésorerie. La dépréciation de N (878 €) est une charge financière de N ; celle de N-1 (528 €) est reprise en produit financier.",
+          c: "Je place un reste de trésorerie dans des valeurs mobilières de placement, de façon temporaire." }),
+        A("a-instr", "Instruments de trésorerie", [], { f: "tre", ind: 1, d: "Produits financiers utilisés pour se couvrir contre un risque (taux, change). Vide ici." }),
+        A("a-dispo", "Disponibilités", [130055, _, 130055, 148155, _, 148155], { f: "tre", ind: 1, pcg: "512, 53",
+          d: "Argent sur les comptes bancaires et en caisse. Baisse de 18 100 € malgré le nouvel emprunt : c’est l’impact des travaux sur la liquidité dont parle l’énoncé." }),
+        A("a-total2", "Total II", [305418, 3100, 302318, 310618, 1650, 308968], { k: "t", f: "res", sl: "Total actif circulant",
+          d: "Total de l’actif circulant. La colonne Amort. et dép. ne contient ici que des dépréciations : un actif circulant ne s’amortit pas." }),
+        A("a-frais-emp", "Frais d’émission d’emprunt à étaler", [], { f: "fin", d: "Frais payés pour obtenir un emprunt, étalés sur sa durée. Vide ici." }),
+        A("a-primes-remb", "Primes de remboursement des obligations", [], { f: "fin", d: "Écart entre le prix de remboursement et le prix d’émission d’obligations. Vide ici." }),
+        A("a-ecart-act", "Écarts de conversion actif", [], { f: "hexp", d: "Pertes latentes de change sur des créances ou dettes en devises. Vide ici." }),
+        A("a-totalg", "Total général", [1739199, 685687, 1053512, 1621719, 655383, 966336], { k: "t", f: "res", sl: "Total actif",
+          d: "Total de l’actif. En valeur nette, il est égal au total du passif (1 053 512 € en N) : un bilan est toujours équilibré.",
+          c: "Le bilan, c’est le patrimoine de l’entreprise." })
+      ]
+    },
+
+    /* ───────────── BILAN PASSIF ───────────── */
+    {
+      id: "passif", tab: "bilan", title: "Bilan passif", short: "Passif",
+      cols: [
+        { k: "n", label: "N", tip: "Montants au 31/12/N." },
+        { k: "p", label: "N-1", tip: "Montants au 31/12/N-1." }
+      ],
+      main: "n", prev: "p", evol: true,
+      rows: [
+        G("p-g-cp", "Capitaux propres", { f: "cp",
+          d: "Ressources qui appartiennent aux associés : ce qu’ils ont apporté et les bénéfices laissés dans l’entreprise." }),
+        P("p-capital", "Capital", [596555, 596555], { f: "cp", ind: 1, pcg: "101",
+          d: "Apports des associés à la création ou lors d’augmentations de capital. Stable.",
+          c: "Capital = apport initial." }),
+        P("p-primes", "Primes d’émission, de fusion, d’apport", [], { f: "cp", ind: 1, d: "Supplément payé par de nouveaux associés au-dessus de la valeur nominale des parts. Vide ici." }),
+        P("p-reeval", "Écarts de réévaluation", [], { f: "cp", ind: 1, d: "Plus-value constatée quand on réévalue des immobilisations. Vide ici." }),
+        P("p-equiv", "Écart d’équivalence", [], { f: "cp", ind: 1, d: "Variation de valeur des participations évaluées par équivalence. Vide ici." }),
+        G("p-g-res", "Réserves", { f: "cp", ind: 1, d: "Bénéfices des années passées que les associés ont choisi de garder dans l’entreprise." }),
+        P("p-res-legale", "Réserve légale", [59655, 59655], { f: "cp", ind: 2, pcg: "1061",
+          d: "Part des bénéfices que la loi oblige à garder (5 % du bénéfice chaque année, jusqu’à atteindre 10 % du capital). Ici, le plafond est atteint : 59 655 € ≈ 10 % de 596 555 €." }),
+        P("p-res-stat", "Réserves statutaires ou contractuelles", [], { f: "cp", ind: 2, d: "Réserves imposées par les statuts de la société. Vide ici." }),
+        P("p-res-regl", "Réserves réglementées", [], { f: "cp", ind: 2, d: "Réserves liées à des règles fiscales. Vide ici." }),
+        P("p-res-autres", "Autres réserves", [], { f: "cp", ind: 2, d: "Réserves libres décidées par les associés. Vide ici." }),
+        P("p-ran", "Report à nouveau", [], { f: "cp", ind: 1, d: "Bénéfice (ou perte) des années passées ni distribué ni mis en réserve, en attente de décision. Vide ici." }),
+        P("p-resultat", "Résultat de l’exercice (bénéfice ou perte)", [1600, 6400], { f: "cp", ind: 1, sl: "Résultat de l’exercice", pcg: "12", s: "up",
+          d: "Bénéfice de l’année, repris du compte de résultat. 1 600 € en N contre 6 400 € en N-1. D’après le doc 4, le résultat de N-1 a été entièrement distribué aux associés en N : ce sont les 6 400 € de dividendes." }),
+        P("p-subv", "Subventions d’investissement", [16000, _], { f: "cp", ind: 1, pcg: "13",
+          d: "Aide publique reçue pour financer un investissement (ici dans le cadre d’un projet d’urbanisme local, doc 4). Elle est virée petit à petit au compte de résultat, au rythme de l’amortissement du bien financé : 4 000 € en N. Il reste 16 000 € au bilan." }),
+        P("p-prov-regl", "Provisions réglementées", [], { f: "cp", ind: 1, d: "Provisions d’origine fiscale. Vide ici." }),
+        P("p-total1", "Total I", [673810, 662610], { k: "t", f: "res", sl: "Total capitaux propres", s: "up",
+          d: "Total des capitaux propres. +11 200 € : la subvention d’investissement (+16 000 €) compense la baisse du résultat (−4 800 €).",
+          c: "Bilan fonctionnel : ressources propres = capitaux propres + amortissements et dépréciations + provisions." }),
+        P("p-titres-part", "Produit des émissions de titres participatifs", [], { f: "cp", d: "Titres hybrides entre capital et dette. Vide ici." }),
+        P("p-av-cond", "Avances conditionnées", [], { f: "cp", d: "Aides remboursables seulement si le projet financé réussit. Vide ici." }),
+        P("p-total1b", "Total I bis", [0, 0], { k: "t", f: "res", sl: "Total autres fonds propres", d: "Total des autres fonds propres. 0 € ici." }),
+        G("p-g-prov", "Provisions pour risques et charges", { f: "cp",
+          d: "Sommes mises de côté pour une charge probable dont le montant ou la date sont incertains (un litige, une garantie…)." }),
+        P("p-prov-risques", "Provisions pour risques", [], { f: "cp", ind: 1, d: "Par exemple un procès en cours. Vide ici." }),
+        P("p-prov-charges", "Provisions pour charges", [], { f: "cp", ind: 1, d: "Par exemple de gros travaux d’entretien prévus. Vide ici." }),
+        P("p-total2", "Total II", [0, 0], { k: "t", f: "res", sl: "Total provisions", d: "Total des provisions pour risques et charges. 0 € ici." }),
+        G("p-g-dettes", "Emprunts et dettes", { f: "fin",
+          d: "Ce que l’entreprise doit à des tiers : banques, fournisseurs, État, organismes sociaux." }),
+        G("p-g-dfin", "Dettes financières", { f: "fin", ind: 1, d: "Dettes liées au financement : emprunts bancaires et obligataires." }),
+        P("p-oblig-conv", "Emprunts obligataires convertibles", [], { f: "fin", ind: 2, d: "Emprunts auprès d’investisseurs, remboursables en actions. Vide ici." }),
+        P("p-oblig", "Autres emprunts obligataires", [], { f: "fin", ind: 2, d: "Emprunts levés auprès d’investisseurs. Vide ici." }),
+        P("p-emprunts", "Emprunts et dettes auprès des établissements de crédit", [82000, 12000], { f: "fin", ind: 2, sl: "Emprunts bancaires", pcg: "164, 519, 1688",
+          d: "Dettes envers les banques. Elles passent de 12 000 € à 82 000 € avec le nouvel emprunt de 90 000 € (doc 4), qui finance une partie des travaux. Ce montant contient aussi le découvert (concours bancaires courants) et les intérêts courus non échus.",
+          c: "Bilan fonctionnel : dettes financières = emprunts − CBC − ICNE = 82 000 − 2 000 − 2 300 = 77 700 €." }),
+        P("p-dont-cbc", "dont concours bancaires courants", [2000, 0], { k: "d", f: "tre", ind: 3, sl: "Concours bancaires courants (CBC)",
+          d: "Découvert bancaire à court terme, déjà compris dans les 82 000 €. Dans le bilan fonctionnel, il passe en trésorerie passif." }),
+        P("p-dont-icne", "dont intérêts courus non échus (ICNE)", [2300, 5400], { k: "d", f: "hexp", ind: 3, sl: "ICNE",
+          d: "Intérêts de l’année pas encore payés à la clôture, déjà compris dans les emprunts. Information donnée par le doc 4, pas par le bilan. Dans le bilan fonctionnel, ils passent en dettes hors exploitation." }),
+        P("p-dfin-div", "Emprunts et dettes financières divers", [], { f: "fin", ind: 2, d: "Dettes financières hors banques, par exemple des comptes courants d’associés. Vide ici." }),
+        P("p-av-recues", "Avances et acomptes reçus sur commandes en cours", [], { f: "exp", ind: 1, d: "Acomptes versés par des clients avant livraison. Vide ici." }),
+        G("p-g-dexp", "Dettes d’exploitation", { f: "exp", ind: 1, d: "Dettes nées de l’activité courante : fournisseurs, État, salariés, organismes sociaux." }),
+        P("p-fournisseurs", "Dettes fournisseurs et comptes rattachés", [77720, 75494], { f: "exp", ind: 2, sl: "Dettes fournisseurs", pcg: "401",
+          d: "Achats déjà reçus mais pas encore payés. Stables (+2,9 %)." }),
+        P("p-fisc-soc", "Dettes fiscales et sociales", [214782, 214232], { f: "exp", ind: 2, pcg: "42, 43, 44",
+          d: "Sommes dues à l’État (TVA, impôts), aux salariés et aux organismes sociaux (cotisations). Montant élevé, cohérent avec une masse salariale de plus d’un million d’euros." }),
+        P("p-autres-dexp", "Autres dettes d’exploitation", [], { f: "exp", ind: 2, d: "Autres dettes liées à l’activité courante. Vide ici." }),
+        P("p-pca", "Produits constatés d’avance", [], { f: "exp", ind: 2, d: "Produits encaissés en N qui concernent N+1, par exemple des cours de cuisine payés d’avance. Vide ici." }),
+        G("p-g-ddiv", "Dettes diverses", { f: "hexp", ind: 1, d: "Dettes qui ne viennent pas de l’activité courante." }),
+        P("p-dettes-immo", "Dettes sur immobilisations et comptes rattachés", [5200, 2000], { f: "hexp", ind: 2, sl: "Dettes sur immobilisations", pcg: "404",
+          d: "Immobilisations reçues mais pas encore payées au fournisseur. Elles passent de 2 000 € à 5 200 €, en lien avec les travaux. Hors exploitation dans le bilan fonctionnel." }),
+        P("p-dettes-is", "Dettes fiscales (impôts sur les bénéfices)", [], { f: "hexp", ind: 2, d: "Impôt sur les bénéfices restant à payer. Vide ici." }),
+        P("p-autres-ddiv", "Autres dettes diverses", [], { f: "hexp", ind: 2, d: "Autres dettes hors exploitation, par exemple des dividendes à payer. Vide ici." }),
+        P("p-total3", "Total III", [379702, 303726], { k: "t", f: "res", sl: "Total dettes",
+          d: "Total des dettes. +75 976 €, surtout à cause du nouvel emprunt." }),
+        P("p-ecart-pas", "Écarts de conversion passif", [], { f: "hexp", d: "Gains latents de change sur des créances ou dettes en devises. Vide ici." }),
+        P("p-totalg", "Total général", [1053512, 966336], { k: "t", f: "res", sl: "Total passif",
+          d: "Total du passif, égal au total de l’actif net. Le passif montre d’où viennent les ressources de l’entreprise." })
+      ]
+    },
+
+    /* ───────────── COMPTE DE RÉSULTAT : CHARGES ───────────── */
+    {
+      id: "crc", tab: "resultat", title: "Charges", short: "Charges",
+      cols: [{ k: "n", label: "N", tip: "Montants de l’exercice N, hors taxes." }],
+      main: "n", prev: null, evol: false,
+      rows: [
+        G("crc-g-exp", "Charges d’exploitation", { f: "exp",
+          d: "Charges de l’activité courante.",
+          c: "Exploitation = activités courantes (vente de marchandises, etc.)." }),
+        P("cr-cout", "Coût d’achat des marchandises vendues", [883502], { k: "s", f: "exp", ind: 1, sl: "Coût d’achat des marchandises vendues",
+          d: "Achats de marchandises corrigés de la variation de stock : on ne garde que le coût des produits réellement vendus dans l’année." }),
+        P("cr-achats", "Achats de marchandises", [884502], { f: "exp", ind: 2, pcg: "607",
+          d: "Produits achetés pour être revendus sans transformation (caviar, truffe, épices…)." }),
+        P("cr-varstock", "Variation de stocks de marchandises", [-1000], { f: "exp", ind: 2, pcg: "6037", sl: "Variation de stocks",
+          d: "Stock de début − stock de fin. Le stock a augmenté de 1 000 €, donc une partie des achats n’a pas été vendue : on la retire des charges (−1 000 €)." }),
+        P("cr-conso", "Consommations de l’exercice en provenance des tiers", [367488], { k: "s", f: "exp", ind: 1, sl: "Consommations de tiers",
+          d: "Tout ce que l’entreprise achète à l’extérieur et consomme, hors marchandises. C’est ce qu’on retire pour calculer la valeur ajoutée." }),
+        P("cr-achats-mp", "Achats de matières premières et autres approvisionnements", [], { f: "exp", ind: 2, d: "Matières destinées à être transformées. Vide ici : Saveur ne fabrique pas." }),
+        P("cr-var-mp", "Variation de stocks de matières premières et autres approvisionnements", [], { f: "exp", ind: 2, d: "Vide ici." }),
+        P("cr-achats-ns", "Achats non stockés de matières et de fournitures", [], { f: "exp", ind: 2, d: "Petites fournitures, eau, énergie… Vide ici : le sujet regroupe tout dans les charges externes." }),
+        P("cr-aace", "Autres achats et charges externes", [367488], { f: "exp", ind: 2, pcg: "61, 62",
+          d: "Loyers, énergie, publicité, honoraires, location de matériel, personnel extérieur. D’après le doc 4, ce poste contient 67 000 € de personnel extérieur (12 000 € en N-1) et la redevance de crédit-bail de 22 000 €.",
+          c: "Par exemple la location d’un matériel ou l’appel à du personnel extérieur." }),
+        P("cr-impots", "Impôts, taxes et versements assimilés", [38328], { f: "exp", ind: 1, pcg: "63", sl: "Impôts et taxes",
+          d: "Impôts liés à l’activité, hors impôt sur les bénéfices, par exemple la cotisation foncière des entreprises. Dans le partage de la VA, c’est la part de l’État." }),
+        P("cr-pers", "Charges de personnel", [1039484], { k: "s", f: "exp", ind: 1,
+          d: "Salaires + charges sociales. C’est la part de la VA qui rémunère les salariés : 92,5 % de la VA en N, en hausse de 4,2 % sur un an (d’après les SIG)." }),
+        P("cr-salaires", "Salaires et traitements", [724048], { f: "exp", ind: 2, pcg: "641", d: "Rémunérations brutes versées aux salariés." }),
+        P("cr-chsoc", "Charges sociales", [315436], { f: "exp", ind: 2, pcg: "645", d: "Cotisations patronales versées aux organismes sociaux (URSSAF, retraite…)." }),
+        P("cr-dot", "Dotations aux amortissements, dépréciations et provisions", [39076], { k: "s", f: "exp", ind: 1, sl: "Dotations d’exploitation", pcg: "681",
+          d: "Usure des immobilisations et pertes de valeur probables constatées dans l’année. C’est une charge calculée : aucun argent ne sort. C’est pour ça qu’on la rajoute dans le calcul de la CAF.",
+          c: "Ne donne pas lieu à une sortie de trésorerie. (Le cours écrit « produit calculé » : il s’agit bien d’une charge calculée.)" }),
+        P("cr-dot-amort", "Dotations aux amortissements sur immobilisations", [36854], { f: "exp", ind: 2, pcg: "6811", sl: "Dotations aux amortissements",
+          d: "Usure de l’année des immobilisations. Au bilan, les amortissements cumulés n’augmentent que de 28 854 € : l’écart de 8 000 € correspond en principe aux amortissements du bien cédé, sortis du bilan avec lui." }),
+        P("cr-dot-dep-immo", "Dotations aux dépréciations sur immobilisations", [], { f: "exp", ind: 2, d: "Pertes de valeur exceptionnelles d’une immobilisation. Vide ici." }),
+        P("cr-dot-dep-ac", "Dotations aux dépréciations sur actif circulant", [2222], { f: "exp", ind: 2, pcg: "6817", sl: "Dépréciations de l’actif circulant",
+          d: "Pertes de valeur probables sur les stocks et les créances clients : 2 222 € = 800 € (stock) + 1 422 € (clients), les dépréciations du bilan N." }),
+        P("cr-dot-prov", "Dotations aux provisions pour risques et charges", [], { f: "exp", ind: 2, d: "Vide ici." }),
+        P("cr-vnc", "Valeurs comptables des immobilisations corporelles et incorporelles cédées", [2000], { f: "exp", ind: 1, sl: "Valeur comptable des immobilisations cédées", pcg: "657 (ancien 675)",
+          d: "Valeur nette (brut − amortissements) du bien vendu, qui sort du bilan. Comparée au prix de vente (2 500 €), elle donne une plus-value de 500 €. Depuis la réforme du plan comptable (exercices ouverts à partir de 2025), les cessions sont classées en exploitation. C’est pour ça qu’en N-1 elles apparaissent encore en exceptionnel." }),
+        P("cr-autres-ch", "Autres charges", [8927], { f: "exp", ind: 1, pcg: "65",
+          d: "Charges courantes qui n’entrent dans aucune autre catégorie, par exemple des pertes sur créances clients définitivement irrécouvrables. En forte baisse (39 213 € en N-1)." }),
+        P("cr-tc-exp", "Total charges d’exploitation", [2378805], { k: "t", f: "exp", sl: "Charges d’exploitation",
+          d: "Somme des charges de l’activité courante." }),
+        G("crc-g-fin", "Charges financières", { f: "fin", d: "Charges liées au financement (intérêts) et aux placements." }),
+        P("cr-dot-fin", "Dotations aux amortissements, dépréciations et provisions", [878], { f: "fin", ind: 1, sl: "Dotations financières", pcg: "686",
+          d: "Dépréciation des VMP constatée en N, même montant que la colonne Amort. et dép. des VMP au bilan N. Charge calculée : on la rajoute dans la CAF." }),
+        P("cr-interets", "Intérêts et charges assimilées", [5000], { f: "fin", ind: 1, pcg: "661", sl: "Intérêts",
+          d: "Rémunération des prêteurs (les banques). Seulement 0,4 % de la VA, contre 2 % dans le secteur.",
+          c: "J’ai rémunéré les prêteurs de 5 000 €." }),
+        P("cr-diff-neg", "Différences négatives de change", [], { f: "fin", ind: 1, d: "Pertes de change sur des opérations en devises. Vide ici." }),
+        P("cr-ch-cvmp", "Charges nettes sur cessions de VMP", [], { f: "fin", ind: 1, d: "Moins-values sur ventes de VMP. Vide ici." }),
+        P("cr-tc-fin", "Total charges financières", [5878], { k: "t", f: "fin", sl: "Charges financières", d: "Somme des charges financières." }),
+        G("crc-g-exc", "Charges exceptionnelles", { f: "exc", d: "Charges qui ne relèvent pas de l’activité courante." }),
+        P("cr-ch-exc", "Sur opérations de gestion", [220], { f: "exc", ind: 1, pcg: "67", sl: "Charges exceptionnelles de gestion",
+          d: "Charge inhabituelle, par exemple une pénalité. 220 €." }),
+        P("cr-dot-exc", "Dotations aux amortissements, dépréciations et provisions", [], { f: "exc", ind: 1, sl: "Dotations exceptionnelles", d: "Dotations exceptionnelles. Vide ici. Quand il y en a, on les rajoute dans la CAF." }),
+        P("cr-tc-exc", "Total charges exceptionnelles", [220], { k: "t", f: "exc", sl: "Charges exceptionnelles", d: "Somme des charges exceptionnelles." }),
+        P("cr-particip", "Participation des salariés", [200], { f: "imp", pcg: "691",
+          d: "Part du bénéfice reversée aux salariés. Dans la répartition de la VA, elle s’ajoute aux charges de personnel." }),
+        P("cr-is", "Impôt sur les bénéfices", [600], { f: "imp", pcg: "695",
+          d: "Impôt calculé sur le bénéfice. Dans la répartition de la VA, il s’ajoute aux impôts et taxes pour la part de l’État." }),
+        P("cr-benefice", "Solde créditeur = bénéfice", [1600], { k: "r", f: "res", sl: "Bénéfice",
+          d: "Produits − charges = 1 600 €. Repris au passif du bilan et en haut du tableau de la CAF.",
+          c: "Résultat = classe 7 − classe 6 (produits − charges)." }),
+        P("cr-tg-ch", "Total général", [2387303], { k: "t", f: "res", sl: "Total général des charges",
+          d: "Total des charges + bénéfice. Égal au total des produits : le bénéfice équilibre le compte de résultat." })
+      ]
+    },
+
+    /* ───────────── COMPTE DE RÉSULTAT : PRODUITS ───────────── */
+    {
+      id: "crp", tab: "resultat", title: "Produits", short: "Produits",
+      cols: [{ k: "n", label: "N", tip: "Montants de l’exercice N, hors taxes." }],
+      main: "n", prev: null, evol: false,
+      rows: [
+        G("crp-g-exp", "Produits d’exploitation", { f: "exp", d: "Produits de l’activité courante." }),
+        P("cr-ventes", "Ventes de marchandises", [2062558], { f: "exp", ind: 1, pcg: "707",
+          d: "Ventes de produits achetés et revendus en l’état. 87 % du chiffre d’affaires.",
+          c: "L’entreprise ne produit pas : pas de transformation." }),
+        P("cr-prod-biens", "Production vendue de biens", [], { f: "exp", ind: 1, d: "Ventes de produits fabriqués par l’entreprise. Vide ici.", c: "Suppose l’achat de matières premières à transformer." }),
+        P("cr-prod-serv", "Production vendue de services", [312447], { f: "exp", ind: 1, pcg: "706", sl: "Production vendue",
+          d: "Prestations de services vendues. Chez Saveur, ce sont très probablement les cours de cuisine." }),
+        P("cr-ca", "Chiffre d’affaires net", [2375005], { k: "s", f: "exp", ind: 1, sl: "Chiffre d’affaires",
+          d: "Ventes de marchandises + production vendue. Stable : +0,5 % sur un an (2 363 499 € en N-1), contre +4 % dans le secteur. Vu les gros travaux faits sans fermer le magasin, cette stabilité est plutôt un bon signe." }),
+        P("cr-prod-stockee", "Production stockée", [], { f: "exp", ind: 1, d: "Variation du stock de produits fabriqués. Vide ici.", c: "Si elle est négative, c’est un déstockage de production." }),
+        P("cr-prod-immo", "Production immobilisée", [], { f: "exp", ind: 1, d: "Immobilisations fabriquées par l’entreprise pour elle-même. Vide ici." }),
+        P("cr-subv", "Subventions d’exploitation", [500], { f: "exp", ind: 1, pcg: "74",
+          d: "Aides reçues pour l’activité courante. Elles s’ajoutent à la VA pour calculer l’EBE.",
+          c: "Assimilées à du chiffre d’affaires." }),
+        P("cr-qpsubv", "Quote-part des subventions d’investissement virée au résultat", [4000], { f: "exp", ind: 1, sl: "Quote-part de subvention virée au résultat", pcg: "747 (ancien 777)",
+          d: "Part de la subvention d’investissement (au passif) passée en produit cette année. Aucun argent n’entre : c’est un produit calculé, qu’on retire dans la CAF. Depuis la réforme du plan comptable (2025), il est classé en exploitation et non plus en exceptionnel.",
+          c: "Aide à financer un investissement. Produit calculé, donc pas encaissable." }),
+        P("cr-rep-exp", "Reprises sur amortissements, dépréciations et provisions", [1122], { f: "exp", ind: 1, sl: "Reprises d’exploitation", pcg: "781",
+          d: "Annulation des dépréciations de N-1 devenues inutiles : 1 122 € = 300 € (stock) + 822 € (clients), les dépréciations du bilan N-1. Produit calculé : on le retire dans la CAF.",
+          c: "Produit calculé." }),
+        P("cr-prodcess", "Produits des cessions des immobilisations corporelles et incorporelles", [2500], { f: "exp", ind: 1, sl: "Produits des cessions", pcg: "757 (ancien 775)",
+          d: "Prix de vente d’un bien immobilisé (2 500 €). On le retire dans la CAF, qui ne mesure que les ressources de l’activité courante. Classé en exploitation depuis la réforme du plan comptable (2025)." }),
+        P("cr-autres-prod", "Autres produits", [3516], { f: "exp", ind: 1, pcg: "75",
+          d: "Produits courants qui n’entrent dans aucune autre catégorie. En hausse (765 € en N-1)." }),
+        P("cr-tp-exp", "Total produits d’exploitation", [2386643], { k: "t", f: "exp", sl: "Produits d’exploitation",
+          d: "Somme des produits de l’activité courante.",
+          a: "Le cours affiche 2 386 543 €. C’est une coquille : seul 2 386 643 € redonne le résultat d’exploitation de 7 838 € et le total général de 2 387 303 €." }),
+        G("crp-g-fin", "Produits financiers", { f: "fin", d: "Produits des placements et des prêts accordés." }),
+        P("cr-pf-part", "De participations", [], { f: "fin", ind: 1, d: "Dividendes reçus de sociétés dont on détient des titres. Vide ici." }),
+        P("cr-pf-vm", "D’autres valeurs mobilières et créances de l’actif immobilisé", [], { f: "fin", ind: 1, d: "Revenus des titres et prêts à long terme. Vide ici." }),
+        P("cr-autres-int", "Autres intérêts et produits assimilés", [132], { f: "fin", ind: 1, pcg: "768", sl: "Intérêts reçus",
+          d: "Intérêts reçus, par exemple sur des placements (132 €)." }),
+        P("cr-rep-fin", "Reprises sur dépréciations et provisions", [528], { f: "fin", ind: 1, pcg: "786", sl: "Reprises financières",
+          d: "Annulation de la dépréciation des VMP de N-1 (528 €, même montant qu’au bilan N-1). Produit calculé : on le retire dans la CAF." }),
+        P("cr-diff-pos", "Différences positives de change", [], { f: "fin", ind: 1, d: "Gains de change. Vide ici." }),
+        P("cr-pf-cvmp", "Produits nets sur cessions de VMP", [], { f: "fin", ind: 1, d: "Plus-values sur ventes de VMP. Vide ici." }),
+        P("cr-tp-fin", "Total produits financiers", [660], { k: "t", f: "fin", sl: "Produits financiers", d: "Somme des produits financiers." }),
+        G("crp-g-exc", "Produits exceptionnels", { f: "exc", d: "Produits qui ne relèvent pas de l’activité courante." }),
+        P("cr-pe-gest", "Sur opérations de gestion", [], { f: "exc", ind: 1, d: "Produits inhabituels liés à la gestion. Vide ici." }),
+        P("cr-rep-exc", "Reprises sur dépréciations et provisions", [], { f: "exc", ind: 1, sl: "Reprises exceptionnelles", d: "Reprises exceptionnelles. Vide ici. Quand il y en a, on les retire dans la CAF." }),
+        P("cr-tp-exc", "Total produits exceptionnels", [0], { k: "t", f: "exc", sl: "Produits exceptionnels", d: "Aucun produit exceptionnel en N." }),
+        P("cr-perte", "Solde débiteur = perte", [], { f: "res", d: "Rempli seulement si les charges dépassent les produits. Vide ici : Saveur fait un bénéfice." }),
+        P("cr-tg-pr", "Total général", [2387303], { k: "t", f: "res", sl: "Total général des produits",
+          d: "Total des produits. Égal au total des charges + bénéfice." })
+      ]
+    },
+
+    /* ───────────── SIG ───────────── */
+    {
+      id: "sig", tab: "sig", title: "Soldes intermédiaires de gestion", short: "SIG", signs: true,
+      cols: [
+        { k: "n", label: "N", tip: "Exercice N." },
+        { k: "p", label: "N-1", tip: "Exercice N-1." }
+      ],
+      main: "n", prev: "p", evol: true,
+      rows: [
+        P("sig-ventes", "Ventes de marchandises", [2062558, 2052297], { sg: "+", f: "exp", s: "up", d: "Ventes de produits revendus en l’état, reprises du compte de résultat." }),
+        P("sig-cout", "Coût d’achat des marchandises vendues", [883502, 874021], { sg: "−", f: "exp", d: "Achats de marchandises + variation de stock, repris du compte de résultat." }),
+        P("sig-mc", "Marge commerciale", [1179056, 1178276], { k: "r", sg: "=", f: "exp", s: "up",
+          d: "Ce que rapporte l’activité de revente. Stable (+0,07 %) alors que les consommations externes augmentent de 3 %.",
+          c: "On achète sans transformer.",
+          a: "Dans le tableau des SIG du cours, la case « Marge commerciale N » affiche 1 178 276 €, qui est la valeur de N-1. La bonne valeur N est 1 179 056 €, celle reprise ensuite pour calculer la VA." }),
+        P("sig-pvendue", "Production vendue", [312447, 311202], { sg: "+", f: "exp", s: "up", d: "Biens et services vendus par l’entreprise, ici les services (cours de cuisine)." }),
+        P("sig-pstockee", "Production stockée (ou déstockage)", [0, _], { sg: "+", f: "exp", keep: true, d: "Variation du stock de produits fabriqués. 0 € ici." }),
+        P("sig-pimmo", "Production immobilisée", [0, _], { sg: "+", f: "exp", keep: true, d: "Immobilisations fabriquées par l’entreprise pour elle-même. 0 € ici." }),
+        P("sig-prod", "Production de l’exercice", [312447, 311202], { k: "r", sg: "=", f: "exp", s: "up",
+          d: "Ce que l’entreprise a produit dans l’année : production vendue + stockée + immobilisée." }),
+        P("sig-conso", "Consommations de l’exercice en provenance des tiers", [367488, 356784], { sg: "−", f: "exp", s: "down", sl: "Consommations de tiers",
+          d: "Achats et charges externes consommés, hors marchandises. +3 % en un an : ils augmentent plus vite que la marge commerciale, ce qui fait baisser la VA. On les retire de la marge commerciale + production pour obtenir la VA." }),
+        P("sig-va", "Valeur ajoutée", [1124015, 1132694], { k: "r", sg: "=", f: "exp", s: "up", x: true, sl: "Valeur ajoutée (VA)",
+          d: "Richesse créée par l’entreprise : marge commerciale + production de l’exercice − consommations de tiers. Elle sert à rémunérer les salariés, l’État, les prêteurs, les associés et l’entreprise elle-même. En baisse de 0,77 %.",
+          c: "La VA rémunère les salariés, les créanciers, etc." }),
+        P("sig-subv", "Subventions d’exploitation", [500, 100], { sg: "+", f: "exp", s: "up", d: "Aides à l’activité courante." }),
+        P("sig-impots", "Impôts, taxes et versements assimilés", [38328, 38815], { sg: "−", f: "exp", s: "down", sl: "Impôts et taxes", d: "Impôts liés à l’activité, hors impôt sur les bénéfices." }),
+        P("sig-pers", "Charges de personnel", [1039484, 997557], { sg: "−", f: "exp", s: "down",
+          d: "+41 927 € en un an (+4,2 %) alors que la VA baisse. Cette hausse explique à elle seule 84 % de la chute de l’EBE." }),
+        P("sig-ebe", "Excédent brut d’exploitation (EBE)", [46703, 96422], { k: "r", sg: "=", f: "exp", s: "up", sl: "EBE",
+          d: "Ce que l’activité courante dégage avant amortissements, frais financiers et impôts. Divisé par deux en un an, surtout à cause des charges de personnel.",
+          c: "Flux potentiel de trésorerie : l’EBE génère la trésorerie." }),
+        P("sig-reprises", "Reprises sur amortissements, dépréciations et provisions", [1122, 1045], { sg: "+", f: "exp", sl: "Reprises d’exploitation", d: "Produits calculés d’exploitation." }),
+        P("sig-qpsubv", "Quote-part des subventions d’investissement virée au résultat", [4000, _], { sg: "+", f: "exp", sl: "Quote-part de subvention",
+          d: "Produit calculé. Absent en N-1 : la subvention a été reçue en N." }),
+        P("sig-pcess", "Produits des cessions d’immobilisations", [2500, _], { sg: "+", f: "exp", sl: "Produits des cessions",
+          d: "Prix de vente du bien cédé. En N-1, la cession figurait en exceptionnel (ancien plan comptable)." }),
+        P("sig-autresprod", "Autres produits", [3516, 765], { sg: "+", f: "exp", s: "up", d: "Autres produits de gestion courante." }),
+        P("sig-dot", "Dotations aux amortissements, dépréciations et provisions", [39076, 37953], { sg: "−", f: "exp", sl: "Dotations d’exploitation", d: "Charges calculées d’exploitation." }),
+        P("sig-vnc", "Valeurs comptables des immobilisations cédées", [2000, _], { sg: "−", f: "exp", sl: "Valeur comptable des biens cédés", d: "Valeur nette du bien vendu." }),
+        P("sig-autresch", "Autres charges", [8927, 39213], { sg: "−", f: "exp", s: "down", d: "Autres charges de gestion courante, en forte baisse." }),
+        P("sig-re", "Résultat d’exploitation", [7838, 21066], { k: "r", sg: "=", f: "exp", s: "up",
+          d: "Performance de l’activité courante après amortissements : EBE + autres produits d’exploitation − autres charges d’exploitation. −62,8 % en un an." }),
+        P("sig-pfin", "Produits financiers", [660, 499], { sg: "+", f: "fin", s: "up", d: "Total des produits financiers du compte de résultat." }),
+        P("sig-chfin", "Charges financières", [5878, 3262], { sg: "−", f: "fin", s: "down", d: "Total des charges financières du compte de résultat." }),
+        P("sig-rcai", "Résultat courant avant impôts (RCAI)", [2620, 18301], { k: "r", sg: "=", f: "res", s: "up", sl: "RCAI",
+          d: "Résultat d’exploitation + résultat financier : la performance de l’activité normale, financement compris.",
+          a: "N-1 : le cours indique 18 301 €, alors que 21 066 + 499 − 3 262 = 18 303 €. Petit écart dans les données du sujet, sans incidence." }),
+        P("sig-pexc", "Produits exceptionnels", [0, 1000], { sg: "+", f: "exc", keep: true, d: "Produits hors activité courante. Les 1 000 € de N-1 sont le prix de cession d’un bien (ancien plan comptable)." }),
+        P("sig-chexc", "Charges exceptionnelles", [220, 9700], { sg: "−", f: "exc", s: "down", d: "Charges hors activité courante. Les 9 700 € de N-1 sont la valeur comptable du bien cédé." }),
+        P("sig-rexc", "Résultat exceptionnel", [-220, -8700], { k: "r", sg: "=", f: "exc", s: "up",
+          d: "Produits exceptionnels − charges exceptionnelles. En N-1, il contenait la perte sur cession (−8 700 €). En N, les cessions sont en exploitation." }),
+        P("sig-particip", "Participation des salariés", [200, _], { sg: "−", f: "imp", d: "Part du bénéfice reversée aux salariés." }),
+        P("sig-is", "Impôts sur les bénéfices", [600, 3200], { sg: "−", f: "imp", d: "Impôt sur les bénéfices." }),
+        P("sig-resultat", "Résultat de l’exercice", [1600, 6401], { k: "r", sg: "=", f: "res", s: "up",
+          d: "RCAI + résultat exceptionnel − participation − impôt sur les bénéfices. Même montant qu’au compte de résultat et au bilan.",
+          a: "N-1 : 6 401 € dans les SIG, 6 400 € au bilan. Même petit écart du sujet." }),
+        G("sig-g-pmv", "Plus-values et moins-values sur cessions", { f: "inv",
+          d: "Bloc à part : il montre si la vente d’immobilisations a rapporté plus ou moins que leur valeur comptable." }),
+        P("sig-pcess2", "Produits des cessions d’éléments d’actif", [2500, 1000], { sg: "+", f: "inv", ind: 1, sl: "Prix de cession", d: "Prix de vente des biens cédés." }),
+        P("sig-vnc2", "Valeur comptable des éléments cédés", [2000, 9700], { sg: "−", f: "inv", ind: 1, sl: "Valeur comptable des biens cédés", d: "Valeur nette des biens vendus." }),
+        P("sig-pmv", "Plus ou moins-value de cession", [500, -8700], { k: "r", sg: "=", f: "inv", ind: 1, s: "up",
+          d: "Prix de vente − valeur comptable. +500 € en N (gain), −8 700 € en N-1 (perte)." })
+      ]
+    },
+
+    /* ───────────── CAF ───────────── */
+    {
+      id: "caf", tab: "caf", title: "Capacité d’autofinancement", short: "CAF", signs: true,
+      cols: [
+        { k: "n", label: "N", tip: "Exercice N." },
+        { k: "p", label: "N-1", tip: "Exercice N-1 : le cours ne donne que le total." }
+      ],
+      main: "n", prev: "p", evol: true,
+      rows: [
+        P("caf-resultat", "Résultat de l’exercice", [1600, _], { k: "r", f: "res", x: true,
+          d: "Point de départ : le bénéfice de l’année, repris du compte de résultat.",
+          c: "Résultat = classe 7 − classe 6." }),
+        G("caf-g-dot", "Dotations aux amortissements, dépréciations et provisions", { sg: "+", f: "res",
+          d: "Charges calculées : elles diminuent le résultat sans faire sortir d’argent. On les rajoute." }),
+        P("caf-dot-exp", "D’exploitation", [39076, _], { sg: "+", f: "exp", ind: 1, keep: true, sl: "Dotations d’exploitation", d: "Charge calculée, sans sortie d’argent : on la rajoute." }),
+        P("caf-dot-fin", "Financières", [878, _], { sg: "+", f: "fin", ind: 1, keep: true, sl: "Dotations financières", d: "Dépréciation des VMP : charge calculée, on la rajoute." }),
+        P("caf-dot-exc", "Exceptionnelles", [0, _], { sg: "+", f: "exc", ind: 1, keep: true, sl: "Dotations exceptionnelles", d: "0 € ici, mais la ligne fait partie du tableau à connaître." }),
+        P("caf-vnc", "Valeur comptable des éléments d’actif cédés", [2000, _], { sg: "+", f: "exp", keep: true, sl: "Valeur comptable des biens cédés",
+          d: "Charge sans sortie d’argent (le bien avait été payé à l’achat) : on la rajoute pour annuler l’effet de la cession." }),
+        G("caf-g-rep", "Reprises sur amortissements, dépréciations et provisions", { sg: "−", f: "res",
+          d: "Produits calculés : ils augmentent le résultat sans faire entrer d’argent. On les retire." }),
+        P("caf-rep-exp", "D’exploitation", [1122, _], { sg: "−", f: "exp", ind: 1, keep: true, sl: "Reprises d’exploitation", d: "Produit calculé, sans entrée d’argent : on le retire." }),
+        P("caf-rep-fin", "Financières", [528, _], { sg: "−", f: "fin", ind: 1, keep: true, sl: "Reprises financières", d: "Reprise de la dépréciation des VMP de N-1 : on la retire." }),
+        P("caf-rep-exc", "Exceptionnelles", [0, _], { sg: "−", f: "exc", ind: 1, keep: true, sl: "Reprises exceptionnelles", d: "0 € ici, mais la ligne fait partie du tableau à connaître." }),
+        P("caf-pcess", "Produits des cessions d’éléments d’actif", [2500, _], { sg: "−", f: "exp", keep: true, sl: "Produits des cessions",
+          d: "Le prix de vente d’un bien ne vient pas de l’activité courante : on le retire. La CAF ne mesure que les ressources de l’activité." }),
+        P("caf-qpsubv", "Quote-part des subventions d’investissement virée au compte de résultat", [4000, _], { sg: "−", f: "exp", keep: true, sl: "Quote-part de subvention",
+          d: "Produit calculé : l’argent de la subvention est entré l’année où elle a été reçue, pas au fur et à mesure. On la retire." }),
+        P("caf-total", "Capacité d’autofinancement (CAF)", [35404, 40500], { k: "r", sg: "=", f: "res", s: "up", x: true, sl: "CAF",
+          d: "Ressources dégagées par l’activité de l’année, disponibles pour investir, rembourser les emprunts ou verser des dividendes. En baisse par rapport à N-1. Vérification par l’EBE (méthode additive) : 46 703 + 3 516 − 8 927 + 132 − 5 000 − 220 − 200 − 600 = 35 404 €.",
+          c: "La CAF, aussi appelée cash-flow ou marge brute d’autofinancement, donne à l’entreprise une marge de manœuvre pour faire face à ses besoins de financement.",
+          a: "N-1 : le cours donne seulement le total (40 500 €). Avec les données N-1 du sujet, un calcul approché donne plutôt 52 000 € environ. À vérifier avec ton prof." }),
+        P("caf-div", "Dividendes versés en N", [6400, _], { sg: "−", f: "cp", sl: "Dividendes",
+          d: "Bénéfice de N-1 distribué aux associés en N (doc 4). Les associés reçoivent 4 fois le résultat de N." }),
+        P("caf-autofin", "Autofinancement", [29004, _], { k: "r", sg: "=", f: "res", s: "up",
+          d: "CAF − dividendes : ce qui reste vraiment à l’entreprise pour se financer seule. 29 004 € en N, soit 2,6 % de la VA. C’est faible pour financer seule une ouverture à Lyon.",
+          c: "Autofinancement = capacité d’autofinancement − dividendes." })
+      ]
+    }
+  ],
+
+  /* Même montant repris ailleurs (surligneur jaune). ".col" = une cellule précise. */
+  same: [
+    { refs: ["cr-ventes", "sig-ventes"] },
+    { refs: ["cr-cout", "sig-cout"] },
+    { refs: ["cr-prod-serv", "sig-pvendue"] },
+    { refs: ["cr-prod-stockee", "sig-pstockee"] },
+    { refs: ["cr-prod-immo", "sig-pimmo"] },
+    { refs: ["cr-conso", "sig-conso"] },
+    { refs: ["cr-impots", "sig-impots"] },
+    { refs: ["cr-pers", "sig-pers"] },
+    { refs: ["cr-subv", "sig-subv"] },
+    { refs: ["cr-dot", "sig-dot", "caf-dot-exp"] },
+    { refs: ["cr-rep-exp", "sig-reprises", "caf-rep-exp"] },
+    { refs: ["cr-qpsubv", "sig-qpsubv", "caf-qpsubv"] },
+    { refs: ["cr-prodcess", "sig-pcess", "sig-pcess2.n", "caf-pcess"] },
+    { refs: ["cr-vnc", "sig-vnc", "sig-vnc2.n", "caf-vnc"] },
+    { refs: ["cr-autres-prod", "sig-autresprod"] },
+    { refs: ["cr-autres-ch", "sig-autresch"] },
+    { refs: ["cr-tp-fin", "sig-pfin"] },
+    { refs: ["cr-tc-fin", "sig-chfin"] },
+    { refs: ["cr-dot-fin", "caf-dot-fin", "a-vmp.na"], note: { "a-vmp.na": "dépréciation des VMP au bilan N" } },
+    { refs: ["cr-rep-fin", "caf-rep-fin", "a-vmp.pa"], note: { "a-vmp.pa": "dépréciation des VMP au bilan N-1, reprise en N" } },
+    { refs: ["cr-tp-exc", "sig-pexc"] },
+    { refs: ["cr-tc-exc", "sig-chexc"] },
+    { refs: ["cr-dot-exc", "caf-dot-exc"] },
+    { refs: ["cr-rep-exc", "caf-rep-exc"] },
+    { refs: ["cr-particip", "sig-particip"] },
+    { refs: ["cr-is", "sig-is"] },
+    { refs: ["cr-benefice", "sig-resultat", "caf-resultat", "p-resultat"] },
+    { refs: ["p-resultat.p", "caf-div.n"], note: { "p-resultat.p": "résultat N-1, distribué en N", "caf-div.n": "le résultat N-1 distribué en N" } },
+    { refs: ["cr-tg-ch", "cr-tg-pr"], note: { "cr-tg-ch": "le compte de résultat est équilibré", "cr-tg-pr": "le compte de résultat est équilibré" } },
+    { refs: ["a-totalg.nn", "p-totalg.n"], note: { "a-totalg.nn": "actif net N = passif N", "p-totalg.n": "passif N = actif net N" } },
+    { refs: ["a-totalg.pn", "p-totalg.p"], note: { "a-totalg.pn": "actif net N-1 = passif N-1", "p-totalg.p": "passif N-1 = actif net N-1" } }
+  ],
+
+  /* Calculs (surligneur bleu) : o = résultat, i = [référence, signe]. */
+  calc: [
+    { o: "a-total1", i: ["a-fe", "a-rd", "a-brevets", "a-fonds", "a-autres-incorp", "a-incorp-encours", "a-incorp-av", "a-terrains", "a-constructions", "a-instal", "a-autres-corp", "a-corp-encours", "a-avances", "a-part-eq", "a-autres-part", "a-cr-part", "a-tiap", "a-autres-titres", "a-prets", "a-autres-imfin"].map(r => [r, 1]) },
+    { o: "a-total2", i: ["a-mp", "a-encours", "a-pf", "a-march", "a-av-cmd", "a-clients", "a-autres-cr", "a-cca", "a-cr-div", "a-csanv", "a-vmp", "a-instr", "a-dispo"].map(r => [r, 1]) },
+    { o: "a-totalg", i: ["a-csna", "a-total1", "a-total2", "a-frais-emp", "a-primes-remb", "a-ecart-act"].map(r => [r, 1]) },
+
+    { o: "p-total1", i: ["p-capital", "p-primes", "p-reeval", "p-equiv", "p-res-legale", "p-res-stat", "p-res-regl", "p-res-autres", "p-ran", "p-resultat", "p-subv", "p-prov-regl"].map(r => [r, 1]) },
+    { o: "p-total1b", i: [["p-titres-part", 1], ["p-av-cond", 1]] },
+    { o: "p-total2", i: [["p-prov-risques", 1], ["p-prov-charges", 1]] },
+    { o: "p-total3", i: ["p-oblig-conv", "p-oblig", "p-emprunts", "p-dfin-div", "p-av-recues", "p-fournisseurs", "p-fisc-soc", "p-autres-dexp", "p-pca", "p-dettes-immo", "p-dettes-is", "p-autres-ddiv"].map(r => [r, 1]) },
+    { o: "p-totalg", i: [["p-total1", 1], ["p-total1b", 1], ["p-total2", 1], ["p-total3", 1], ["p-ecart-pas", 1]] },
+
+    { o: "cr-cout", i: [["cr-achats", 1], ["cr-varstock", 1]] },
+    { o: "cr-varstock.n", i: [["a-march.pb", 1], ["a-march.nb", -1]], label: "Stock initial − stock final" },
+    { o: "cr-conso", i: [["cr-achats-mp", 1], ["cr-var-mp", 1], ["cr-achats-ns", 1], ["cr-aace", 1]] },
+    { o: "cr-pers", i: [["cr-salaires", 1], ["cr-chsoc", 1]] },
+    { o: "cr-dot", i: [["cr-dot-amort", 1], ["cr-dot-dep-immo", 1], ["cr-dot-dep-ac", 1], ["cr-dot-prov", 1]] },
+    { o: "cr-dot-dep-ac.n", i: [["a-march.na", 1], ["a-clients.na", 1]], label: "Dépréciations du bilan N (stock + clients)" },
+    { o: "cr-tc-exp", i: [["cr-cout", 1], ["cr-conso", 1], ["cr-impots", 1], ["cr-pers", 1], ["cr-dot", 1], ["cr-vnc", 1], ["cr-autres-ch", 1]] },
+    { o: "cr-tc-fin", i: [["cr-dot-fin", 1], ["cr-interets", 1], ["cr-diff-neg", 1], ["cr-ch-cvmp", 1]] },
+    { o: "cr-tc-exc", i: [["cr-ch-exc", 1], ["cr-dot-exc", 1]] },
+    { o: "cr-benefice", i: [["cr-tp-exp", 1], ["cr-tp-fin", 1], ["cr-tp-exc", 1], ["cr-tc-exp", -1], ["cr-tc-fin", -1], ["cr-tc-exc", -1], ["cr-particip", -1], ["cr-is", -1]] },
+    { o: "cr-tg-ch", i: [["cr-tc-exp", 1], ["cr-tc-fin", 1], ["cr-tc-exc", 1], ["cr-particip", 1], ["cr-is", 1], ["cr-benefice", 1]] },
+    { o: "cr-ca", i: [["cr-ventes", 1], ["cr-prod-biens", 1], ["cr-prod-serv", 1]] },
+    { o: "cr-tp-exp", i: [["cr-ca", 1], ["cr-prod-stockee", 1], ["cr-prod-immo", 1], ["cr-subv", 1], ["cr-qpsubv", 1], ["cr-rep-exp", 1], ["cr-prodcess", 1], ["cr-autres-prod", 1]] },
+    { o: "cr-rep-exp.n", i: [["a-march.pa", 1], ["a-clients.pa", 1]], label: "Dépréciations du bilan N-1 (stock + clients)" },
+    { o: "cr-tp-fin", i: [["cr-pf-part", 1], ["cr-pf-vm", 1], ["cr-autres-int", 1], ["cr-rep-fin", 1], ["cr-diff-pos", 1], ["cr-pf-cvmp", 1]] },
+    { o: "cr-tp-exc", i: [["cr-pe-gest", 1], ["cr-rep-exc", 1]] },
+    { o: "cr-tg-pr", i: [["cr-tp-exp", 1], ["cr-tp-fin", 1], ["cr-tp-exc", 1], ["cr-perte", 1]] },
+
+    { o: "sig-mc", i: [["sig-ventes", 1], ["sig-cout", -1]] },
+    { o: "sig-prod", i: [["sig-pvendue", 1], ["sig-pstockee", 1], ["sig-pimmo", 1]] },
+    { o: "sig-va", i: [["sig-mc", 1], ["sig-prod", 1], ["sig-conso", -1]] },
+    { o: "sig-ebe", i: [["sig-va", 1], ["sig-subv", 1], ["sig-impots", -1], ["sig-pers", -1]] },
+    { o: "sig-re", i: [["sig-ebe", 1], ["sig-reprises", 1], ["sig-qpsubv", 1], ["sig-pcess", 1], ["sig-autresprod", 1], ["sig-dot", -1], ["sig-vnc", -1], ["sig-autresch", -1]] },
+    { o: "sig-rcai", i: [["sig-re", 1], ["sig-pfin", 1], ["sig-chfin", -1]] },
+    { o: "sig-rexc", i: [["sig-pexc", 1], ["sig-chexc", -1]] },
+    { o: "sig-resultat", i: [["sig-rcai", 1], ["sig-rexc", 1], ["sig-particip", -1], ["sig-is", -1]] },
+    { o: "sig-pmv", i: [["sig-pcess2", 1], ["sig-vnc2", -1]] },
+
+    { o: "caf-total", i: [["caf-resultat", 1], ["caf-dot-exp", 1], ["caf-dot-fin", 1], ["caf-dot-exc", 1], ["caf-vnc", 1], ["caf-rep-exp", -1], ["caf-rep-fin", -1], ["caf-rep-exc", -1], ["caf-pcess", -1], ["caf-qpsubv", -1]] },
+    { o: "caf-autofin", i: [["caf-total", 1], ["caf-div", -1]] }
+  ]
+};
+
+if (typeof module !== "undefined") module.exports = DATA;
+
+</script>
+<script>
+(function () {
+  "use strict";
+  var D = DATA;
+  var ROWS = {}, TBL = {}, OUT = {};
+  D.tables.forEach(function (t) { t.rows.forEach(function (r) { ROWS[r.id] = r; TBL[r.id] = t; }); });
+  var TAB = {}; D.tabs.forEach(function (t) { TAB[t.id] = t; });
+  var TABSUB = { bilan: "Le patrimoine au 31 décembre", resultat: "L’activité de l’année", sig: "Le résultat étape par étape", caf: "Les ressources dégagées" };
+  function pr(ref) { var i = ref.indexOf("."); return i < 0 ? { row: ref, col: null } : { row: ref.slice(0, i), col: ref.slice(i + 1) }; }
+  D.calc.forEach(function (e) { var o = pr(e.o).row; (OUT[o] = OUT[o] || []).push(e); });
+
+  var NF = new Intl.NumberFormat("fr-FR");
+  function num(v) { return v == null ? "" : (v < 0 ? "−" : "") + NF.format(Math.abs(v)); }
+  function pct(x) { return (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1).replace(".", ",") + " %"; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function isEmpty(r) {
+    if (r.keep || (r.k !== "l" && r.k !== "d")) return false;
+    for (var k in r.v) { if (r.v[k] != null && r.v[k] !== 0) return false; }
+    return true;
+  }
+  function colName(t, k) {
+    var c = t.cols.filter(function (c) { return c.k === k; })[0];
+    if (!c) return k;
+    return c.year ? c.label + " " + c.year : c.label;
+  }
+  function colHead(t, k) {
+    if (t.id === "actif") return k === "nn" ? "Net N" : k === "pn" ? "Net N-1" : colName(t, k);
+    return colName(t, k);
+  }
+  function shortName(r) { return r.sl || r.l; }
+  function evolOf(r, t) {
+    if (!t.prev) return null;
+    var n = r.v[t.main], p = r.v[t.prev];
+    if (n == null || p == null || p === 0) return null;
+    return (n - p) / Math.abs(p) * 100;
+  }
+  function verdict(r, x) {
+    if (x == null || !r.s || Math.abs(x) < 0.05) return "";
+    var good = r.s === "up" ? x > 0 : x < 0;
+    return good ? "good" : "bad";
+  }
+
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem("saveur-tableaux-v2") || "{}") || {}; } catch (e) { store = {}; }
+  function save() { try { localStorage.setItem("saveur-tableaux-v2", JSON.stringify(store)); } catch (e) {} }
+
+  var showEmpty = !!store.showEmpty;
+  var current = (location.hash || "").slice(1);
+  if (!TAB[current]) current = TAB[store.tab] ? store.tab : "bilan";
+  var selected = null;
+
+  var main = document.getElementById("main");
+  var tabsEl = document.getElementById("tabs");
+  var pbody = document.getElementById("pbody");
+  var panel = document.getElementById("panel");
+  var tip = document.getElementById("tip");
+  var clearBtn = document.getElementById("clear");
+  var emptyBox = document.getElementById("show-empty");
+
+  /* ── Construction ── */
+  function famStyle(r) { return r.f ? "--fc:var(--f-" + r.f + ")" : ""; }
+  function tableById(id) { return D.tables.filter(function (x) { return x.id === id; })[0]; }
+  function cellHTML(t, r, c) {
+    var v = r.v[c.k];
+    if (v == null) return '<td class="num" data-col="' + c.k + '">' + (isEmpty(r) || r.k === "g" ? "" : '<span class="nil">–</span>') + "</td>";
+    return '<td class="num" data-col="' + c.k + '"><span class="cv">' + num(v) + "</span></td>";
+  }
+  function rowHTML(t, r, grandId) {
+    var cls = ["row", "k-" + r.k];
+    if (isEmpty(r)) cls.push("empty");
+    if (r.id === grandId) cls.push("grand");
+    if (r.ind) cls.push("sub");
+    if (r.sg === "=") cls.push("sg-eq");
+    var h = '<tr class="' + cls.join(" ") + '" data-row="' + r.id + '" tabindex="0" style="' + famStyle(r) + '">';
+    if (t.signs) h += '<td class="sg">' + (r.sg ? '<span class="sgc">' + esc(r.sg) + "</span>" : "") + "</td>";
+    var chips = "";
+    if (r.x) chips += '<span class="chip-x">À connaître</span>';
+    if (r.a) chips += '<span class="chip-a">écart</span>';
+    var inner;
+    if (r.k === "g") inner = '<span class="lt"><span class="gp">' + (r.f ? '<i class="dot"></i>' : "") + esc(r.l) + "</span>" + chips + "</span>";
+    else if (r.k === "l" || r.k === "s" || r.k === "d") inner = '<span class="lw"><i class="dot"></i><span class="lt">' + esc(r.l) + chips + "</span></span>";
+    else inner = '<span class="lt">' + esc(r.l) + chips + "</span>";
+    h += '<td class="lab" style="--ind:' + (r.ind || 0) + '">' + inner + "</td>";
+    if (r.k === "g") {
+      h += '<td colspan="' + (t.cols.length + (t.evol ? 1 : 0)) + '"></td>';
+    } else {
+      t.cols.forEach(function (c) { h += cellHTML(t, r, c); });
+      if (t.evol) {
+        var x = evolOf(r, t);
+        h += '<td class="num evol">' + (x == null ? "" : '<span class="ev ' + verdict(r, x) + '">' + pct(x) + "</span>") + "</td>";
+      }
+    }
+    return h + "</tr>";
+  }
+  function theadHTML(t) {
+    var h = "<thead>";
+    if (t.id === "actif") {
+      h += '<tr><th class="lab-h" rowspan="2">Actif</th><th class="yr" colspan="3"><span>Exercice N</span></th><th class="yr" colspan="3"><span>Exercice N-1</span></th></tr><tr>';
+      t.cols.forEach(function (c) { h += '<th data-col="' + c.k + '" data-tip="' + esc(c.tip) + '">' + esc(c.label) + "</th>"; });
+      h += "</tr>";
+    } else {
+      h += "<tr>";
+      if (t.signs) h += '<th class="sg-h"></th>';
+      h += '<th class="lab-h">' + esc(t.short) + "</th>";
+      t.cols.forEach(function (c) { h += '<th data-tip="' + esc(c.tip) + '">' + esc(c.label) + "</th>"; });
+      if (t.evol) h += '<th data-tip="Évolution de N par rapport à N-1, en %. En vert si elle est favorable, en rouge si elle est défavorable.">Évol.</th>';
+      h += "</tr>";
+    }
+    return h + "</thead>";
+  }
+  function legendHTML(tab) {
+    var fams = [];
+    tab.tables.forEach(function (tid) {
+      tableById(tid).rows.forEach(function (r) {
+        if (r.f && r.f !== "res" && fams.indexOf(r.f) < 0 && (!isEmpty(r) || r.k === "g")) fams.push(r.f);
+      });
+    });
+    var order = ["inv", "exp", "hexp", "tre", "cp", "fin", "exc", "imp"];
+    fams.sort(function (a, b) { return order.indexOf(a) - order.indexOf(b); });
+    var h = '<div class="legend" aria-label="Légende">';
+    fams.forEach(function (f) {
+      h += '<span class="lg" data-tipfam="' + f + '" style="--fc:var(--f-' + f + ')"><i class="dot"></i>' + esc(D.families[f].name) + "</span>";
+    });
+    h += '<span class="lg-mks"><span class="lg-sep" aria-hidden="true"></span>' +
+      '<span class="lg-mk"><span class="stroke same" aria-hidden="true"></span>Même montant</span>' +
+      '<span class="lg-mk"><span class="stroke calc" aria-hidden="true"></span>Lien de calcul</span></span></div>';
+    return h;
+  }
+  function build() {
+    var th = "", mh = "";
+    D.tabs.forEach(function (tab) {
+      th += '<button class="tab" role="tab" type="button" id="tab-' + tab.id + '" data-tab="' + tab.id + '" aria-controls="tp-' + tab.id + '">' +
+        '<span class="tab-t">' + esc(tab.label) + '<span class="badges" aria-hidden="true"></span></span>' +
+        '<span class="tab-s">' + esc(TABSUB[tab.id] || "") + "</span></button>";
+      mh += '<section class="tabpanel" role="tabpanel" id="tp-' + tab.id + '" aria-labelledby="tab-' + tab.id + '" data-tab="' + tab.id + '">';
+      mh += '<header class="tp-head"><div><h2 class="tp-title">' + esc(tab.label) + "</h2></div>" +
+        '<div class="tp-side"><p class="tp-intro">' + esc(tab.intro) + "</p>" + (tab.exam ? '<span class="chip-exam">' + esc(tab.exam) + "</span>" : "") + "</div></header>";
+      mh += legendHTML(tab);
+      mh += '<div class="sheets' + (tab.tables.length > 1 && tab.id === "resultat" ? " duo" : "") + '">';
+      tab.tables.forEach(function (tid) {
+        var t = tableById(tid);
+        var last = t.rows[t.rows.length - 1];
+        var grandId = last && last.k === "t" ? last.id : null;
+        mh += '<article class="sheet"><div class="sheet-h"><h3>' + esc(t.title) + "</h3>" +
+          (t.id === "actif" ? '<label class="switch" for="actif-detail"><input type="checkbox" id="actif-detail" role="switch"> Brut et amortissements</label>' : '<span class="unit">en euros</span>') + "</div>";
+        mh += '<div class="scroll"><table class="' + [t.id === "actif" ? "wide" : "", t.signs ? "signed" : ""].join(" ").trim() + '">' + theadHTML(t) + "<tbody>";
+        t.rows.forEach(function (r) { mh += rowHTML(t, r, grandId); });
+        mh += "</tbody></table></div></article>";
+      });
+      mh += "</div>";
+      var alerts = [];
+      tab.tables.forEach(function (tid) { tableById(tid).rows.forEach(function (r) { if (r.a) alerts.push(r); }); });
+      if (alerts.length) {
+        mh += '<div class="notes"><h3>Écarts relevés dans le cours</h3><ul>';
+        alerts.forEach(function (r) { mh += '<li><button type="button" data-goto="' + r.id + '">' + esc(shortName(r)) + "</button>" + esc(r.a) + "</li>"; });
+        mh += "</ul></div>";
+      }
+      mh += '<p class="foot">Source : cours Diagnostic financier, cas Saveur (documents 1 à 6). Montants en euros.</p>';
+      mh += "</section>";
+    });
+    tabsEl.innerHTML = th;
+    main.innerHTML = mh;
+  }
+
+  /* ── Onglets ── */
+  function showTab(id, keepScroll) {
+    current = id; store.tab = id; save();
+    D.tabs.forEach(function (t) {
+      var on = t.id === id;
+      document.getElementById("tab-" + t.id).setAttribute("aria-selected", on ? "true" : "false");
+      document.getElementById("tab-" + t.id).tabIndex = on ? 0 : -1;
+      document.getElementById("tp-" + t.id).hidden = !on;
+    });
+    sweepIn(document.getElementById("tp-" + id));
+    try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    if (!keepScroll) {
+      var bar = document.querySelector(".bar");
+      if (bar.getBoundingClientRect().top <= 1) window.scrollTo({ top: document.querySelector(".masthead").offsetHeight, behavior: "auto" });
+    }
+  }
+
+  /* ── Relations ── */
+  function addTo(map, row, col, note, via) {
+    var e = map.get(row);
+    if (!e) { e = { cells: [], notes: [], via: [] }; map.set(row, e); }
+    if (col && e.cells.indexOf(col) < 0) e.cells.push(col);
+    if (note && e.notes.indexOf(note) < 0) e.notes.push(note);
+    (via || []).forEach(function (v) { if (e.via.indexOf(v) < 0) e.via.push(v); });
+  }
+  function relations(id) {
+    var same = new Map(), up = new Map(), down = new Map();
+    var members = new Set([id]);
+    var ownCells = [];
+    D.same.forEach(function (g) {
+      var mine = g.refs.filter(function (ref) { return pr(ref).row === id; });
+      if (!mine.length) return;
+      var ownRowLevel = mine.some(function (ref) { return !pr(ref).col; });
+      mine.forEach(function (ref) { var c = pr(ref).col; if (c && ownCells.indexOf(c) < 0) ownCells.push(c); });
+      g.refs.forEach(function (ref) {
+        var p = pr(ref);
+        if (p.row === id) return;
+        addTo(same, p.row, p.col, g.note && g.note[ref]);
+        if (ownRowLevel && !p.col) members.add(p.row);
+      });
+    });
+    D.calc.forEach(function (e) {
+      var o = pr(e.o);
+      if (members.has(o.row)) {
+        e.i.forEach(function (x) {
+          var p = pr(x[0]);
+          if (!members.has(p.row)) addTo(up, p.row, p.col);
+          else if (p.row === id && p.col && ownCells.indexOf(p.col) < 0) ownCells.push(p.col);
+        });
+      }
+      var hits = e.i.filter(function (x) { return members.has(pr(x[0]).row); });
+      if (hits.length && !members.has(o.row)) {
+        addTo(down, o.row, o.col, null, hits.map(function (x) { return x[0]; }));
+        hits.forEach(function (x) { var p = pr(x[0]); if (p.row === id && p.col && ownCells.indexOf(p.col) < 0) ownCells.push(p.col); });
+      }
+    });
+    same.forEach(function (_, k) { up.delete(k); down.delete(k); });
+    up.forEach(function (_, k) { down.delete(k); });
+    [same, up, down].forEach(function (m) {
+      m.delete(id);
+      if (!showEmpty) m.forEach(function (_, k) { if (isEmpty(ROWS[k])) m.delete(k); });
+    });
+    return { same: same, up: up, down: down, ownCells: ownCells };
+  }
+
+  /* ── Sélection ── */
+  function clearMarks() {
+    main.querySelectorAll("tr.sel, tr.hl-same, tr.hl-up, tr.hl-down").forEach(function (tr) { tr.classList.remove("sel", "hl-same", "hl-up", "hl-down"); });
+    main.querySelectorAll("td.hit, td.hit-own").forEach(function (td) { td.classList.remove("hit", "hit-own"); });
+    main.querySelectorAll(".tag").forEach(function (s) { s.remove(); });
+    tabsEl.querySelectorAll(".badges").forEach(function (b) { b.innerHTML = ""; });
+  }
+  function trOf(id) { return main.querySelector('tr[data-row="' + id + '"]'); }
+  /* Le surligneur traverse la ligne d'un seul geste : chaque cellule reçoit sa part du trajet, avec un léger ralenti à la fin. */
+  var SWEEP = 0.42;
+  function ease(p) { return 1 - Math.sqrt(1 - Math.min(1, Math.max(0, p))); }
+  function sweep(tr) {
+    var total = tr.offsetWidth;
+    if (!total) return;
+    var acc = 0;
+    Array.prototype.forEach.call(tr.cells, function (td) {
+      if (td.offsetParent === null) return;
+      var w = td.offsetWidth;
+      var t0 = ease(acc / total) * SWEEP, t1 = ease((acc + w) / total) * SWEEP;
+      td.style.setProperty("--d0", t0.toFixed(3) + "s");
+      td.style.setProperty("--dd", Math.max(t1 - t0, 0.02).toFixed(3) + "s");
+      acc += w;
+    });
+  }
+  function sweepIn(scope) { scope.querySelectorAll("tr.sel, tr.hl-same, tr.hl-up, tr.hl-down").forEach(sweep); }
+  function mark(map, cls, tagText) {
+    map.forEach(function (e, rowId) {
+      var tr = trOf(rowId);
+      if (!tr) return;
+      tr.classList.add(cls);
+      sweep(tr);
+      e.cells.forEach(function (c) { var td = tr.querySelector('td[data-col="' + c + '"]'); if (td) td.classList.add("hit"); });
+      var lt = tr.querySelector(".lt");
+      if (lt) { var s = document.createElement("span"); s.className = "tag " + cls.replace("hl-", ""); s.textContent = tagText; lt.appendChild(s); }
+    });
+  }
+  function select(id, opts) {
+    opts = opts || {};
+    hideTip();
+    if (selected === id && !opts.force) { deselect(); return; }
+    selected = id;
+    clearMarks();
+    var rel = relations(id);
+    var tr = trOf(id);
+    if (tr) {
+      tr.classList.add("sel");
+      sweep(tr);
+      rel.ownCells.forEach(function (c) { var td = tr.querySelector('td[data-col="' + c + '"]'); if (td) td.classList.add("hit-own"); });
+    }
+    mark(rel.same, "hl-same", "même montant");
+    mark(rel.up, "hl-up", "sert au calcul");
+    mark(rel.down, "hl-down", "utilise cette ligne");
+    D.tabs.forEach(function (tab) {
+      var s = 0, c = 0;
+      rel.same.forEach(function (_, k) { if (TBL[k].tab === tab.id) s++; });
+      rel.up.forEach(function (_, k) { if (TBL[k].tab === tab.id) c++; });
+      rel.down.forEach(function (_, k) { if (TBL[k].tab === tab.id) c++; });
+      var b = document.querySelector("#tab-" + tab.id + " .badges");
+      b.innerHTML = (s ? '<span class="badge same" title="Même montant">' + s + "</span>" : "") + (c ? '<span class="badge calc" title="Lien de calcul">' + c + "</span>" : "");
+    });
+    renderPanel(id, rel);
+    clearBtn.disabled = false;
+    panel.classList.add("open");
+    document.body.classList.add("panel-open");
+    store.sel = id; save();
+  }
+  function deselect() {
+    selected = null;
+    clearMarks();
+    renderEmpty();
+    clearBtn.disabled = true;
+    panel.classList.remove("open");
+    document.body.classList.remove("panel-open");
+    store.sel = null; save();
+  }
+
+  /* ── Panneau ── */
+  function whereOf(id) { var t = TBL[id]; return TAB[t.tab].label + (TAB[t.tab].tables.length > 1 ? " › " + t.short : ""); }
+  function valueFor(id, col) {
+    var r = ROWS[id], t = TBL[id];
+    return r.v[col || t.main];
+  }
+  function termLabel(ref, outTable) {
+    var p = pr(ref), r = ROWS[p.row], t = TBL[p.row];
+    var s = shortName(r);
+    if (p.col) s += " (" + colName(t, p.col) + ")";
+    if (t.tab !== outTable.tab) s = TAB[t.tab].label + " › " + s;
+    return s;
+  }
+  function formulaData(e) {
+    var o = pr(e.o), ot = TBL[o.row], orow = ROWS[o.row];
+    var terms = e.i.filter(function (x) { return !isEmpty(ROWS[pr(x[0]).row]); });
+    var labels = terms.map(function (x, i) {
+      var sign = x[1] < 0 ? "− " : (i ? "+ " : "");
+      return sign + termLabel(x[0], ot);
+    }).join(" ");
+    var cols = (o.col ? [o.col] : [ot.main, ot.prev].filter(Boolean)).filter(function (c) { return orow.v[c] != null; });
+    var rows = terms.map(function (x, i) {
+      var p = pr(x[0]);
+      return { sign: x[1] < 0 ? "−" : (i ? "+" : ""), label: termLabel(x[0], ot), vals: cols.map(function (c) { return ROWS[p.row].v[p.col || c]; }) };
+    });
+    var sums = cols.map(function (c, j) {
+      var s = 0, any = false;
+      terms.forEach(function (x, i) { var v = rows[i].vals[j]; if (v != null) { any = true; s += x[1] * v; } });
+      return any ? s : null;
+    });
+    return {
+      labels: labels, heads: cols.map(function (c) { return o.col ? colName(ot, c) : colHead(ot, c); }),
+      rows: rows, sums: sums, shown: cols.map(function (c) { return orow.v[c]; }), total: shortName(orow)
+    };
+  }
+  function posee(heads, rows, total, sums) {
+    var h = '<table class="posee"><thead><tr><th></th><th></th>';
+    heads.forEach(function (x) { h += "<th>" + esc(x) + "</th>"; });
+    h += "</tr></thead><tbody>";
+    rows.forEach(function (r) {
+      h += '<tr><td class="ps">' + r.sign + '</td><td class="pl">' + esc(r.label) + "</td>";
+      r.vals.forEach(function (v) { h += '<td class="pv">' + (v == null ? "–" : v < 0 ? "(" + num(v) + ")" : num(v)) + "</td>"; });
+      h += "</tr>";
+    });
+    h += '</tbody><tfoot><tr><td class="ps">=</td><td class="pl">' + esc(total) + "</td>";
+    sums.forEach(function (v) { h += '<td class="pv">' + (v == null ? "–" : num(v)) + "</td>"; });
+    return h + "</tr></tfoot></table>";
+  }
+  function linkItem(rowId, e, kind) {
+    var r = ROWS[rowId], t = TBL[rowId];
+    var col = e.cells[0];
+    var v = valueFor(rowId, col);
+    var notes = e.notes.slice();
+    if (e.cells.length && !e.notes.length && t.cols.length > 1) notes.push("colonne " + e.cells.map(function (c) { return colName(t, c); }).join(", "));
+    if (e.via.length) {
+      var cols = e.via.map(function (ref) { return pr(ref).col; }).filter(Boolean);
+      if (cols.length) notes.push("à partir de " + cols.map(function (c) { return colName(TBL[pr(e.via[0]).row], c); }).join(", "));
+    }
+    return '<li><button type="button" class="lk ' + kind + '" data-goto="' + rowId + '">' +
+      '<span class="w">' + esc(whereOf(rowId)) + "</span>" +
+      '<span class="n">' + esc(shortName(r)) + "</span>" +
+      '<span class="v">' + (v == null ? "–" : num(v)) + "</span>" +
+      (notes.length ? '<span class="note">' + esc(notes.join(" · ")) + "</span>" : "") +
+      "</button></li>";
+  }
+  function renderEmpty() {
+    pbody.innerHTML = '<div class="p-empty">' +
+      '<div class="pe-art" aria-hidden="true"><span class="stroke sel"></span><span class="stroke same"></span><span class="stroke calc"></span></div>' +
+      '<p class="pe-lead">Choisis une ligne dans un tableau.</p>' +
+      '<p>Tu verras ici son explication, son calcul posé avec les chiffres du cas et tous les tableaux où elle est reprise.</p>' +
+      '<div class="pe-btns"><button type="button" class="btn" data-goto="sig-va">La valeur ajoutée</button>' +
+      '<button type="button" class="btn" data-goto="p-resultat">Le résultat au passif</button>' +
+      '<button type="button" class="btn" data-goto="caf-total">La CAF</button></div></div>';
+  }
+  function renderPanel(id, rel) {
+    var r = ROWS[id], t = TBL[id];
+    var chips = "";
+    if (r.f) chips += '<span class="chip" style="--fc:var(--f-' + r.f + ')"><i class="dot"></i>' + esc(D.families[r.f].name) + "</span>";
+    if (r.pcg) chips += '<span class="chip pcg">Compte ' + esc(r.pcg) + "</span>";
+    if (r.x) chips += '<span class="chip x">À connaître</span>';
+    var h = '<div class="p-top"><p class="p-where">' + esc(whereOf(id)) + '</p><h3 class="p-title">' + esc(r.l) + "</h3>" +
+      (chips ? '<div class="p-chips">' + chips + "</div>" : "") + "</div>";
+    if (r.k !== "g") {
+      if (t.id === "actif") {
+        h += '<div class="mini-wrap"><table class="mini"><tr><th></th><th>Brut</th><th>Amort.</th><th>Net</th></tr>';
+        [["N", "nb", "na", "nn"], ["N-1", "pb", "pa", "pn"]].forEach(function (y) {
+          h += "<tr><th>" + y[0] + "</th><td>" + num(r.v[y[1]]) + "</td><td>" + num(r.v[y[2]]) + '</td><td class="netc">' + num(r.v[y[3]]) + "</td></tr>";
+        });
+        h += "</table></div>";
+      } else {
+        h += '<dl class="vals">';
+        t.cols.forEach(function (c, i) { h += '<div class="' + (i === 0 ? "main" : "") + '"><dt>' + esc(c.label) + "</dt><dd>" + (r.v[c.k] == null ? "–" : num(r.v[c.k])) + "</dd></div>"; });
+        var x = evolOf(r, t);
+        if (x != null) {
+          var vd = verdict(r, x);
+          h += '<div class="' + vd + '"><dt>Évolution</dt><dd>' + pct(x) + (vd ? "<small>" + (vd === "good" ? "favorable" : "défavorable") + "</small>" : "") + "</dd></div>";
+        }
+        h += "</dl>";
+      }
+    }
+    if (r.d) h += '<p class="p-desc">' + esc(r.d) + "</p>";
+    if (r.c) h += '<p class="cours"><b>Dans ton cours</b><span>' + esc(r.c) + "</span></p>";
+    (OUT[id] || []).forEach(function (e) {
+      var f = formulaData(e);
+      h += '<div class="formula"><h4>' + esc(e.label || "Calcul") + '</h4><p class="fl"><b>' + esc(shortName(r)) + "</b> = " + esc(f.labels) + "</p>";
+      if (f.heads.length) {
+        h += posee(f.heads, f.rows, f.total, f.sums);
+        f.sums.forEach(function (s, j) {
+          if (s != null && s !== f.shown[j]) h += '<p class="fx-note">' + esc(f.heads[j]) + " : le calcul donne " + num(s) + ", le cours indique " + num(f.shown[j]) + ".</p>";
+        });
+      }
+      h += "</div>";
+    });
+    if (t.id === "actif" && r.v.na != null && r.k === "l") {
+      var hasPrev = r.v.pa != null;
+      h += '<div class="formula"><h4>Valeur nette</h4><p class="fl"><b>Net</b> = Brut − Amortissements et dépréciations</p>' +
+        posee(hasPrev ? ["N", "N-1"] : ["N"], [
+          { sign: "", label: "Brut", vals: hasPrev ? [r.v.nb, r.v.pb] : [r.v.nb] },
+          { sign: "−", label: "Amort. et dép.", vals: hasPrev ? [r.v.na, r.v.pa] : [r.v.na] }
+        ], "Net", hasPrev ? [r.v.nn, r.v.pn] : [r.v.nn]) + "</div>";
+    }
+    if (r.a) h += '<p class="alert"><b>Écart dans le cours</b><span>' + esc(r.a) + "</span></p>";
+    if (r.k !== "g") {
+      h += '<div class="links">';
+      var any = rel.same.size + rel.up.size + rel.down.size;
+      if (rel.same.size) {
+        h += '<section><h4><span class="stroke same" aria-hidden="true"></span>Même montant ailleurs</h4><ul>';
+        rel.same.forEach(function (e, k) { h += linkItem(k, e, "same"); });
+        h += "</ul></section>";
+      }
+      if (rel.up.size) {
+        h += '<section><h4><span class="stroke calc" aria-hidden="true"></span>Calculé à partir de</h4><ul>';
+        rel.up.forEach(function (e, k) { h += linkItem(k, e, "calc"); });
+        h += "</ul></section>";
+      }
+      if (rel.down.size) {
+        h += '<section><h4><span class="stroke calc" aria-hidden="true"></span>Entre dans le calcul de</h4><ul>';
+        rel.down.forEach(function (e, k) { h += linkItem(k, e, "calc"); });
+        h += "</ul></section>";
+      }
+      if (!any) h += '<p class="none">Cette ligne n’est reprise dans aucun autre tableau de cette fiche.</p>';
+      h += "</div>";
+    }
+    pbody.innerHTML = h;
+    pbody.scrollTop = 0;
+  }
+
+  /* ── Aller à une ligne ── */
+  function goTo(id) {
+    var t = TBL[id];
+    if (!t) return;
+    if (t.tab !== current) showTab(t.tab, true);
+    var tr = trOf(id);
+    if (!tr) return;
+    if (tr.classList.contains("empty") && !showEmpty) { emptyBox.checked = true; setEmpty(true); }
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (window.matchMedia("(min-width: 1180px)").matches) {
+      tr.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+    } else {
+      var top = tr.getBoundingClientRect().top + window.scrollY - document.querySelector(".bar").offsetHeight - 16;
+      window.scrollTo({ top: Math.max(0, top), behavior: reduce ? "auto" : "smooth" });
+    }
+    tr.classList.remove("flash"); void tr.offsetWidth; tr.classList.add("flash");
+    setTimeout(function () { tr.classList.remove("flash"); }, 1600);
+  }
+
+  /* ── Infobulle ── */
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  var tipTimer = null, mouseX = 0, tipFor = null;
+  function hideTip() { clearTimeout(tipTimer); tip.hidden = true; tipFor = null; }
+  function tipHTMLRow(r) {
+    var h = "<strong>" + esc(r.l) + "</strong>";
+    if (r.d) h += "<p>" + esc(r.d) + "</p>";
+    var e = (OUT[r.id] || [])[0];
+    if (e) h += '<p class="tf">= ' + esc(formulaData(e).labels) + "</p>";
+    if (r.k !== "g") h += '<p class="th">Clique pour voir le détail et les liens.</p>';
+    return h;
+  }
+  function placeTip(anchor) {
+    tip.style.visibility = "hidden"; tip.hidden = false;
+    var rect = anchor.getBoundingClientRect();
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    var x = Math.min(Math.max(12, mouseX - 60), window.innerWidth - w - 12);
+    var y = rect.bottom + 8;
+    if (y + h > window.innerHeight - 12) y = rect.top - h - 8;
+    if (y < 12) y = 12;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+    tip.style.visibility = "";
+  }
+  function showTipFor(el) {
+    var html;
+    if (el.matches("tr[data-row]")) html = tipHTMLRow(ROWS[el.getAttribute("data-row")]);
+    else if (el.matches("[data-tip]")) html = "<p>" + esc(el.getAttribute("data-tip")) + "</p>";
+    else if (el.matches("[data-tipfam]")) { var f = D.families[el.getAttribute("data-tipfam")]; html = "<strong>" + esc(f.name) + "</strong><p>" + esc(f.desc) + "</p>"; }
+    if (!html) return;
+    tip.innerHTML = html; tipFor = el; placeTip(el);
+  }
+  document.addEventListener("mousemove", function (ev) { mouseX = ev.clientX; }, { passive: true });
+  main.addEventListener("mouseover", function (ev) {
+    if (!fine.matches) return;
+    var el = ev.target.closest("tr[data-row], th[data-tip], [data-tipfam]");
+    if (!el || el === tipFor) return;
+    clearTimeout(tipTimer);
+    tip.hidden = true;
+    tipTimer = setTimeout(function () { showTipFor(el); }, 220);
+  });
+  main.addEventListener("mouseout", function (ev) {
+    var el = ev.target.closest("tr[data-row], th[data-tip], [data-tipfam]");
+    if (el && !el.contains(ev.relatedTarget)) hideTip();
+  });
+  window.addEventListener("scroll", hideTip, { passive: true });
+
+  /* ── Événements ── */
+  main.addEventListener("click", function (ev) {
+    var go = ev.target.closest("[data-goto]");
+    if (go) { var gid = go.getAttribute("data-goto"); if (selected !== gid) select(gid, { force: true }); goTo(gid); return; }
+    var th = ev.target.closest("th[data-tip], [data-tipfam]");
+    if (th && !fine.matches) { showTipFor(th); clearTimeout(tipTimer); tipTimer = setTimeout(hideTip, 3500); return; }
+    var tr = ev.target.closest("tr[data-row]");
+    if (tr) select(tr.getAttribute("data-row"));
+  });
+  main.addEventListener("keydown", function (ev) {
+    var tr = ev.target.closest && ev.target.closest("tr[data-row]");
+    if (!tr) return;
+    if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(tr.getAttribute("data-row")); }
+    if (ev.key === "ArrowDown" || ev.key === "ArrowUp") {
+      ev.preventDefault();
+      var rows = Array.prototype.filter.call(tr.closest("table").querySelectorAll("tr[data-row]"), function (r) { return r.offsetParent !== null; });
+      var i = rows.indexOf(tr) + (ev.key === "ArrowDown" ? 1 : -1);
+      if (rows[i]) rows[i].focus();
+    }
+  });
+  pbody.addEventListener("click", function (ev) {
+    var go = ev.target.closest("[data-goto]");
+    if (!go) return;
+    var id = go.getAttribute("data-goto");
+    if (go.classList.contains("btn")) { select(id, { force: true }); goTo(id); return; }
+    goTo(id);
+  });
+  tabsEl.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-tab]");
+    if (b) showTab(b.getAttribute("data-tab"));
+  });
+  tabsEl.addEventListener("keydown", function (ev) {
+    if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+    var ids = D.tabs.map(function (t) { return t.id; });
+    var i = ids.indexOf(current) + (ev.key === "ArrowRight" ? 1 : -1);
+    i = (i + ids.length) % ids.length;
+    showTab(ids[i]); document.getElementById("tab-" + ids[i]).focus();
+  });
+  clearBtn.addEventListener("click", deselect);
+  document.getElementById("close").addEventListener("click", deselect);
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") { hideTip(); if (selected) deselect(); } });
+  function setEmpty(on) {
+    showEmpty = on; store.showEmpty = on; save();
+    document.body.classList.toggle("show-empty", on);
+    if (selected) select(selected, { force: true });
+  }
+  emptyBox.addEventListener("change", function () { setEmpty(emptyBox.checked); });
+  window.addEventListener("hashchange", function () { var id = location.hash.slice(1); if (TAB[id] && id !== current) showTab(id, true); });
+
+  function setDetail(on) {
+    store.actifDetail = on; save();
+    var tbl = document.querySelector("#tp-bilan table.wide");
+    if (!tbl) return;
+    tbl.classList.toggle("net-only", !on);
+    tbl.querySelectorAll("th.yr").forEach(function (th) { th.colSpan = on ? 3 : 1; });
+    var box = document.getElementById("actif-detail"); if (box) box.checked = on;
+  }
+
+  /* ── Démarrage ── */
+  build();
+  emptyBox.checked = showEmpty;
+  setDetail(typeof store.actifDetail === "boolean" ? store.actifDetail : window.innerWidth >= 760);
+  document.getElementById("actif-detail").addEventListener("change", function (ev) { setDetail(ev.target.checked); });
+  document.body.classList.toggle("show-empty", showEmpty);
+  showTab(current, true);
+  var bar = document.querySelector(".bar");
+  function setBarH() { document.documentElement.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
+  setBarH();
+  if (window.ResizeObserver) new ResizeObserver(setBarH).observe(bar);
+  if (store.sel && ROWS[store.sel] && TBL[store.sel].tab === current && window.matchMedia("(min-width: 1180px)").matches) select(store.sel, { force: true });
+  else renderEmpty();
+})();
+</script>
+
+</body>
+</html>
