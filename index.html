@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Fiche de révision interactive du cas Saveur : bilan, compte de résultat, SIG et CAF reliés ligne par ligne.">
+<meta name="description" content="Fiche de révision interactive du cas Saveur : bilan, compte de résultat, SIG, CAF, bilan fonctionnel et ratios reliés ligne par ligne.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231F1C33'/%3E%3Crect x='6' y='9' width='20' height='5' rx='2.5' fill='%23FFA8CD' transform='rotate(-4 16 11)'/%3E%3Crect x='6' y='15' width='20' height='5' rx='2.5' fill='%23FFE04A' transform='rotate(3 16 17)'/%3E%3Crect x='6' y='21' width='20' height='5' rx='2.5' fill='%2385CDFF' transform='rotate(-2 16 23)'/%3E%3C/svg%3E">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Tableaux du cas Saveur</title>
@@ -138,63 +138,13 @@ button { font: inherit; color: inherit; font-variation-settings: inherit; }
 .stroke.same { --c: var(--same); }
 .stroke.calc { --c: var(--calc); }
 
-/* ── En-tête ── */
-.mast-in { padding-block: 44px 30px; display: grid; gap: 26px 56px; align-items: end; }
-@media (min-width: 980px) { .mast-in { grid-template-columns: minmax(0, 1fr) minmax(0, 430px); } }
-.eyebrow {
-  margin: 0; display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%;
-  padding: 6px 14px 6px 8px; border-radius: 999px; background: var(--card); box-shadow: inset 0 0 0 1px var(--edge);
-  font-size: 12px; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
-}
-.eyebrow .stroke { width: 22px; height: 10px; }
-h1 {
-  margin: 18px 0 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0;
-  font-weight: 880; font-size: clamp(38px, 6.2vw, 78px); line-height: .98; letter-spacing: -.025em; text-wrap: balance;
-}
-.hlw { position: relative; z-index: 0; white-space: nowrap; }
-.hlw::before {
-  content: ""; position: absolute; z-index: -1; left: -.1em; right: -.16em; bottom: .02em; height: .52em;
-  background: var(--same); border-radius: .22em .42em .28em .5em / .34em .22em .44em .26em;
-  transform-origin: left center; transform: rotate(-1.6deg);
-  animation: draw .75s cubic-bezier(.55, .1, .25, 1) .25s both;
-}
-@keyframes draw { from { transform: rotate(-1.6deg) scaleX(0); } to { transform: rotate(-1.6deg) scaleX(1); } }
-.lede { margin: 16px 0 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: var(--ink-2); }
-.howto {
-  background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-1); border: 1px solid var(--edge);
-  padding: 20px 22px; display: grid; gap: 14px; min-width: 0;
-}
-.howto-h { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
-.on-fine { display: none; }
-@media (hover: hover) and (pointer: fine) { .on-fine { display: inline; } .on-touch { display: none; } }
-.markers { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-.markers li { display: flex; align-items: center; gap: 14px; font-size: 14.5px; color: var(--ink-2); }
-.markers b { color: var(--ink); font-weight: 700; margin-right: 2px; }
+/* ── Structure du site : sommaire à gauche, page au centre, détail à droite ── */
+.site { max-width: 1720px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 32px; }
+@media (min-width: 900px) { .site { grid-template-columns: 232px minmax(0, 1fr); } }
+@media (min-width: 1280px) { .site { grid-template-columns: 236px minmax(0, 1fr) 360px; } }
+main { min-width: 0; padding-block: 26px 72px; }
 
-/* ── Barre d'onglets ── */
-.bar {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
-  background: var(--ground);
-  background: color-mix(in srgb, var(--ground) 95%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
-}
-.bar-in { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; padding-block: 10px; }
-.tabs {
-  display: flex; gap: 4px; padding: 5px; min-width: 0; max-width: 100%;
-  background: var(--card); border-radius: 19px; box-shadow: var(--shadow-1); border: 1px solid var(--edge);
-  overflow-x: auto; scrollbar-width: none;
-}
-.tabs::-webkit-scrollbar { display: none; }
-.tab {
-  appearance: none; border: 0; background: none; cursor: pointer; text-align: left; white-space: nowrap;
-  display: grid; gap: 1px; padding: 9px 16px 10px; border-radius: 14px; color: var(--ink-2);
-  transition: background-color .15s, color .15s;
-}
-.tab:hover { background: var(--card-2); color: var(--ink); }
-.tab-t { display: flex; align-items: center; gap: 8px; font-size: 15.5px; font-weight: 720; line-height: 1.25; }
-.tab-s { font-size: 12px; font-weight: 450; color: var(--ink-3); }
-.tab[aria-selected="true"] { background: var(--ink); color: var(--card); }
-.tab[aria-selected="true"] .tab-s { color: color-mix(in srgb, var(--card) 68%, var(--ink)); }
+/* Commandes : pastilles, interrupteur, boutons */
 .badges { display: inline-flex; gap: 3px; }
 .badge {
   min-width: 21px; height: 21px; padding: 0 6px; border-radius: 999px;
@@ -205,7 +155,6 @@ h1 {
 @keyframes pop { from { transform: scale(.4); opacity: 0; } }
 .badge.same { background: var(--same); color: var(--same-ink); }
 .badge.calc { background: var(--calc); color: var(--calc-ink); }
-.controls { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .switch { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-2); cursor: pointer; user-select: none; }
 .switch input {
   appearance: none; -webkit-appearance: none; margin: 0; flex: none; cursor: pointer; position: relative;
@@ -225,13 +174,58 @@ h1 {
 .btn:hover:not(:disabled) { border-color: var(--ink-3); }
 .btn:disabled { opacity: .45; cursor: default; }
 
-/* ── Mise en page ── */
-.layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding-block: 18px 72px; }
-@media (min-width: 1180px) { .layout { grid-template-columns: minmax(0, 1fr) 390px; } }
-main { min-width: 0; }
-.tabpanel { display: grid; gap: 26px; }
-.tp-head { display: grid; gap: 14px 48px; align-items: start; padding-top: 8px; }
-@media (min-width: 900px) { .tp-head { grid-template-columns: auto minmax(0, 62ch); justify-content: space-between; } }
+/* Sommaire */
+.side { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+@media (min-width: 900px) {
+  .side {
+    position: sticky; top: env(safe-area-inset-top, 0px); align-self: start;
+    height: 100vh; height: 100dvh; overflow-y: auto; padding-block: 24px 20px; scrollbar-width: thin;
+  }
+}
+.brand { display: flex; align-items: center; gap: 12px; padding: 2px 6px; color: var(--ink); text-decoration: none; border-radius: 16px; }
+.brand-mark {
+  flex: none; width: 42px; height: 42px; border-radius: 13px; background: var(--ink);
+  display: grid; align-content: center; justify-items: center; gap: 3px;
+}
+.brand-mark i { display: block; width: 23px; height: 5px; border-radius: 3px; background: var(--c); }
+.brand-mark i:nth-child(1) { --c: var(--sel); transform: rotate(-4deg); }
+.brand-mark i:nth-child(2) { --c: var(--same); transform: rotate(3deg); }
+.brand-mark i:nth-child(3) { --c: var(--calc); transform: rotate(-2deg); }
+.brand-t { display: grid; gap: 1px; min-width: 0; }
+.brand-t b { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 16px; font-weight: 820; line-height: 1.15; }
+.brand-t small { font-size: 12px; color: var(--ink-3); }
+.toc { display: grid; gap: 16px; }
+.toc-grp { display: grid; gap: 2px; }
+.toc-gt { margin: 0 0 4px; padding: 0 10px; font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
+.toc-i {
+  display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 11px;
+  padding: 8px 10px; border-radius: 14px; color: var(--ink-2); text-decoration: none;
+  transition: background-color .15s, color .15s;
+}
+.toc-i:hover { background: var(--card); color: var(--ink); }
+.toc-i .tn {
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--card); box-shadow: inset 0 0 0 1.5px var(--line-2); color: var(--ink-2);
+  font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 12px; font-weight: 700;
+}
+.toc-i .tn svg { width: 14px; height: 14px; }
+.toc-i .tt { display: grid; gap: 1px; min-width: 0; }
+.toc-i .tt b { font-size: 14.5px; font-weight: 700; line-height: 1.25; }
+.toc-i .tt small { font-size: 12px; color: var(--ink-3); line-height: 1.3; }
+.toc-i[aria-current="page"] { background: var(--ink); color: var(--card); }
+.toc-i[aria-current="page"] .tn { background: var(--sel); color: var(--sel-ink, var(--ink)); box-shadow: none; }
+.toc-i[aria-current="page"] .tt small { color: color-mix(in srgb, var(--card) 68%, var(--ink)); }
+.side-opts {
+  margin-top: auto; display: grid; gap: 12px; justify-items: start;
+  padding: 14px 14px 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--edge);
+}
+.side-opts-t { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
+
+/* Page */
+.tabpanel { display: grid; gap: 26px; container-type: inline-size; }
+.tp-head { display: grid; gap: 14px 48px; align-items: start; }
+@container (min-width: 820px) { .tp-head { grid-template-columns: auto minmax(0, 60ch); justify-content: space-between; } }
+.kicker { margin: 0 0 8px; font-size: 12px; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
 .tp-title {
   margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0;
   font-weight: 860; font-size: clamp(32px, 4.2vw, 50px); line-height: 1; letter-spacing: -.02em; text-wrap: balance;
@@ -257,7 +251,7 @@ main { min-width: 0; }
 .lg-mk .stroke { width: 24px; height: 10px; }
 
 .sheets { display: grid; gap: 24px; }
-@media (min-width: 1360px) { .sheets.duo { grid-template-columns: 1fr 1fr; align-items: start; } }
+@container (min-width: 960px) { .sheets.duo { grid-template-columns: 1fr 1fr; align-items: start; } .sheets.duo .span { grid-column: 1 / -1; } }
 .sheet {
   background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-1); border: 1px solid var(--edge);
   padding: 4px 10px 12px; min-width: 0;
@@ -271,6 +265,90 @@ main { min-width: 0; }
 .scroll { overflow-x: auto; }
 table.net-only [data-col="nb"], table.net-only [data-col="na"], table.net-only [data-col="pb"], table.net-only [data-col="pa"] { display: none; }
 table.wide.net-only { min-width: 0; }
+
+/* Accueil */
+.hero { padding-top: 10px; }
+.eyebrow {
+  margin: 0; display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%;
+  padding: 6px 14px 6px 8px; border-radius: 999px; background: var(--card); box-shadow: inset 0 0 0 1px var(--edge);
+  font-size: 12px; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
+}
+.eyebrow .stroke { width: 22px; height: 10px; }
+h1 {
+  margin: 18px 0 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0;
+  font-weight: 880; font-size: clamp(38px, 6vw, 76px); line-height: .98; letter-spacing: -.025em; text-wrap: balance;
+}
+.hlw { position: relative; z-index: 0; white-space: nowrap; }
+.hlw::before {
+  content: ""; position: absolute; z-index: -1; left: -.1em; right: -.16em; bottom: .02em; height: .52em;
+  background: var(--same); border-radius: .22em .42em .28em .5em / .34em .22em .44em .26em;
+  transform-origin: left center; transform: rotate(-1.6deg);
+  animation: draw .75s cubic-bezier(.55, .1, .25, 1) .25s both;
+}
+@keyframes draw { from { transform: rotate(-1.6deg) scaleX(0); } to { transform: rotate(-1.6deg) scaleX(1); } }
+.lede { margin: 16px 0 0; max-width: 58ch; font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+.home-grid { display: grid; gap: 18px; }
+@container (min-width: 700px) { .home-grid { grid-template-columns: 1fr 1fr; align-items: stretch; } }
+.howto, .case {
+  background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-1); border: 1px solid var(--edge);
+  padding: 20px 22px; display: grid; gap: 14px; align-content: start; min-width: 0;
+}
+.box-t { margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 19px; font-weight: 800; line-height: 1.2; }
+.howto-h { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
+.on-fine { display: none; }
+@media (hover: hover) and (pointer: fine) { .on-fine { display: inline; } .on-touch { display: none; } }
+.markers { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.markers li { display: flex; align-items: center; gap: 14px; font-size: 14.5px; color: var(--ink-2); }
+.markers b { color: var(--ink); font-weight: 700; margin-right: 2px; }
+.case p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.case .mission { color: var(--ink); font-weight: 600; }
+.path { display: grid; gap: 22px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-t { margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: clamp(24px, 3vw, 32px); font-weight: 840; letter-spacing: -.015em; }
+.sec-head p { margin: 0; max-width: 64ch; color: var(--ink-2); font-size: 15.5px; line-height: 1.55; }
+.chapters { display: grid; gap: 24px; }
+.chap { display: grid; gap: 12px; align-content: start; }
+.chap-cards { display: grid; gap: 14px; }
+@container (min-width: 560px) { .chap-cards { grid-template-columns: 1fr 1fr; } }
+.chap-t { margin: 0; display: flex; align-items: center; gap: 12px; font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
+.chap-t::after { content: ""; flex: 1; height: 1px; background: var(--line-2); }
+.card {
+  display: grid; gap: 10px; padding: 18px 18px 16px; border-radius: var(--r-lg);
+  background: var(--card); border: 1px solid var(--edge); box-shadow: var(--shadow-1);
+  color: var(--ink); text-decoration: none; transition: transform .18s cubic-bezier(.3, .7, .3, 1), border-color .18s;
+}
+.card:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.card-top { display: flex; align-items: center; gap: 12px; }
+.card .tn {
+  flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--card);
+  font-family: var(--font-num); font-variation-settings: "CASL" 0, "MONO" 1; font-size: 14px; font-weight: 700;
+}
+.card h3 { margin: 0; font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 20px; font-weight: 800; line-height: 1.15; }
+.card-docs { margin: 2px 0 0; font-size: 11.5px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.card p.tz { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+.card .chip-exam { font-size: 12px; padding: 3px 11px 3px 9px; justify-self: start; }
+.card-go { font-size: 13.5px; font-weight: 700; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; }
+.card-go i { font-style: normal; transition: transform .18s cubic-bezier(.3, .7, .3, 1); }
+.card:hover .card-go i { transform: translateX(4px); }
+
+/* Pages précédente et suivante */
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pg {
+  display: grid; gap: 3px; padding: 14px 18px 15px; border-radius: 18px; min-width: 0;
+  background: var(--card); border: 1px solid var(--edge); color: var(--ink); text-decoration: none;
+  transition: border-color .15s, transform .18s cubic-bezier(.3, .7, .3, 1);
+}
+.pg:hover { border-color: var(--line-2); }
+.pg.prev:hover { transform: translateX(-3px); }
+.pg.next:hover { transform: translateX(3px); }
+.pg small { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.pg b { font-family: var(--font-display); font-variation-settings: "CASL" 1, "MONO" 0; font-size: 18px; font-weight: 800; }
+.pg.next { grid-column: 2; text-align: right; }
+.srcs { display: grid; gap: 6px; font-size: 13px; color: var(--ink-3); }
+.srcs p { margin: 0; }
+.srcs ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.srcs a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.srcs a:hover { color: var(--ink); text-decoration-color: var(--pink); }
 
 /* ── Tableaux ── */
 table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
@@ -515,51 +593,83 @@ table.posee tfoot td.pl { color: var(--ink); }
 .lk .note { grid-column: 1 / -1; font-size: 12.5px; color: var(--ink-2); }
 .none { margin: 0; font-size: 14px; color: var(--ink-3); }
 
-@media (min-width: 1180px) {
-  #panel .panel-in { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--bar-h) + 12px); max-height: calc(100vh - var(--bar-h) - 32px); }
+/* Unités, écarts au secteur, valeurs calculées */
+.chip-m { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; vertical-align: 1px; box-shadow: inset 0 0 0 1.5px var(--line-2); color: var(--ink-2); font-family: var(--font-body); font-variation-settings: "CASL" 0, "MONO" 0; font-size: 11px; font-weight: 700; line-height: 1.6; white-space: nowrap; }
+tr.grand .chip-m { color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; }
+.vals > div.full { grid-column: 1 / -1; }
+.chip.m { box-shadow: inset 0 0 0 1.5px var(--line-2); background: var(--card); }
+table.posee tr.sec td { padding: 8px 0 3px; font-size: 10.5px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+table.posee tr.sub td { border-top: 1px solid var(--line-2); font-weight: 700; color: var(--ink); }
+
+@media (min-width: 1280px) {
+  #panel { padding-block: 26px 24px; }
+  #panel .panel-in { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); }
 }
-@media (max-width: 1179px) {
+@media (max-width: 1279px) {
   #panel {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
     transform: translateY(105%); transition: transform .3s cubic-bezier(.3, .8, .3, 1);
     padding-left: max(6px, env(safe-area-inset-left, 0px)); padding-right: max(6px, env(safe-area-inset-right, 0px));
   }
   #panel.open { transform: none; }
-  .panel-in { max-height: 66vh; border-radius: 26px 26px 0 0; box-shadow: var(--shadow-2); border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .panel-in { max-width: 720px; margin: 0 auto; max-height: 66vh; border-radius: 26px 26px 0 0; box-shadow: var(--shadow-2); border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
   .p-head { padding-top: 20px; }
   .grip { display: block; position: absolute; top: 8px; left: 50%; width: 40px; height: 4px; margin-left: -20px; border-radius: 4px; background: var(--line-2); }
   .p-close { display: inline-flex; }
   body.panel-open main { padding-bottom: 62vh; }
 }
+/* Téléphone et petite tablette : le sommaire devient une barre collante */
+@media (max-width: 899px) {
+  main { padding-top: 18px; }
+  .side {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; gap: 8px; padding-block: 10px 8px;
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    background: var(--ground);
+    background: color-mix(in srgb, var(--ground) 95%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
+  }
+  .brand { display: none; }
+  .toc {
+    display: flex; gap: 4px; padding: 5px; overflow-x: auto; scrollbar-width: none;
+    background: var(--card); border-radius: 18px; border: 1px solid var(--edge); box-shadow: var(--shadow-1);
+  }
+  .toc::-webkit-scrollbar { display: none; }
+  .toc-grp { display: contents; }
+  .toc-gt { display: none; }
+  .toc-i { display: flex; flex: none; gap: 8px; padding: 6px 12px 6px 6px; white-space: nowrap; }
+  .toc-i:hover { background: var(--card-2); }
+  .toc-i[aria-current="page"]:hover { background: var(--ink); }
+  .toc-i .tn { width: 22px; height: 22px; font-size: 11px; }
+  .toc-i .tn svg { width: 12px; height: 12px; }
+  .toc-i .tt small { display: none; }
+  .toc-i .tt b { font-size: 14px; }
+  .side-opts { margin: 0; padding: 0; background: none; border: 0; border-radius: 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .side-opts-t { display: none; }
+}
 @media (max-width: 640px) {
   body { font-size: 14.5px; }
-  .mast-in { padding-block: 26px 20px; gap: 18px; }
   h1 { margin-top: 14px; }
   .lede { font-size: 15.5px; }
-  .howto { padding: 16px 16px; }
-  .bar-in { gap: 8px; padding-block: 8px; }
-  .tabs { width: 100%; }
-  .tab { padding: 8px 12px 9px; }
-  .tab-s { display: none; }
-  .tab-t { font-size: 14.5px; }
-  .controls { width: 100%; justify-content: space-between; gap: 10px; }
+  .howto, .case { padding: 16px; }
   .switch { font-size: 13px; }
   .long { display: none; }
   .btn { padding: 6px 13px; font-size: 13px; }
   .sheet { padding: 2px 4px 8px; border-radius: 18px; }
   .sheet-h { padding: 14px 8px 10px; }
-  td.lab { min-width: 176px; }
   tr.row td { padding: 9px 8px; }
-  td.lab { padding-left: calc(8px + var(--ind, 0) * 14px); }
+  td.lab { padding-left: calc(8px + var(--ind, 0) * 14px); min-width: 160px; }
   thead th { padding: 9px 8px 10px; }
   table.signed td.sg, table.signed th.sg-h { width: 34px; }
   td.lab, th.lab-h { position: sticky; left: 0; z-index: 1; }
   table.signed td.sg, table.signed th.sg-h { position: sticky; left: 0; z-index: 2; background-color: var(--rbg, var(--card)); }
   table.signed td.lab, table.signed th.lab-h { left: 34px; }
-  td.lab { min-width: 160px; }
   .lg-sep { display: none; }
   .notes { padding: 16px; }
+  .pg { padding: 12px 14px; }
+  .pg b { font-size: 16px; }
 }
+
 
 /* ── Infobulle ── */
 #tip {
@@ -581,35 +691,19 @@ table.posee tfoot td.pl { color: var(--ink); }
 
 </head>
 <body>
-<header class="masthead">
-  <div class="wrap gutter mast-in">
-    <div>
-      <p class="eyebrow"><span class="stroke same" aria-hidden="true"></span>Fiche de révision · Diagnostic financier</p>
-      <h1>Tableaux du cas <span class="hlw">Saveur</span></h1>
-      <p class="lede">L’épicerie fine Saveur sur deux exercices, N et N-1. Le bilan, le compte de résultat, les SIG et la CAF, reliés entre eux ligne par ligne.</p>
-    </div>
-    <div class="howto" aria-label="Mode d’emploi">
-      <p class="howto-h"><span class="on-fine">Survole une ligne pour lire son explication, puis clique dessus pour allumer ses liens dans tous les onglets.</span><span class="on-touch">Touche une ligne pour lire son explication et allumer ses liens dans tous les onglets.</span></p>
-      <ul class="markers">
-        <li><span class="stroke sel" aria-hidden="true"></span><span><b>Rose</b> la ligne que tu as choisie</span></li>
-        <li><span class="stroke same" aria-hidden="true"></span><span><b>Jaune</b> le même montant, repris ailleurs</span></li>
-        <li><span class="stroke calc" aria-hidden="true"></span><span><b>Bleu</b> un lien de calcul entre deux lignes</span></li>
-      </ul>
-    </div>
-  </div>
-</header>
-
-<div class="bar">
-  <div class="wrap gutter bar-in">
-    <nav class="tabs" role="tablist" aria-label="Tableaux" id="tabs"></nav>
-    <div class="controls">
+<div class="site gutter">
+  <aside class="side" aria-label="Sommaire">
+    <a class="brand" href="#accueil" data-tab="accueil">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-t"><b>Tableaux du cas Saveur</b><small>Diagnostic financier</small></span>
+    </a>
+    <nav class="toc" id="tabs" aria-label="Pages du site"></nav>
+    <div class="side-opts">
+      <p class="side-opts-t">Affichage</p>
       <label class="switch" for="show-empty"><input type="checkbox" id="show-empty" role="switch"> <span>Lignes vides<span class="long"> du modèle</span></span></label>
       <button class="btn" type="button" id="clear" disabled>Effacer la sélection</button>
     </div>
-  </div>
-</div>
-
-<div class="wrap gutter layout">
+  </aside>
   <main id="main"></main>
   <aside id="panel" aria-label="Détail de la ligne">
     <div class="panel-in">
@@ -640,20 +734,44 @@ function mk(cols, id, l, vals, o) {
 }
 const A = (id, l, vals, o) => mk(ACOLS, id, l, vals, o);
 const P = (id, l, vals, o) => mk(PCOLS, id, l, vals, o);
+const RCOLS = ["n", "p", "s"];
+const R = (id, l, vals, o) => mk(RCOLS, id, l, vals, o);
+/* Ratio : numérateur / dénominateur × m (100 par défaut). i sert aux liens entre lignes. */
+function Q(o, num, den, opt) {
+  opt = opt || {};
+  return { o: o, i: num.concat(den), q: { n: num, d: den, m: opt.m == null ? 100 : opt.m }, cols: opt.cols };
+}
 const G = (id, l, o) => Object.assign({ id: id, l: l, v: {}, k: "g", ind: 0 }, o || {});
 
 const DATA = {
   tabs: [
-    { id: "bilan", label: "Bilan", tables: ["actif", "passif"],
+    { id: "bilan", label: "Bilan", tables: ["actif", "passif"], docs: "Documents 1 et 2",
       intro: "Le bilan est la photo du patrimoine au 31 décembre. L’actif montre ce que l’entreprise possède, le passif d’où viennent les ressources qui l’ont financé. Les deux totaux sont toujours égaux." },
-    { id: "resultat", label: "Compte de résultat", tables: ["crc", "crp"],
+    { id: "resultat", label: "Compte de résultat", tables: ["crc", "crp"], docs: "Document 3",
       intro: "Le compte de résultat résume l’année. Produits − charges = résultat. Chaque poste est classé en exploitation, financier ou exceptionnel. Le cours ne donne que l’exercice N." },
-    { id: "sig", label: "SIG", tables: ["sig"],
+    { id: "sig", label: "SIG", tables: ["sig"], docs: "Document 5",
       intro: "Les soldes intermédiaires de gestion découpent le résultat en étapes, de la marge commerciale au résultat de l’exercice. Ce tableau est à savoir lire, pas à apprendre par cœur. Le calcul de la VA, lui, est à connaître.",
       exam: "Calcul de la VA à connaître" },
-    { id: "caf", label: "CAF", tables: ["caf"],
+    { id: "caf", label: "CAF", tables: ["caf"], docs: "Document 6",
       intro: "La CAF mesure ce que l’activité de l’année a réellement dégagé comme ressources. On part du résultat, on ajoute les charges qui ne font pas sortir d’argent et on retire les produits qui n’en font pas entrer.",
-      exam: "Tableau à connaître par cœur" }
+      exam: "Tableau à connaître par cœur" },
+    { id: "fonctionnel", label: "Bilan fonctionnel", tables: ["bfe", "bfr", "equi"], docs: "Documents 9 et 10",
+      intro: "Le bilan fonctionnel reclasse le bilan selon trois fonctions, l’investissement, le financement et l’exploitation. Tout est repris en valeurs brutes, et les amortissements et dépréciations passent du côté des ressources. Il sert à calculer le FRNG, le BFR et la trésorerie nette.",
+      exam: "Formules FRNG, BFR et TN à connaître",
+      sources: [
+        { t: "Académie de Versailles, Analyse du bilan", u: "https://cerpeg.ac-versailles.fr/IMG/pdf/analyse_du_bilan.pdf" },
+        { t: "Bpifrance Création, Fonds de roulement", u: "https://bpifrance-creation.fr/fonds-roulement" },
+        { t: "Bpifrance Création, Le besoin en fonds de roulement", u: "https://bpifrance-creation.fr/entrepreneur/actualites/besoin-fonds-roulement-bfr-1" },
+        { t: "Legifiscal, Bilan fonctionnel, FRNG, BFR et trésorerie nette", u: "https://www.legifiscal.fr/comptabilite-gestion-pilotage/analyse-financiere-ratios/bilan-fonctionnel.html" }
+      ] },
+    { id: "ratios", label: "Ratios", tables: ["rva", "rap", "rse"], docs: "Documents 7, 8 et 10",
+      intro: "Un ratio rapporte deux montants l’un à l’autre pour juger une situation. On le compare à l’année précédente et au secteur. Le cours en présente trois familles, la répartition de la valeur ajoutée, l’activité et la profitabilité, puis l’endettement.",
+      exam: "Formules des ratios à connaître",
+      sources: [
+        { t: "INSEE, Taux de marge (définitions de la VA et de l’EBE)", u: "https://www.insee.fr/fr/statistiques/7678544" },
+        { t: "Legifiscal, Ratios de structure financière", u: "https://www.legifiscal.fr/comptabilite-gestion-pilotage/analyse-financiere-ratios/bilan-fonctionnel.html" },
+        { t: "Fiducial, Capacité d’autofinancement et capacité de remboursement", u: "https://www.fiducial.fr/BanquePro/Glossaire/Capacite-d-autofinancement-CAF" }
+      ] }
   ],
 
   families: {
@@ -1068,6 +1186,255 @@ const DATA = {
           d: "CAF − dividendes : ce qui reste vraiment à l’entreprise pour se financer seule. 29 004 € en N, soit 2,6 % de la VA. C’est faible pour financer seule une ouverture à Lyon.",
           c: "Autofinancement = capacité d’autofinancement − dividendes." })
       ]
+    },
+
+    /* ───────────── BILAN FONCTIONNEL : EMPLOIS ───────────── */
+    {
+      id: "bfe", tab: "fonctionnel", title: "Emplois", short: "Emplois",
+      cols: [
+        { k: "n", label: "N", tip: "Valeurs brutes au 31/12/N." },
+        { k: "p", label: "N-1", tip: "Valeurs brutes au 31/12/N-1." }
+      ],
+      main: "n", prev: "p", evol: true,
+      rows: [
+        G("fe-g-es", "Emplois stables", { f: "inv",
+          d: "Les immobilisations, en valeur brute. Ce sont les biens que l’entreprise garde durablement et qu’elle doit financer avec des ressources stables." }),
+        P("fe-immo", "Immobilisations brutes", [1433781, 1311101], { f: "inv", ind: 1, sl: "Emplois stables",
+          d: "Le total I de l’actif, colonne brut. On reprend le prix d’achat des immobilisations sans retirer les amortissements, car le bilan fonctionnel regarde ce qui a été financé à l’origine. Elles augmentent de 122 680 € avec les travaux du magasin.",
+          c: "Bilan fonctionnel = toujours en valeur brute." }),
+        G("fe-g-ace", "Actif circulant d’exploitation", { f: "exp",
+          d: "Les postes liés au cycle acheter, stocker, vendre." }),
+        P("fe-stock", "Stocks de marchandises", [31278, 30278], { f: "exp", ind: 1, sl: "Stocks",
+          d: "Valeur brute du stock, avant la dépréciation de 800 € (300 € en N-1)." }),
+        P("fe-clients", "Créances clients", [20872, 15122], { f: "exp", ind: 1, sl: "Créances clients", s: "down",
+          d: "Ce que les clients doivent encore, en valeur brute. Elles augmentent de 38 % alors que le CA est stable, ce qui alourdit le BFRE." }),
+        P("fe-autcr", "Autres créances d’exploitation", [312, 112], { f: "exp", ind: 1, sl: "Autres créances",
+          d: "Petites créances liées à l’activité courante." }),
+        P("fe-cca", "Charges constatées d’avance", [44952, 41002], { f: "exp", ind: 1, sl: "Charges constatées d’avance",
+          d: "Charges payées pendant l’exercice mais qui concernent l’exercice suivant. Le doc 4 précise qu’elles relèvent de l’exploitation.",
+          c: "Doc 4 : les charges et produits constatés d’avance concernent l’exploitation." }),
+        P("fe-ace", "Total actif circulant d’exploitation", [97414, 86514], { k: "s", f: "exp", sl: "Actif circulant d’exploitation",
+          d: "Stocks + créances d’exploitation + charges constatées d’avance. C’est le premier terme du BFRE." }),
+        G("fe-g-ache", "Actif circulant hors exploitation", { f: "hexp",
+          d: "Les créances sans lien direct avec l’activité courante." }),
+        P("fe-crediv", "Créances diverses", [25749, 25149], { f: "hexp", ind: 1, sl: "Actif circulant hors exploitation",
+          d: "Le doc 4 les classe hors exploitation. Elles forment à elles seules tout l’actif circulant hors exploitation de Saveur.",
+          c: "Doc 4 : les créances diverses sont des créances hors exploitation." }),
+        G("fe-g-ta", "Trésorerie active", { f: "tre",
+          d: "L’argent disponible ou mobilisable tout de suite." }),
+        P("fe-vmp", "Valeurs mobilières de placement", [52200, 50800], { f: "tre", ind: 1, sl: "VMP",
+          d: "Valeur brute des placements. Le doc 4 précise qu’ils sont liquides, ils comptent donc dans la trésorerie et pas dans le hors exploitation.",
+          c: "Doc 4 : les valeurs mobilières de placement sont liquides." }),
+        P("fe-dispo", "Disponibilités", [130055, 148155], { f: "tre", ind: 1,
+          d: "L’argent en banque et en caisse." }),
+        P("fe-ta", "Total trésorerie active", [182255, 198955], { k: "s", f: "tre", sl: "Trésorerie active",
+          d: "VMP + disponibilités." }),
+        P("fe-total", "Total des emplois", [1739199, 1621719], { k: "t", f: "res",
+          d: "Égal au total de l’actif en valeurs brutes, et au total des ressources." })
+      ]
+    },
+
+    /* ───────────── BILAN FONCTIONNEL : RESSOURCES ───────────── */
+    {
+      id: "bfr", tab: "fonctionnel", title: "Ressources", short: "Ressources",
+      cols: [
+        { k: "n", label: "N", tip: "Montants au 31/12/N." },
+        { k: "p", label: "N-1", tip: "Montants au 31/12/N-1." }
+      ],
+      main: "n", prev: "p", evol: true,
+      rows: [
+        G("fr-g-rd", "Ressources durables", { f: "cp",
+          d: "Les financements stables, apportés ou laissés par les associés, ou prêtés à long terme par les banques." }),
+        P("fr-cp", "Capitaux propres", [673810, 662610], { f: "cp", ind: 1,
+          d: "Le total I du passif, résultat de l’exercice compris." }),
+        P("fr-amort", "Amortissements et dépréciations", [685687, 655383], { f: "cp", ind: 1, sl: "Amortissements et dépréciations",
+          d: "Tous les amortissements et dépréciations de l’actif. Comme l’actif est repris en brut, on les ajoute aux ressources propres, et le bilan reste équilibré." }),
+        P("fr-prov", "Provisions pour risques et charges", [0, 0], { f: "cp", ind: 1, keep: true, sl: "Provisions",
+          d: "Le total II du passif. 0 € chez Saveur, mais elles font partie des ressources propres." }),
+        P("fr-rp", "Ressources propres", [1359497, 1317993], { k: "s", f: "cp",
+          d: "Capitaux propres + amortissements et dépréciations + provisions." }),
+        P("fr-emp", "Emprunts auprès des établissements de crédit", [82000, 12000], { f: "fin", ind: 1, sl: "Emprunts",
+          d: "Le montant du bilan. Il contient les concours bancaires courants et les intérêts courus, qu’on retire juste en dessous." }),
+        P("fr-cbcm", "moins concours bancaires courants", [-2000, 0], { f: "tre", ind: 2, sl: "− CBC",
+          d: "Le découvert bancaire n’est pas une ressource stable. Il part en trésorerie passive." }),
+        P("fr-icnem", "moins intérêts courus non échus", [-2300, -5400], { f: "hexp", ind: 2, sl: "− ICNE",
+          d: "Des intérêts dus mais pas encore payés. Ils partent dans les dettes circulantes hors exploitation.",
+          c: "Doc 4 : les intérêts courus sont de 2 300 € en N et 5 400 € en N-1." }),
+        P("fr-dfin", "Dettes financières", [77700, 6600], { k: "s", f: "fin",
+          d: "Emprunts − CBC − ICNE. La partie vraiment durable de l’endettement bancaire. Elle bondit avec le nouvel emprunt de 90 000 € (doc 4)." }),
+        P("fr-rd", "Ressources durables", [1437197, 1324593], { k: "t", f: "res", sl: "Ressources durables",
+          d: "Ressources propres + dettes financières. Elles doivent financer au moins les emplois stables." }),
+        G("fr-g-dce", "Dettes circulantes d’exploitation", { f: "exp",
+          d: "Les dettes nées de l’activité courante, à payer à court terme." }),
+        P("fr-fourn", "Dettes fournisseurs", [77720, 75494], { f: "exp", ind: 1,
+          d: "Les achats reçus mais pas encore payés." }),
+        P("fr-fisc", "Dettes fiscales et sociales", [214782, 214232], { f: "exp", ind: 1,
+          d: "Les salaires, cotisations et taxes encore dus à la clôture." }),
+        P("fr-dce", "Total dettes circulantes d’exploitation", [292502, 289726], { k: "s", f: "exp", sl: "Dettes circulantes d’exploitation",
+          d: "Le second terme du BFRE. Ces dettes financent l’actif circulant d’exploitation, et chez Saveur elles le dépassent largement." }),
+        G("fr-g-dche", "Dettes circulantes hors exploitation", { f: "hexp",
+          d: "Les dettes à court terme sans lien avec l’activité courante." }),
+        P("fr-icne", "Intérêts courus non échus (ICNE)", [2300, 5400], { f: "hexp", ind: 1, sl: "ICNE",
+          d: "Retirés des emprunts et classés ici, car ce sont des intérêts à payer à court terme." }),
+        P("fr-dimmo", "Dettes sur immobilisations", [5200, 2000], { f: "hexp", ind: 1,
+          d: "Des immobilisations reçues mais pas encore payées." }),
+        P("fr-dis", "Dettes d’impôt sur les bénéfices", [_, _], { f: "hexp", ind: 1,
+          d: "Prévues dans le modèle du cours, vides dans le cas Saveur." }),
+        P("fr-dche", "Total dettes circulantes hors exploitation", [7500, 7400], { k: "s", f: "hexp", sl: "Dettes circulantes hors exploitation",
+          d: "ICNE + dettes sur immobilisations." }),
+        G("fr-g-tp", "Trésorerie passive", { f: "tre",
+          d: "Les financements bancaires de très court terme." }),
+        P("fr-cbc", "Concours bancaires courants", [2000, 0], { f: "tre", ind: 1, sl: "Trésorerie passive",
+          d: "Le découvert et les crédits de trésorerie. Ils sortent des dettes financières et forment toute la trésorerie passive." }),
+        P("fr-total", "Total des ressources", [1739199, 1621719], { k: "t", f: "res",
+          d: "Égal au total des emplois." })
+      ]
+    },
+
+    /* ───────────── ÉQUILIBRE FINANCIER ───────────── */
+    {
+      id: "equi", tab: "fonctionnel", title: "FRNG, BFR et trésorerie nette", short: "Équilibre", signs: true,
+      cols: [
+        { k: "n", label: "N", tip: "Exercice N." },
+        { k: "p", label: "N-1", tip: "Exercice N-1." }
+      ],
+      main: "n", prev: "p", evol: true,
+      rows: [
+        G("eq-g-fr", "Fonds de roulement net global", { f: "res",
+          d: "Ce qui reste des ressources durables une fois les emplois stables financés." }),
+        P("eq-rd", "Ressources durables", [1437197, 1324593], { sg: "+", f: "cp" }),
+        P("eq-es", "Emplois stables", [1433781, 1311101], { sg: "−", f: "inv" }),
+        P("eq-frng", "FRNG", [3416, 13492], { k: "r", sg: "=", f: "res", s: "up", x: true, sl: "FRNG",
+          d: "FRNG = ressources durables − emplois stables. Positif, il montre que les ressources stables financent toutes les immobilisations et qu’il reste une marge pour le cycle d’exploitation. Négatif, une partie des immobilisations serait financée à court terme, ce qui est risqué. Chez Saveur il reste positif, mais il fond de 75 % avec les travaux.",
+          c: "Variation −74,68 %. Repère secteur du cours : 5 %.",
+          a: "Dans le doc 10, les emplois stables sont écrits 1 433 789 au lieu de 1 433 781. Le FRNG de 3 416 € est bien juste." }),
+        G("eq-g-bfre", "Besoin en fonds de roulement d’exploitation", { f: "exp",
+          d: "Le décalage entre ce que le cycle d’exploitation immobilise (stocks, créances) et ce qu’il apporte (dettes fournisseurs, fiscales et sociales)." }),
+        P("eq-ace", "Actif circulant d’exploitation", [97414, 86514], { sg: "+", f: "exp",
+          a: "Le doc 10 écrit 97 416. Le bon total est 97 414 € (doc 9), et c’est bien lui qui donne −195 088 €." }),
+        P("eq-dce", "Dettes circulantes d’exploitation", [292502, 289726], { sg: "−", f: "exp" }),
+        P("eq-bfre", "BFRE", [-195088, -203212], { k: "r", sg: "=", f: "exp", s: "down", x: true, sl: "BFRE",
+          d: "BFRE = actif circulant d’exploitation − dettes circulantes d’exploitation. Chez Saveur il est négatif. Ce n’est donc pas un besoin mais une ressource, les fournisseurs et les dettes fiscales et sociales financent plus que les stocks et les créances. C’est fréquent dans le commerce de détail, où les clients paient vite.",
+          c: "Le cours parle d’excédent en fonds de roulement d’exploitation, avec un repère secteur de −4,5 %. Il donne une variation de −4 % en raisonnant sur l’excédent, qui diminue. Calculée sur le BFRE lui-même, l’évolution est de +4 %. Pour réduire un BFRE, on peut raccourcir la durée de stockage, faire payer les clients plus vite ou négocier des délais plus longs avec les fournisseurs." }),
+        G("eq-g-bfrhe", "Besoin en fonds de roulement hors exploitation", { f: "hexp",
+          d: "Le même calcul pour les postes hors exploitation." }),
+        P("eq-ache", "Actif circulant hors exploitation", [25749, 25149], { sg: "+", f: "hexp", sl: "ACHE" }),
+        P("eq-dche", "Dettes circulantes hors exploitation", [7500, 7400], { sg: "−", f: "hexp", sl: "DCHE" }),
+        P("eq-bfrhe", "BFRHE", [18249, 17749], { k: "r", sg: "=", f: "hexp", s: "down", sl: "BFRHE",
+          d: "BFRHE = actif circulant hors exploitation − dettes circulantes hors exploitation. Il pèse peu chez Saveur." }),
+        G("eq-g-bfr", "Besoin en fonds de roulement total", { f: "res",
+          d: "La somme des deux besoins." }),
+        P("eq-bfre2", "BFRE", [-195088, -203212], { sg: "+", f: "exp" }),
+        P("eq-bfrhe2", "BFRHE", [18249, 17749], { sg: "+", f: "hexp" }),
+        P("eq-bfr", "BFR", [-176839, -185463], { k: "r", sg: "=", f: "res", s: "down", x: true, sl: "BFR",
+          d: "BFR = BFRE + BFRHE. Négatif chez Saveur, il dégage une ressource de 176 839 € qui alimente la trésorerie.",
+          c: "Le cours parle d’excédent en fonds de roulement." }),
+        G("eq-g-tn", "Trésorerie nette", { f: "tre",
+          d: "Ce que l’entreprise a vraiment en caisse, découvert déduit." }),
+        P("eq-ta", "Trésorerie active", [182255, 198955], { sg: "+", f: "tre", sl: "TA" }),
+        P("eq-tp", "Trésorerie passive", [2000, 0], { sg: "−", f: "tre", sl: "TP" }),
+        P("eq-tn", "Trésorerie nette", [180255, 198955], { k: "r", sg: "=", f: "tre", s: "up", x: true, sl: "TN",
+          d: "TN = trésorerie active − trésorerie passive. C’est l’argent dont l’entreprise dispose vraiment à la clôture. Elle est aussi égale à FRNG − BFR, la relation de base du bilan fonctionnel.",
+          c: "Le cours conclut que l’excédent de BFR vient équilibrer la trésorerie, et que c’est une bonne chose. Repère secteur : 6 %.",
+          a: "Le cours donne une variation de −10,37 % en divisant par la TN de N au lieu de celle de N-1. La bonne variation est −9,40 %." }),
+        G("eq-g-check", "Vérification par l’autre côté", { f: "res",
+          d: "La trésorerie nette se retrouve aussi à partir du FRNG et du BFR." }),
+        P("eq-frng2", "FRNG", [3416, 13492], { sg: "+", f: "res" }),
+        P("eq-bfr2", "BFR", [-176839, -185463], { sg: "−", f: "res" }),
+        P("eq-tn2", "Trésorerie nette = FRNG − BFR", [180255, 198955], { k: "r", sg: "=", f: "tre", s: "up", sl: "TN par FRNG − BFR",
+          d: "Avec un BFR négatif, on soustrait un nombre négatif, ce qui revient à l’ajouter. 3 416 − (−176 839) = 180 255 €." })
+      ]
+    },
+
+    /* ───────────── RATIOS : RÉPARTITION DE LA VA ───────────── */
+    {
+      id: "rva", tab: "ratios", title: "Répartition de la valeur ajoutée", short: "Répartition de la VA",
+      cols: [
+        { k: "n", label: "N", tip: "Exercice N." },
+        { k: "p", label: "N-1", tip: "Valeurs N-1 données par le cours." }
+      ],
+      main: "n", prev: "p",
+      rows: [
+        P("rva-va", "Valeur ajoutée à partager", [1124015, 1132694], { k: "s", f: "exp", sl: "VA",
+          d: "La richesse créée par l’entreprise. Ce tableau montre qui en profite, en pourcentage de la VA." }),
+        P("rva-pers", "Personnel", [92.48, 80], { u: "pct", f: "exp", s: "down", x: true, sl: "Part du personnel",
+          d: "(Charges de personnel + participation des salariés) / VA × 100. Chez Saveur, le personnel absorbe presque toute la richesse créée.",
+          a: "Le cours indique 92,48 %, ce qui correspond aux charges de personnel seules (1 039 484 / 1 124 015). Avec la participation de 200 €, comme le prévoit sa formule, on trouve 92,50 %. Il écrit aussi 1 125 015 au lieu de 1 124 015 au dénominateur. En N-1, il donne 80 % alors que les chiffres du SIG donnent 88,07 %." }),
+        P("rva-etat", "État", [3.48, 3.8], { u: "pct", f: "imp", sl: "Part de l’État",
+          d: "(Impôts et taxes + impôt sur les bénéfices) / VA × 100.",
+          a: "Le cours ajoute 800 € d’impôt sur les bénéfices, alors que le compte de résultat indique 600 €. Les 200 € restants sont la participation, déjà comptée pour le personnel. Avec 600 €, on trouve 3,46 %. En N-1, le cours donne 3,8 % et les chiffres du SIG 3,71 %." }),
+        P("rva-pret", "Prêteurs", [0.44, 1], { u: "pct", f: "fin", sl: "Part des prêteurs",
+          d: "Intérêts / VA × 100. Ce que l’entreprise verse aux banques pour ses emprunts.",
+          c: "La valeur N-1 (1 %) vient du cours. Le sujet ne détaille pas les intérêts de N-1, on ne peut pas la vérifier." }),
+        P("rva-assoc", "Associés", [0.57, 3], { u: "pct", f: "cp", sl: "Part des associés",
+          d: "Dividendes / VA × 100. Les 6 400 € versés en N correspondent au résultat de N-1, entièrement distribué." }),
+        P("rva-entr", "Entreprise", [2.58, 5], { u: "pct", f: "res", sl: "Part de l’entreprise",
+          d: "Autofinancement / VA × 100, avec autofinancement = CAF − dividendes. C’est ce que l’entreprise garde pour se financer elle-même." }),
+        P("rva-total", "Total", [99.55, _], { k: "t", u: "pct", f: "res",
+          d: "La somme des cinq parts.",
+          c: "Le cours trouve 99,55 % au lieu de 100 %, et précise qu’au-delà de 100 % l’entreprise aurait eu recours à d’autres ressources. L’écart vient des produits et charges que ce partage ne reprend pas, comme les subventions, les autres produits et charges de gestion ou les opérations financières." })
+      ]
+    },
+
+    /* ───────────── RATIOS : ACTIVITÉ ET PROFITABILITÉ ───────────── */
+    {
+      id: "rap", tab: "ratios", title: "Activité et profitabilité", short: "Activité et profitabilité",
+      cols: [
+        { k: "n", label: "N", tip: "Exercice N." },
+        { k: "p", label: "N-1", tip: "Exercice N-1." },
+        { k: "s", label: "Secteur", tip: "Repère du secteur donné par le cours pour l’exercice N." }
+      ],
+      main: "n", prev: "p", cmp: "s",
+      rows: [
+        R("ra-ca", "Chiffre d’affaires", [2375005, 2363499, _], { k: "s", f: "exp", sl: "CA",
+          d: "Ventes de marchandises + production vendue. C’est la base de la plupart des ratios de profitabilité.",
+          a: "Dans ses formules, le cours écrit 2 375 558 € pour le CA de N. Le bon montant est 2 375 005 € (doc 3), et c’est lui qui donne les résultats du cours." }),
+        G("ra-g-act", "Ratios d’activité", { f: "exp" }),
+        R("ra-varca", "Variation du chiffre d’affaires", [0.49, 3, 4], { u: "pct", f: "exp", s: "up", x: true, ind: 1, sl: "Variation du CA",
+          d: "(CA N − CA N-1) / CA N-1 × 100. Le CA est presque stable alors que le secteur progresse de 4 %.",
+          c: "Mauvais par rapport à la concurrence. Mais avec de gros travaux sans fermeture du magasin, un CA stable est plutôt un bon signe." }),
+        R("ra-varva", "Variation de la valeur ajoutée", [-0.77, 2, 3], { u: "pct", f: "exp", s: "up", ind: 1, sl: "Variation de la VA",
+          d: "(VA N − VA N-1) / VA N-1 × 100. La VA recule, car les consommations externes augmentent plus vite que la marge.",
+          c: "Le cours précise que cette VA n’est pas retraitée. Une VA retraitée réintégrerait notamment le personnel extérieur et le crédit-bail du doc 4." }),
+        G("ra-g-prof", "Ratios de profitabilité", { f: "exp" }),
+        R("ra-pnet", "Taux de profitabilité nette", [0.07, 0.27, 1.3], { u: "pct", f: "res", s: "up", x: true, ind: 1, sl: "Résultat net / CA",
+          d: "Résultat net / CA × 100. Sur 100 € de ventes, Saveur garde 7 centimes de bénéfice, contre 1,30 € dans le secteur." }),
+        R("ra-vaca", "Taux de valeur ajoutée", [47.33, 47.92, 52], { u: "pct", f: "exp", s: "up", x: true, ind: 1, sl: "VA / CA",
+          d: "VA / CA × 100. La part du chiffre d’affaires qui devient de la richesse créée par l’entreprise." }),
+        R("ra-ebeca", "Taux de marge brute d’exploitation", [1.97, 4.08, 24], { u: "pct", f: "exp", s: "up", x: true, ind: 1, sl: "EBE / CA",
+          d: "EBE / CA × 100. L’EBE est la ressource que l’exploitation dégage avant amortissements et frais financiers. Saveur est très loin du secteur.",
+          c: "Le cours l’appelle ratio de marge brute et rappelle que l’EBE génère la trésorerie. Attention, l’INSEE appelle taux de marge le rapport EBE / VA.",
+          a: "Dans la formule N-1, le cours écrit 2 025 297 au lieu de 2 052 297 pour les ventes. Le résultat de 4,08 % est juste." }),
+        R("ra-persva", "Charges de personnel / VA", [92.48, 80, 70], { u: "pct", f: "exp", s: "down", x: true, ind: 1, sl: "Personnel / VA",
+          d: "Charges de personnel / VA × 100. C’est le point faible de Saveur, le personnel absorbe 92 % de la richesse créée.",
+          c: "Le cours renvoie au doc 7.",
+          a: "En N-1, le cours donne 80 %, mais 997 557 / 1 132 694 donne 88,07 %." }),
+        R("ra-intva", "Intérêts / VA", [0.44, 1, 2], { u: "pct", f: "fin", s: "down", ind: 1, sl: "Intérêts / VA",
+          d: "Intérêts / VA × 100. La part de la richesse qui rémunère les prêteurs. Elle est faible, Saveur est peu endettée.",
+          c: "Le cours renvoie au doc 7. La valeur N-1 (1 %) n’est pas vérifiable avec le sujet." })
+      ]
+    },
+
+    /* ───────────── RATIOS : ENDETTEMENT ───────────── */
+    {
+      id: "rse", tab: "ratios", title: "Endettement", short: "Endettement",
+      cols: [
+        { k: "n", label: "N", tip: "Exercice N, calculé par la fiche avec la formule du cours." },
+        { k: "p", label: "N-1", tip: "Exercice N-1, calculé par la fiche avec la formule du cours." },
+        { k: "s", label: "Secteur", tip: "Repère du secteur donné par le cours." }
+      ],
+      main: "n", prev: "p", cmp: "s",
+      rows: [
+        R("rs-dn", "Dettes financières nettes", [-48055, -136155, _], { k: "s", f: "fin", m: true, sl: "Dettes nettes",
+          d: "Dettes financières + ICNE + CBC − disponibilités, selon la formule du cours. Les trois premiers termes redonnent les emprunts du bilan (82 000 €). Le résultat est négatif, car les disponibilités de Saveur dépassent ses dettes bancaires. Elle n’a donc pas d’endettement net.",
+          c: "Le cours donne la formule sans les montants. Les valeurs N et N-1 sont calculées par la fiche." }),
+        R("rs-tend", "Taux d’endettement net", [-7.13, -20.55, 20], { u: "pct", f: "fin", s: "down", m: true, x: true, sl: "Dettes nettes / capitaux propres",
+          d: "Dettes nettes / capitaux propres × 100. Il mesure la dépendance de l’entreprise vis-à-vis des prêteurs. Plus il est élevé, moins c’est bon. Négatif ici, Saveur a plus de trésorerie que de dettes.",
+          c: "Repère secteur du cours : 20 %." }),
+        R("rs-capend", "Capacité d’endettement", [-1.36, -3.36, 2.5], { u: "ans", f: "fin", s: "down", m: true, x: true, sl: "Dettes nettes / CAF",
+          d: "Dettes nettes / CAF. Le nombre d’années de CAF qu’il faudrait pour rembourser les dettes nettes. Négatif ici, il n’y a pas de dette nette à rembourser.",
+          c: "Repère secteur du cours : 2,5, soit une dette remboursable en deux ans et demi. La CAF N-1 utilisée est celle du cours (40 500 €)." })
+      ]
     }
   ],
 
@@ -1103,7 +1470,45 @@ const DATA = {
     { refs: ["p-resultat.p", "caf-div.n"], note: { "p-resultat.p": "résultat N-1, distribué en N", "caf-div.n": "le résultat N-1 distribué en N" } },
     { refs: ["cr-tg-ch", "cr-tg-pr"], note: { "cr-tg-ch": "le compte de résultat est équilibré", "cr-tg-pr": "le compte de résultat est équilibré" } },
     { refs: ["a-totalg.nn", "p-totalg.n"], note: { "a-totalg.nn": "actif net N = passif N", "p-totalg.n": "passif N = actif net N" } },
-    { refs: ["a-totalg.pn", "p-totalg.p"], note: { "a-totalg.pn": "actif net N-1 = passif N-1", "p-totalg.p": "passif N-1 = actif net N-1" } }
+    { refs: ["a-totalg.pn", "p-totalg.p"], note: { "a-totalg.pn": "actif net N-1 = passif N-1", "p-totalg.p": "passif N-1 = actif net N-1" } },
+
+    /* bilan → bilan fonctionnel (valeurs brutes) */
+    ...[["a-total1", "fe-immo"], ["a-march", "fe-stock"], ["a-clients", "fe-clients"], ["a-autres-cr", "fe-autcr"], ["a-cca", "fe-cca"], ["a-cr-div", "fe-crediv"], ["a-vmp", "fe-vmp"], ["a-dispo", "fe-dispo"]]
+      .flatMap(([a, f]) => [
+        { refs: [a + ".nb", f + ".n"], note: { [a + ".nb"]: "valeur brute N" } },
+        { refs: [a + ".pb", f + ".p"], note: { [a + ".pb"]: "valeur brute N-1" } }
+      ]),
+    { refs: ["a-totalg.nb", "fe-total.n", "fr-total.n"], note: { "a-totalg.nb": "total de l’actif brut N" } },
+    { refs: ["a-totalg.pb", "fe-total.p", "fr-total.p"], note: { "a-totalg.pb": "total de l’actif brut N-1" } },
+    { refs: ["a-totalg.na", "fr-amort.n"], note: { "a-totalg.na": "amortissements et dépréciations N de tout l’actif" } },
+    { refs: ["a-totalg.pa", "fr-amort.p"], note: { "a-totalg.pa": "amortissements et dépréciations N-1 de tout l’actif" } },
+    { refs: ["p-total1", "fr-cp"] },
+    { refs: ["p-total2", "fr-prov"] },
+    { refs: ["p-emprunts", "fr-emp"] },
+    { refs: ["p-dont-icne", "fr-icne"] },
+    { refs: ["p-dont-cbc", "fr-cbc", "eq-tp"] },
+    { refs: ["p-fournisseurs", "fr-fourn"] },
+    { refs: ["p-fisc-soc", "fr-fisc"] },
+    { refs: ["p-dettes-immo", "fr-dimmo"] },
+    { refs: ["p-dettes-is", "fr-dis"] },
+    /* bilan fonctionnel → équilibre */
+    { refs: ["fr-rd", "eq-rd"] },
+    { refs: ["fe-immo", "eq-es"] },
+    { refs: ["fe-ace", "eq-ace"] },
+    { refs: ["fr-dce", "eq-dce"] },
+    { refs: ["fe-crediv", "eq-ache"] },
+    { refs: ["fr-dche", "eq-dche"] },
+    { refs: ["fe-ta", "eq-ta"] },
+    { refs: ["eq-frng", "eq-frng2"] },
+    { refs: ["eq-bfre", "eq-bfre2"] },
+    { refs: ["eq-bfrhe", "eq-bfrhe2"] },
+    { refs: ["eq-bfr", "eq-bfr2"] },
+    { refs: ["eq-tn", "eq-tn2"] },
+    /* ratios */
+    { refs: ["sig-va", "rva-va"] },
+    { refs: ["cr-ca.n", "ra-ca.n"] },
+    { refs: ["rva-pers", "ra-persva"], note: { "rva-pers": "le doc 8 reprend le doc 7", "ra-persva": "le doc 8 reprend le doc 7" } },
+    { refs: ["rva-pret", "ra-intva"], note: { "rva-pret": "le doc 8 reprend le doc 7", "ra-intva": "le doc 8 reprend le doc 7" } }
   ],
 
   /* Calculs (surligneur bleu) : o = résultat, i = [référence, signe]. */
@@ -1147,7 +1552,43 @@ const DATA = {
     { o: "sig-pmv", i: [["sig-pcess2", 1], ["sig-vnc2", -1]] },
 
     { o: "caf-total", i: [["caf-resultat", 1], ["caf-dot-exp", 1], ["caf-dot-fin", 1], ["caf-dot-exc", 1], ["caf-vnc", 1], ["caf-rep-exp", -1], ["caf-rep-fin", -1], ["caf-rep-exc", -1], ["caf-pcess", -1], ["caf-qpsubv", -1]] },
-    { o: "caf-autofin", i: [["caf-total", 1], ["caf-div", -1]] }
+    { o: "caf-autofin", i: [["caf-total", 1], ["caf-div", -1]] },
+
+    { o: "fe-ace", i: [["fe-stock", 1], ["fe-clients", 1], ["fe-autcr", 1], ["fe-cca", 1]] },
+    { o: "fe-ta", i: [["fe-vmp", 1], ["fe-dispo", 1]] },
+    { o: "fe-total", i: [["fe-immo", 1], ["fe-ace", 1], ["fe-crediv", 1], ["fe-ta", 1]] },
+    { o: "fr-cbcm", i: [["p-dont-cbc", -1]], label: "Les CBC, retirés des emprunts" },
+    { o: "fr-icnem", i: [["p-dont-icne", -1]], label: "Les ICNE, retirés des emprunts" },
+    { o: "fr-rp", i: [["fr-cp", 1], ["fr-amort", 1], ["fr-prov", 1]] },
+    { o: "fr-dfin", i: [["fr-emp", 1], ["fr-cbcm", 1], ["fr-icnem", 1]] },
+    { o: "fr-rd", i: [["fr-rp", 1], ["fr-dfin", 1]] },
+    { o: "fr-dce", i: [["fr-fourn", 1], ["fr-fisc", 1]] },
+    { o: "fr-dche", i: [["fr-icne", 1], ["fr-dimmo", 1], ["fr-dis", 1]] },
+    { o: "fr-total", i: [["fr-rd", 1], ["fr-dce", 1], ["fr-dche", 1], ["fr-cbc", 1]] },
+    { o: "eq-frng", i: [["eq-rd", 1], ["eq-es", -1]] },
+    { o: "eq-bfre", i: [["eq-ace", 1], ["eq-dce", -1]] },
+    { o: "eq-bfrhe", i: [["eq-ache", 1], ["eq-dche", -1]] },
+    { o: "eq-bfr", i: [["eq-bfre2", 1], ["eq-bfrhe2", 1]] },
+    { o: "eq-tn", i: [["eq-ta", 1], ["eq-tp", -1]] },
+    { o: "eq-tn2", i: [["eq-frng2", 1], ["eq-bfr2", -1]] },
+
+    { o: "rva-total", i: [["rva-pers", 1], ["rva-etat", 1], ["rva-pret", 1], ["rva-assoc", 1], ["rva-entr", 1]] },
+    Q("rva-pers", [["sig-pers", 1], ["sig-particip", 1]], [["sig-va", 1]]),
+    Q("rva-etat", [["sig-impots", 1], ["sig-is", 1]], [["sig-va", 1]]),
+    Q("rva-pret", [["cr-interets", 1]], [["sig-va", 1]]),
+    Q("rva-assoc", [["caf-div", 1]], [["sig-va", 1]]),
+    Q("rva-entr", [["caf-autofin", 1]], [["sig-va", 1]]),
+    { o: "ra-ca", i: [["sig-ventes", 1], ["sig-pvendue", 1]] },
+    Q("ra-varca", [["ra-ca.n", 1], ["ra-ca.p", -1]], [["ra-ca.p", 1]], { cols: ["n"] }),
+    Q("ra-varva", [["sig-va.n", 1], ["sig-va.p", -1]], [["sig-va.p", 1]], { cols: ["n"] }),
+    Q("ra-pnet", [["p-resultat", 1]], [["ra-ca", 1]]),
+    Q("ra-vaca", [["sig-va", 1]], [["ra-ca", 1]]),
+    Q("ra-ebeca", [["sig-ebe", 1]], [["ra-ca", 1]]),
+    Q("ra-persva", [["sig-pers", 1]], [["sig-va", 1]]),
+    Q("ra-intva", [["cr-interets", 1]], [["sig-va", 1]]),
+    { o: "rs-dn", i: [["fr-dfin", 1], ["fr-icne", 1], ["fr-cbc", 1], ["fe-dispo", -1]] },
+    Q("rs-tend", [["rs-dn", 1]], [["fr-cp", 1]]),
+    Q("rs-capend", [["rs-dn", 1]], [["caf-total", 1]], { m: 1 })
   ]
 };
 
@@ -1161,13 +1602,52 @@ if (typeof module !== "undefined") module.exports = DATA;
   var ROWS = {}, TBL = {}, OUT = {};
   D.tables.forEach(function (t) { t.rows.forEach(function (r) { ROWS[r.id] = r; TBL[r.id] = t; }); });
   var TAB = {}; D.tabs.forEach(function (t) { TAB[t.id] = t; });
-  var TABSUB = { bilan: "Le patrimoine au 31 décembre", resultat: "L’activité de l’année", sig: "Le résultat étape par étape", caf: "Les ressources dégagées" };
+  var META = {
+    accueil: { sub: "Le cas et le mode d’emploi" },
+    bilan: { n: 1, sub: "Le patrimoine au 31 décembre", tz: "Ce que Saveur possède, et comment elle l’a financé." },
+    resultat: { n: 2, sub: "L’activité de l’année", tz: "Les charges et les produits de l’exercice N, classés en exploitation, financier et exceptionnel." },
+    sig: { n: 3, sub: "Le résultat étape par étape", tz: "De la marge commerciale au résultat, en passant par la valeur ajoutée et l’EBE." },
+    caf: { n: 4, sub: "Les ressources dégagées", tz: "Ce que l’activité laisse vraiment pour investir, rembourser et verser des dividendes." },
+    fonctionnel: { n: 5, sub: "L’équilibre financier", tz: "Le bilan reclassé par fonction, pour calculer le FRNG, le BFR et la trésorerie nette." },
+    ratios: { n: 6, sub: "Les repères pour juger", tz: "Répartition de la VA, profitabilité et endettement, comparés à N-1 et au secteur." }
+  };
+  var CHAPTERS = [
+    { t: "Les comptes annuels", tabs: ["bilan", "resultat"] },
+    { t: "L’activité et les résultats", tabs: ["sig", "caf"] },
+    { t: "L’analyse financière", tabs: ["fonctionnel", "ratios"] }
+  ];
+  var PAGES = ["accueil"].concat(D.tabs.map(function (t) { return t.id; }));
+  function pageLabel(id) { return id === "accueil" ? "Accueil" : TAB[id].label; }
   function pr(ref) { var i = ref.indexOf("."); return i < 0 ? { row: ref, col: null } : { row: ref.slice(0, i), col: ref.slice(i + 1) }; }
   D.calc.forEach(function (e) { var o = pr(e.o).row; (OUT[o] = OUT[o] || []).push(e); });
 
   var NF = new Intl.NumberFormat("fr-FR");
+  var NF2 = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 });
   function num(v) { return v == null ? "" : (v < 0 ? "−" : "") + NF.format(Math.abs(v)); }
-  function pct(x) { return (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1).replace(".", ",") + " %"; }
+  function pct(x) { return (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1).replace(".", ",") + " %"; }
+  function r2(x) { return Math.round(x * 100) / 100; }
+  function fmtU(u, v) {
+    if (v == null) return "";
+    if (!u) return num(v);
+    var s = (v < 0 ? "−" : "") + NF2.format(Math.abs(r2(v)));
+    if (u === "pct") return s + " %";
+    if (u === "ans") return s + (Math.abs(v) < 2 ? " an" : " ans");
+    return s;
+  }
+  function fmtV(r, v) { return fmtU(r.u, v); }
+  var NF2F = new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function fmtFix(u, v) {
+    if (!u) return num(v);
+    var s = (v < 0 ? "−" : "") + NF2F.format(Math.abs(v));
+    return s + (u === "pct" ? "\u00a0%" : u === "ans" ? (Math.abs(v) < 2 ? "\u00a0an" : "\u00a0ans") : "");
+  }
+  function fmtDiff(r, d) {
+    var a = Math.abs(r2(d));
+    var s = (d > 0 ? "+" : d < 0 ? "−" : "") + NF2.format(a);
+    if (r.u === "pct") return s + (a < 2 ? " pt" : " pts");
+    if (r.u === "ans") return s + (a < 2 ? " an" : " ans");
+    return s;
+  }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function isEmpty(r) {
     if (r.keep || (r.k !== "l" && r.k !== "d")) return false;
@@ -1185,33 +1665,42 @@ if (typeof module !== "undefined") module.exports = DATA;
   }
   function shortName(r) { return r.sl || r.l; }
   function evolOf(r, t) {
-    if (!t.prev) return null;
+    if (!t.evol || !t.prev) return null;
     var n = r.v[t.main], p = r.v[t.prev];
     if (n == null || p == null || p === 0) return null;
     return (n - p) / Math.abs(p) * 100;
   }
+  function cmpOf(r, t) {
+    if (!t.cmp) return null;
+    var n = r.v[t.main], s = r.v[t.cmp];
+    if (n == null || s == null) return null;
+    return n - s;
+  }
   function verdict(r, x) {
-    if (x == null || !r.s || Math.abs(x) < 0.05) return "";
+    if (x == null || !r.s || Math.abs(x) < 0.005) return "";
     var good = r.s === "up" ? x > 0 : x < 0;
     return good ? "good" : "bad";
   }
 
   var store = {};
-  try { store = JSON.parse(localStorage.getItem("saveur-tableaux-v2") || "{}") || {}; } catch (e) { store = {}; }
-  function save() { try { localStorage.setItem("saveur-tableaux-v2", JSON.stringify(store)); } catch (e) {} }
+  try { store = JSON.parse(localStorage.getItem("saveur-tableaux-v3") || "{}") || {}; } catch (e) { store = {}; }
+  function save() { try { localStorage.setItem("saveur-tableaux-v3", JSON.stringify(store)); } catch (e) {} }
 
   var showEmpty = !!store.showEmpty;
   var current = (location.hash || "").slice(1);
-  if (!TAB[current]) current = TAB[store.tab] ? store.tab : "bilan";
+  if (PAGES.indexOf(current) < 0) current = PAGES.indexOf(store.tab) >= 0 ? store.tab : "accueil";
   var selected = null;
 
   var main = document.getElementById("main");
   var tabsEl = document.getElementById("tabs");
+  var side = document.querySelector(".side");
   var pbody = document.getElementById("pbody");
   var panel = document.getElementById("panel");
   var tip = document.getElementById("tip");
   var clearBtn = document.getElementById("clear");
   var emptyBox = document.getElementById("show-empty");
+  var wide = window.matchMedia("(min-width: 1280px)");
+  var narrow = window.matchMedia("(max-width: 899px)");
 
   /* ── Construction ── */
   function famStyle(r) { return r.f ? "--fc:var(--f-" + r.f + ")" : ""; }
@@ -1219,7 +1708,7 @@ if (typeof module !== "undefined") module.exports = DATA;
   function cellHTML(t, r, c) {
     var v = r.v[c.k];
     if (v == null) return '<td class="num" data-col="' + c.k + '">' + (isEmpty(r) || r.k === "g" ? "" : '<span class="nil">–</span>') + "</td>";
-    return '<td class="num" data-col="' + c.k + '"><span class="cv">' + num(v) + "</span></td>";
+    return '<td class="num" data-col="' + c.k + '"><span class="cv">' + fmtV(r, v) + "</span></td>";
   }
   function rowHTML(t, r, grandId) {
     var cls = ["row", "k-" + r.k];
@@ -1231,19 +1720,25 @@ if (typeof module !== "undefined") module.exports = DATA;
     if (t.signs) h += '<td class="sg">' + (r.sg ? '<span class="sgc">' + esc(r.sg) + "</span>" : "") + "</td>";
     var chips = "";
     if (r.x) chips += '<span class="chip-x">À connaître</span>';
+    if (r.m) chips += '<span class="chip-m" title="Valeur calculée par la fiche avec la formule du cours">calculé ici</span>';
     if (r.a) chips += '<span class="chip-a">écart</span>';
     var inner;
     if (r.k === "g") inner = '<span class="lt"><span class="gp">' + (r.f ? '<i class="dot"></i>' : "") + esc(r.l) + "</span>" + chips + "</span>";
     else if (r.k === "l" || r.k === "s" || r.k === "d") inner = '<span class="lw"><i class="dot"></i><span class="lt">' + esc(r.l) + chips + "</span></span>";
     else inner = '<span class="lt">' + esc(r.l) + chips + "</span>";
-    h += '<td class="lab" style="--ind:' + (r.ind || 0) + '">' + inner + "</td>";
+    var extra = (t.evol ? 1 : 0) + (t.cmp ? 1 : 0);
     if (r.k === "g") {
-      h += '<td colspan="' + (t.cols.length + (t.evol ? 1 : 0)) + '"></td>';
+      h += '<td class="lab" colspan="' + (1 + t.cols.length + extra) + '" style="--ind:' + (r.ind || 0) + '">' + inner + "</td>";
     } else {
+      h += '<td class="lab" style="--ind:' + (r.ind || 0) + '">' + inner + "</td>";
       t.cols.forEach(function (c) { h += cellHTML(t, r, c); });
       if (t.evol) {
         var x = evolOf(r, t);
         h += '<td class="num evol">' + (x == null ? "" : '<span class="ev ' + verdict(r, x) + '">' + pct(x) + "</span>") + "</td>";
+      }
+      if (t.cmp) {
+        var d = cmpOf(r, t);
+        h += '<td class="num cmp">' + (d == null ? "" : '<span class="ev ' + verdict(r, d) + '">' + fmtDiff(r, d) + "</span>") + "</td>";
       }
     }
     return h + "</tr>";
@@ -1260,6 +1755,7 @@ if (typeof module !== "undefined") module.exports = DATA;
       h += '<th class="lab-h">' + esc(t.short) + "</th>";
       t.cols.forEach(function (c) { h += '<th data-tip="' + esc(c.tip) + '">' + esc(c.label) + "</th>"; });
       if (t.evol) h += '<th data-tip="Évolution de N par rapport à N-1, en %. En vert si elle est favorable, en rouge si elle est défavorable.">Évol.</th>';
+      if (t.cmp) h += '<th data-tip="Différence entre N et le repère du secteur. En vert si elle est favorable, en rouge si elle est défavorable.">Écart secteur</th>';
       h += "</tr>";
     }
     return h + "</thead>";
@@ -1282,23 +1778,74 @@ if (typeof module !== "undefined") module.exports = DATA;
       '<span class="lg-mk"><span class="stroke calc" aria-hidden="true"></span>Lien de calcul</span></span></div>';
     return h;
   }
+  var HOME_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7.2 8 2.8l5.5 4.4V13a.6.6 0 0 1-.6.6H3.1a.6.6 0 0 1-.6-.6Z"/><path d="M6.4 13.6V9.8h3.2v3.8"/></svg>';
+  function tocItem(id) {
+    var m = META[id] || {};
+    return '<a class="toc-i" id="tab-' + id + '" href="#' + id + '" data-tab="' + id + '">' +
+      '<span class="tn" aria-hidden="true">' + (id === "accueil" ? HOME_ICON : m.n) + "</span>" +
+      '<span class="tt"><b>' + esc(pageLabel(id)) + "</b><small>" + esc(m.sub || "") + "</small></span>" +
+      '<span class="badges" aria-hidden="true"></span></a>';
+  }
+  function pagerHTML(id) {
+    var i = PAGES.indexOf(id), prev = PAGES[i - 1], next = PAGES[i + 1];
+    var h = '<nav class="pager" aria-label="Pages voisines">';
+    if (prev) h += '<a class="pg prev" href="#' + prev + '" data-tab="' + prev + '"><small>← Précédent</small><b>' + esc(pageLabel(prev)) + "</b></a>";
+    if (next) h += '<a class="pg next" href="#' + next + '" data-tab="' + next + '"><small>' + (id === "accueil" ? "Commencer" : "Suivant") + " →</small><b>" + esc(pageLabel(next)) + "</b></a>";
+    return h + "</nav>";
+  }
+  function homeHTML() {
+    var h = '<section class="tabpanel home" id="tp-accueil" aria-label="Accueil" data-tab="accueil">';
+    h += '<header class="hero"><p class="eyebrow"><span class="stroke same" aria-hidden="true"></span>Fiche de révision · Diagnostic financier</p>' +
+      '<h1>Tableaux du cas <span class="hlw">Saveur</span></h1>' +
+      '<p class="lede">L’épicerie fine Saveur sur deux exercices, N et N-1. Six tableaux du cours, reliés entre eux ligne par ligne, pour comprendre d’où vient chaque chiffre et à quoi il sert.</p></header>';
+    h += '<div class="home-grid">' +
+      '<div class="howto" aria-label="Mode d’emploi"><h2 class="box-t">Comment s’en servir</h2>' +
+      '<p class="howto-h"><span class="on-fine">Survole une ligne pour lire son explication, puis clique dessus pour allumer ses liens dans tous les tableaux.</span><span class="on-touch">Touche une ligne pour lire son explication et allumer ses liens dans tous les tableaux.</span></p>' +
+      '<ul class="markers">' +
+      '<li><span class="stroke sel" aria-hidden="true"></span><span><b>Rose</b> la ligne que tu as choisie</span></li>' +
+      '<li><span class="stroke same" aria-hidden="true"></span><span><b>Jaune</b> le même montant, repris ailleurs</span></li>' +
+      '<li><span class="stroke calc" aria-hidden="true"></span><span><b>Bleu</b> un lien de calcul entre deux lignes</span></li>' +
+      '</ul><p class="howto-h">Les pastilles du sommaire comptent les lignes surlignées dans chaque tableau.</p></div>' +
+      '<div class="case"><h2 class="box-t">Le cas en bref</h2>' +
+      '<p>Saveur est une grande épicerie fine créée en 2002 dans le Marais, à Paris. Elle vend des produits haut de gamme à des particuliers et à des restaurateurs, et propose des cours de cuisine.</p>' +
+      '<p>En N-1 et N, elle a agrandi sa surface de vente et rénové sa façade sans fermer le magasin. Le chiffre d’affaires est resté stable, mais le résultat et la liquidité en ont souffert. Elle envisage d’ouvrir un point de vente à Lyon début N+1.</p>' +
+      '<p class="mission">Ta mission, analyser l’activité puis la structure financière.</p></div></div>';
+    h += '<section class="path"><div class="sec-head"><h2 class="sec-t">Les six tableaux</h2><p>Ils suivent l’ordre d’un diagnostic financier. On part des comptes annuels, on mesure ce que l’activité dégage, puis on juge l’équilibre et la solidité de l’entreprise.</p></div><div class="chapters">';
+    CHAPTERS.forEach(function (ch) {
+      h += '<div class="chap"><p class="chap-t">' + esc(ch.t) + '</p><div class="chap-cards">';
+      ch.tabs.forEach(function (id) {
+        var tab = TAB[id], m = META[id];
+        h += '<a class="card" href="#' + id + '" data-tab="' + id + '"><span class="card-top"><span class="tn">' + m.n + "</span><span><h3>" + esc(tab.label) + '</h3><p class="card-docs">' + esc(tab.docs || "") + "</p></span></span>" +
+          '<p class="tz">' + esc(m.tz) + "</p>" + (tab.exam ? '<span class="chip-exam">' + esc(tab.exam) + "</span>" : "") +
+          '<span class="card-go">Ouvrir le tableau <i aria-hidden="true">→</i></span></a>';
+      });
+      h += "</div></div>";
+    });
+    h += "</div></section>" + pagerHTML("accueil") + '<p class="foot">Source : cours Diagnostic financier, cas Saveur. Montants en euros.</p></section>';
+    return h;
+  }
   function build() {
-    var th = "", mh = "";
+    var th = '<div class="toc-grp">' + tocItem("accueil") + "</div>";
+    CHAPTERS.forEach(function (ch) {
+      th += '<div class="toc-grp"><p class="toc-gt">' + esc(ch.t) + "</p>";
+      ch.tabs.forEach(function (id) { th += tocItem(id); });
+      th += "</div>";
+    });
+    var mh = homeHTML();
     D.tabs.forEach(function (tab) {
-      th += '<button class="tab" role="tab" type="button" id="tab-' + tab.id + '" data-tab="' + tab.id + '" aria-controls="tp-' + tab.id + '">' +
-        '<span class="tab-t">' + esc(tab.label) + '<span class="badges" aria-hidden="true"></span></span>' +
-        '<span class="tab-s">' + esc(TABSUB[tab.id] || "") + "</span></button>";
-      mh += '<section class="tabpanel" role="tabpanel" id="tp-' + tab.id + '" aria-labelledby="tab-' + tab.id + '" data-tab="' + tab.id + '">';
-      mh += '<header class="tp-head"><div><h2 class="tp-title">' + esc(tab.label) + "</h2></div>" +
+      var m = META[tab.id] || {};
+      mh += '<section class="tabpanel" id="tp-' + tab.id + '" aria-labelledby="h-' + tab.id + '" data-tab="' + tab.id + '">';
+      mh += '<header class="tp-head"><div><p class="kicker">Étape ' + m.n + " · " + esc(tab.docs || "") + '</p><h2 class="tp-title" id="h-' + tab.id + '">' + esc(tab.label) + "</h2></div>" +
         '<div class="tp-side"><p class="tp-intro">' + esc(tab.intro) + "</p>" + (tab.exam ? '<span class="chip-exam">' + esc(tab.exam) + "</span>" : "") + "</div></header>";
       mh += legendHTML(tab);
-      mh += '<div class="sheets' + (tab.tables.length > 1 && tab.id === "resultat" ? " duo" : "") + '">';
-      tab.tables.forEach(function (tid) {
+      var duo = tab.id === "resultat" || tab.id === "fonctionnel";
+      mh += '<div class="sheets' + (duo ? " duo" : "") + '">';
+      tab.tables.forEach(function (tid, i) {
         var t = tableById(tid);
         var last = t.rows[t.rows.length - 1];
         var grandId = last && last.k === "t" ? last.id : null;
-        mh += '<article class="sheet"><div class="sheet-h"><h3>' + esc(t.title) + "</h3>" +
-          (t.id === "actif" ? '<label class="switch" for="actif-detail"><input type="checkbox" id="actif-detail" role="switch"> Brut et amortissements</label>' : '<span class="unit">en euros</span>') + "</div>";
+        mh += '<article class="sheet' + (duo && i > 1 ? " span" : "") + '"><div class="sheet-h"><h3>' + esc(t.title) + "</h3>" +
+          (t.id === "actif" ? '<label class="switch" for="actif-detail"><input type="checkbox" id="actif-detail" role="switch"> Brut et amortissements</label>' : '<span class="unit">' + (t.cmp || t.rows.some(function (r) { return r.u; }) ? "en euros et en %" : "en euros") + "</span>") + "</div>";
         mh += '<div class="scroll"><table class="' + [t.id === "actif" ? "wide" : "", t.signs ? "signed" : ""].join(" ").trim() + '">' + theadHTML(t) + "<tbody>";
         t.rows.forEach(function (r) { mh += rowHTML(t, r, grandId); });
         mh += "</tbody></table></div></article>";
@@ -1311,28 +1858,43 @@ if (typeof module !== "undefined") module.exports = DATA;
         alerts.forEach(function (r) { mh += '<li><button type="button" data-goto="' + r.id + '">' + esc(shortName(r)) + "</button>" + esc(r.a) + "</li>"; });
         mh += "</ul></div>";
       }
-      mh += '<p class="foot">Source : cours Diagnostic financier, cas Saveur (documents 1 à 6). Montants en euros.</p>';
+      mh += pagerHTML(tab.id);
+      mh += '<p class="foot">Source : cours Diagnostic financier, cas Saveur, ' + esc((tab.docs || "").toLowerCase()) + ". Montants en euros.</p>";
+      if (tab.sources && tab.sources.length) {
+        mh += '<div class="srcs"><p>Définitions complétées avec</p><ul>';
+        tab.sources.forEach(function (s) { mh += '<li><a href="' + esc(s.u) + '" target="_blank" rel="noopener">' + esc(s.t) + "</a></li>"; });
+        mh += "</ul></div>";
+      }
       mh += "</section>";
     });
     tabsEl.innerHTML = th;
     main.innerHTML = mh;
   }
 
-  /* ── Onglets ── */
+  /* ── Pages ── */
+  function centerChip(a) {
+    if (!narrow.matches || !a) return;
+    var left = a.offsetLeft - (tabsEl.clientWidth - a.offsetWidth) / 2;
+    try { tabsEl.scrollTo({ left: Math.max(0, left), behavior: "auto" }); } catch (e) { tabsEl.scrollLeft = Math.max(0, left); }
+  }
   function showTab(id, keepScroll) {
+    if (PAGES.indexOf(id) < 0) id = "accueil";
     current = id; store.tab = id; save();
-    D.tabs.forEach(function (t) {
-      var on = t.id === id;
-      document.getElementById("tab-" + t.id).setAttribute("aria-selected", on ? "true" : "false");
-      document.getElementById("tab-" + t.id).tabIndex = on ? 0 : -1;
-      document.getElementById("tp-" + t.id).hidden = !on;
+    PAGES.forEach(function (p) {
+      var a = document.getElementById("tab-" + p);
+      if (a) { if (p === id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }
+      document.getElementById("tp-" + p).hidden = p !== id;
     });
     sweepIn(document.getElementById("tp-" + id));
-    try { history.replaceState(null, "", "#" + id); } catch (e) {}
-    if (!keepScroll) {
-      var bar = document.querySelector(".bar");
-      if (bar.getBoundingClientRect().top <= 1) window.scrollTo({ top: document.querySelector(".masthead").offsetHeight, behavior: "auto" });
-    }
+    if (location.hash.slice(1) !== id) { try { history.replaceState(null, "", "#" + id); } catch (e) {} }
+    if (!keepScroll) window.scrollTo({ top: 0, behavior: "auto" });
+    centerChip(document.getElementById("tab-" + id));
+  }
+  function navigate(id) {
+    hideTip();
+    if (id === current) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    try { history.pushState(null, "", "#" + id); } catch (e) {}
+    showTab(id);
   }
 
   /* ── Relations ── */
@@ -1472,40 +2034,78 @@ if (typeof module !== "undefined") module.exports = DATA;
     if (t.tab !== outTable.tab) s = TAB[t.tab].label + " › " + s;
     return s;
   }
-  function formulaData(e) {
-    var o = pr(e.o), ot = TBL[o.row], orow = ROWS[o.row];
-    var terms = e.i.filter(function (x) { return !isEmpty(ROWS[pr(x[0]).row]); });
-    var labels = terms.map(function (x, i) {
-      var sign = x[1] < 0 ? "− " : (i ? "+ " : "");
-      return sign + termLabel(x[0], ot);
-    }).join(" ");
-    var cols = (o.col ? [o.col] : [ot.main, ot.prev].filter(Boolean)).filter(function (c) { return orow.v[c] != null; });
+  function cellTxt(u, v) {
+    if (v == null) return "–";
+    if (!u && v < 0) return "(" + num(v) + ")";
+    return fmtU(u, v);
+  }
+  function decimals(v) { var s = String(v); var i = s.indexOf("."); return i < 0 ? 0 : s.length - i - 1; }
+  function sameShown(u, calc, shown) {
+    if (calc == null || shown == null) return true;
+    if (!u) return Math.abs(calc - shown) < 1e-6;
+    var d = decimals(shown), k = Math.pow(10, d);
+    return Math.round(calc * k) / k === shown;
+  }
+  function termRows(list, ot, cols) {
+    var terms = list.filter(function (x) { return !isEmpty(ROWS[pr(x[0]).row]); });
     var rows = terms.map(function (x, i) {
-      var p = pr(x[0]);
-      return { sign: x[1] < 0 ? "−" : (i ? "+" : ""), label: termLabel(x[0], ot), vals: cols.map(function (c) { return ROWS[p.row].v[p.col || c]; }) };
+      var p = pr(x[0]), row = ROWS[p.row];
+      return { sign: x[1] < 0 ? "−" : (i ? "+" : ""), label: termLabel(x[0], ot), u: row.u, k: x[1],
+        vals: cols.map(function (c) { return row.v[p.col || c]; }) };
     });
     var sums = cols.map(function (c, j) {
       var s = 0, any = false;
-      terms.forEach(function (x, i) { var v = rows[i].vals[j]; if (v != null) { any = true; s += x[1] * v; } });
+      rows.forEach(function (r) { var v = r.vals[j]; if (v != null) { any = true; s += r.k * v; } });
       return any ? s : null;
     });
-    return {
-      labels: labels, heads: cols.map(function (c) { return o.col ? colName(ot, c) : colHead(ot, c); }),
-      rows: rows, sums: sums, shown: cols.map(function (c) { return orow.v[c]; }), total: shortName(orow)
-    };
+    var labels = rows.map(function (r) { return (r.sign ? r.sign + " " : "") + r.label; }).join(" ");
+    return { rows: rows, sums: sums, labels: labels, n: rows.length };
   }
-  function posee(heads, rows, total, sums) {
+  function formulaData(e) {
+    var o = pr(e.o), ot = TBL[o.row], orow = ROWS[o.row];
+    var base = e.cols || (o.col ? [o.col] : [ot.main, ot.prev].filter(Boolean));
+    var cols = base.filter(function (c) { return orow.v[c] != null; });
+    var heads = cols.map(function (c) { return o.col ? colName(ot, c) : colHead(ot, c); });
+    var shown = cols.map(function (c) { return orow.v[c]; });
+    if (e.q) {
+      var nu = termRows(e.q.n, ot, cols), de = termRows(e.q.d, ot, cols);
+      var res = cols.map(function (c, j) {
+        var a = nu.sums[j], b = de.sums[j];
+        return a == null || b == null || b === 0 ? null : a / b * e.q.m;
+      });
+      var wrap = function (p) { return p.n > 1 ? "(" + p.labels + ")" : p.labels; };
+      return { q: true, u: orow.u, heads: heads, nu: nu, de: de, sums: res, shown: shown, m: e.q.m, total: shortName(orow),
+        labels: wrap(nu) + " / " + wrap(de) + (e.q.m === 100 ? " × 100" : "") };
+    }
+    var lin = termRows(e.i, ot, cols);
+    return { q: false, u: orow.u, heads: heads, rows: lin.rows, sums: lin.sums, shown: shown, total: shortName(orow), labels: lin.labels };
+  }
+  function poseeHTML(heads, body, foot) {
+    var span = heads.length + 2;
     var h = '<table class="posee"><thead><tr><th></th><th></th>';
     heads.forEach(function (x) { h += "<th>" + esc(x) + "</th>"; });
     h += "</tr></thead><tbody>";
-    rows.forEach(function (r) {
-      h += '<tr><td class="ps">' + r.sign + '</td><td class="pl">' + esc(r.label) + "</td>";
-      r.vals.forEach(function (v) { h += '<td class="pv">' + (v == null ? "–" : v < 0 ? "(" + num(v) + ")" : num(v)) + "</td>"; });
+    body.forEach(function (r) {
+      if (r.sec) { h += '<tr class="sec"><td colspan="' + span + '">' + esc(r.sec) + "</td></tr>"; return; }
+      h += '<tr class="' + (r.sub ? "sub" : "") + '"><td class="ps">' + (r.sign || "") + '</td><td class="pl">' + esc(r.label) + "</td>";
+      r.vals.forEach(function (v) { h += '<td class="pv">' + cellTxt(r.u, v) + "</td>"; });
       h += "</tr>";
     });
-    h += '</tbody><tfoot><tr><td class="ps">=</td><td class="pl">' + esc(total) + "</td>";
-    sums.forEach(function (v) { h += '<td class="pv">' + (v == null ? "–" : num(v)) + "</td>"; });
+    h += '</tbody><tfoot><tr><td class="ps">=</td><td class="pl">' + esc(foot.label) + "</td>";
+    foot.vals.forEach(function (v) { h += '<td class="pv">' + (v == null ? "–" : fmtU(foot.u, v)) + "</td>"; });
     return h + "</tr></tfoot></table>";
+  }
+  function formulaHTML(f) {
+    if (!f.heads.length) return "";
+    if (!f.q) return poseeHTML(f.heads, f.rows, { label: f.total, vals: f.sums, u: f.u });
+    var body = [];
+    body.push({ sec: "Numérateur" });
+    f.nu.rows.forEach(function (r) { body.push(r); });
+    if (f.nu.n > 1) body.push({ sub: true, sign: "=", label: "Total du numérateur", vals: f.nu.sums, u: f.nu.rows[0].u });
+    body.push({ sec: "Dénominateur" });
+    f.de.rows.forEach(function (r) { body.push(r); });
+    if (f.de.n > 1) body.push({ sub: true, sign: "=", label: "Total du dénominateur", vals: f.de.sums, u: f.de.rows[0].u });
+    return poseeHTML(f.heads, body, { label: f.total + (f.m === 100 ? " (× 100)" : ""), vals: f.sums, u: f.u });
   }
   function linkItem(rowId, e, kind) {
     var r = ROWS[rowId], t = TBL[rowId];
@@ -1520,7 +2120,7 @@ if (typeof module !== "undefined") module.exports = DATA;
     return '<li><button type="button" class="lk ' + kind + '" data-goto="' + rowId + '">' +
       '<span class="w">' + esc(whereOf(rowId)) + "</span>" +
       '<span class="n">' + esc(shortName(r)) + "</span>" +
-      '<span class="v">' + (v == null ? "–" : num(v)) + "</span>" +
+      '<span class="v">' + (v == null ? "–" : fmtV(r, v)) + "</span>" +
       (notes.length ? '<span class="note">' + esc(notes.join(" · ")) + "</span>" : "") +
       "</button></li>";
   }
@@ -1530,8 +2130,8 @@ if (typeof module !== "undefined") module.exports = DATA;
       '<p class="pe-lead">Choisis une ligne dans un tableau.</p>' +
       '<p>Tu verras ici son explication, son calcul posé avec les chiffres du cas et tous les tableaux où elle est reprise.</p>' +
       '<div class="pe-btns"><button type="button" class="btn" data-goto="sig-va">La valeur ajoutée</button>' +
-      '<button type="button" class="btn" data-goto="p-resultat">Le résultat au passif</button>' +
-      '<button type="button" class="btn" data-goto="caf-total">La CAF</button></div></div>';
+      '<button type="button" class="btn" data-goto="eq-bfr">Le BFR</button>' +
+      '<button type="button" class="btn" data-goto="ra-ebeca">Le taux de marge</button></div></div>';
   }
   function renderPanel(id, rel) {
     var r = ROWS[id], t = TBL[id];
@@ -1539,6 +2139,7 @@ if (typeof module !== "undefined") module.exports = DATA;
     if (r.f) chips += '<span class="chip" style="--fc:var(--f-' + r.f + ')"><i class="dot"></i>' + esc(D.families[r.f].name) + "</span>";
     if (r.pcg) chips += '<span class="chip pcg">Compte ' + esc(r.pcg) + "</span>";
     if (r.x) chips += '<span class="chip x">À connaître</span>';
+    if (r.m) chips += '<span class="chip m">Calculé par la fiche</span>';
     var h = '<div class="p-top"><p class="p-where">' + esc(whereOf(id)) + '</p><h3 class="p-title">' + esc(r.l) + "</h3>" +
       (chips ? '<div class="p-chips">' + chips + "</div>" : "") + "</div>";
     if (r.k !== "g") {
@@ -1550,11 +2151,16 @@ if (typeof module !== "undefined") module.exports = DATA;
         h += "</table></div>";
       } else {
         h += '<dl class="vals">';
-        t.cols.forEach(function (c, i) { h += '<div class="' + (i === 0 ? "main" : "") + '"><dt>' + esc(c.label) + "</dt><dd>" + (r.v[c.k] == null ? "–" : num(r.v[c.k])) + "</dd></div>"; });
+        t.cols.forEach(function (c, i) { h += '<div class="' + (i === 0 ? "main" : "") + '"><dt>' + esc(c.label) + "</dt><dd>" + (r.v[c.k] == null ? "–" : fmtV(r, r.v[c.k])) + "</dd></div>"; });
         var x = evolOf(r, t);
         if (x != null) {
           var vd = verdict(r, x);
           h += '<div class="' + vd + '"><dt>Évolution</dt><dd>' + pct(x) + (vd ? "<small>" + (vd === "good" ? "favorable" : "défavorable") + "</small>" : "") + "</dd></div>";
+        }
+        var d = cmpOf(r, t);
+        if (d != null) {
+          var vc = verdict(r, d);
+          h += '<div class="full ' + vc + '"><dt>Écart secteur</dt><dd>' + fmtDiff(r, d) + (vc ? "<small>" + (vc === "good" ? "favorable" : "défavorable") + "</small>" : "") + "</dd></div>";
         }
         h += "</dl>";
       }
@@ -1563,22 +2169,20 @@ if (typeof module !== "undefined") module.exports = DATA;
     if (r.c) h += '<p class="cours"><b>Dans ton cours</b><span>' + esc(r.c) + "</span></p>";
     (OUT[id] || []).forEach(function (e) {
       var f = formulaData(e);
-      h += '<div class="formula"><h4>' + esc(e.label || "Calcul") + '</h4><p class="fl"><b>' + esc(shortName(r)) + "</b> = " + esc(f.labels) + "</p>";
-      if (f.heads.length) {
-        h += posee(f.heads, f.rows, f.total, f.sums);
-        f.sums.forEach(function (s, j) {
-          if (s != null && s !== f.shown[j]) h += '<p class="fx-note">' + esc(f.heads[j]) + " : le calcul donne " + num(s) + ", le cours indique " + num(f.shown[j]) + ".</p>";
-        });
-      }
+      h += '<div class="formula"><h4>' + esc(e.label || (e.q ? "Formule du ratio" : "Calcul")) + '</h4><p class="fl"><b>' + esc(e.q ? r.l : shortName(r)) + "</b> = " + esc(f.labels) + "</p>";
+      h += formulaHTML(f);
+      if (!r.m) f.sums.forEach(function (s, j) {
+        if (!sameShown(f.u, s, f.shown[j])) h += '<p class="fx-note">' + esc(f.heads[j]) + " : le calcul donne " + fmtFix(f.u, s) + ", le cours indique " + fmtU(f.u, f.shown[j]) + ".</p>";
+      });
       h += "</div>";
     });
     if (t.id === "actif" && r.v.na != null && r.k === "l") {
       var hasPrev = r.v.pa != null;
       h += '<div class="formula"><h4>Valeur nette</h4><p class="fl"><b>Net</b> = Brut − Amortissements et dépréciations</p>' +
-        posee(hasPrev ? ["N", "N-1"] : ["N"], [
+        poseeHTML(hasPrev ? ["N", "N-1"] : ["N"], [
           { sign: "", label: "Brut", vals: hasPrev ? [r.v.nb, r.v.pb] : [r.v.nb] },
           { sign: "−", label: "Amort. et dép.", vals: hasPrev ? [r.v.na, r.v.pa] : [r.v.na] }
-        ], "Net", hasPrev ? [r.v.nn, r.v.pn] : [r.v.nn]) + "</div>";
+        ], { label: "Net", vals: hasPrev ? [r.v.nn, r.v.pn] : [r.v.nn] }) + "</div>";
     }
     if (r.a) h += '<p class="alert"><b>Écart dans le cours</b><span>' + esc(r.a) + "</span></p>";
     if (r.k !== "g") {
@@ -1610,15 +2214,19 @@ if (typeof module !== "undefined") module.exports = DATA;
   function goTo(id) {
     var t = TBL[id];
     if (!t) return;
-    if (t.tab !== current) showTab(t.tab, true);
+    if (t.tab !== current) {
+      try { history.pushState(null, "", "#" + t.tab); } catch (e) {}
+      showTab(t.tab, true);
+    }
     var tr = trOf(id);
     if (!tr) return;
     if (tr.classList.contains("empty") && !showEmpty) { emptyBox.checked = true; setEmpty(true); }
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (window.matchMedia("(min-width: 1180px)").matches) {
+    if (wide.matches) {
       tr.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
     } else {
-      var top = tr.getBoundingClientRect().top + window.scrollY - document.querySelector(".bar").offsetHeight - 16;
+      var off = narrow.matches ? side.offsetHeight : 0;
+      var top = tr.getBoundingClientRect().top + window.scrollY - off - 24;
       window.scrollTo({ top: Math.max(0, top), behavior: reduce ? "auto" : "smooth" });
     }
     tr.classList.remove("flash"); void tr.offsetWidth; tr.classList.add("flash");
@@ -1672,7 +2280,14 @@ if (typeof module !== "undefined") module.exports = DATA;
   window.addEventListener("scroll", hideTip, { passive: true });
 
   /* ── Événements ── */
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest("a[data-tab]");
+    if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
+    ev.preventDefault();
+    navigate(a.getAttribute("data-tab"));
+  });
   main.addEventListener("click", function (ev) {
+    if (ev.target.closest("a[data-tab]")) return;
     var go = ev.target.closest("[data-goto]");
     if (go) { var gid = go.getAttribute("data-goto"); if (selected !== gid) select(gid, { force: true }); goTo(gid); return; }
     var th = ev.target.closest("th[data-tip], [data-tipfam]");
@@ -1698,17 +2313,6 @@ if (typeof module !== "undefined") module.exports = DATA;
     if (go.classList.contains("btn")) { select(id, { force: true }); goTo(id); return; }
     goTo(id);
   });
-  tabsEl.addEventListener("click", function (ev) {
-    var b = ev.target.closest("[data-tab]");
-    if (b) showTab(b.getAttribute("data-tab"));
-  });
-  tabsEl.addEventListener("keydown", function (ev) {
-    if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
-    var ids = D.tabs.map(function (t) { return t.id; });
-    var i = ids.indexOf(current) + (ev.key === "ArrowRight" ? 1 : -1);
-    i = (i + ids.length) % ids.length;
-    showTab(ids[i]); document.getElementById("tab-" + ids[i]).focus();
-  });
   clearBtn.addEventListener("click", deselect);
   document.getElementById("close").addEventListener("click", deselect);
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") { hideTip(); if (selected) deselect(); } });
@@ -1718,7 +2322,9 @@ if (typeof module !== "undefined") module.exports = DATA;
     if (selected) select(selected, { force: true });
   }
   emptyBox.addEventListener("change", function () { setEmpty(emptyBox.checked); });
-  window.addEventListener("hashchange", function () { var id = location.hash.slice(1); if (TAB[id] && id !== current) showTab(id, true); });
+  function fromHash() { var id = location.hash.slice(1); if (PAGES.indexOf(id) >= 0 && id !== current) showTab(id); }
+  window.addEventListener("hashchange", fromHash);
+  window.addEventListener("popstate", fromHash);
 
   function setDetail(on) {
     store.actifDetail = on; save();
@@ -1732,15 +2338,11 @@ if (typeof module !== "undefined") module.exports = DATA;
   /* ── Démarrage ── */
   build();
   emptyBox.checked = showEmpty;
-  setDetail(typeof store.actifDetail === "boolean" ? store.actifDetail : window.innerWidth >= 760);
+  setDetail(typeof store.actifDetail === "boolean" ? store.actifDetail : window.innerWidth >= 1500);
   document.getElementById("actif-detail").addEventListener("change", function (ev) { setDetail(ev.target.checked); });
   document.body.classList.toggle("show-empty", showEmpty);
   showTab(current, true);
-  var bar = document.querySelector(".bar");
-  function setBarH() { document.documentElement.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
-  setBarH();
-  if (window.ResizeObserver) new ResizeObserver(setBarH).observe(bar);
-  if (store.sel && ROWS[store.sel] && TBL[store.sel].tab === current && window.matchMedia("(min-width: 1180px)").matches) select(store.sel, { force: true });
+  if (store.sel && ROWS[store.sel] && TBL[store.sel].tab === current && wide.matches) select(store.sel, { force: true });
   else renderEmpty();
 })();
 </script>
